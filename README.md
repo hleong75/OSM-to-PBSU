@@ -2,6 +2,8 @@
 
 A tool to convert OpenStreetMap data to Proton Bus Simulator (PBSU) route format.
 
+📖 **[Quick Start Guide](QUICKSTART.md)** | 🔧 **[PBSU Format Reference](PBSU_FORMAT.md)** | 📋 **[Examples](examples/README.md)**
+
 ## Description
 
 This program converts OpenStreetMap (OSM) data containing bus routes and bus stops into the file format required by Proton Bus Simulator. It automates the creation of:
