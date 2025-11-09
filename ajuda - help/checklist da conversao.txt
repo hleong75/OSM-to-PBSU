@@ -1,0 +1,98 @@
+Checklist da conversão de ônibus
+Esta lista resume todos os itens necessários para um ônibus bem convertido, para evitar que algum item seja esquecido. Mesmo que não tenha tutorial de tudo, não desanime! É possível aprender fuçando nos vários mods de exemplo postados com o blend no busmods.com
+
+----
+
+BOAS PRÁTICAS PARA POLÍGONOS E TEXTURAS
+
+Quanto menos polígonos e texturas, melhor. Em mods para celulares evite ao máximo usar mais de 300 ou 400 mil triângulos para o veículo. Modelos com um milhão ou um milhão e meio de polígonos terão dificuldades de serem carregados na maioria dos celulares. Lembre-se que além do ônibus ainda vai ter o cenário... O total de polígonos enviados pra GPU depende das configurações do usuário como visibilidade, detalhes extras etc, mas via de regra quanto menos, mais leve.
+
+Texturas de detalhes pequenos podem ser menores, evitando gastar memória RAM de vídeo. Peças com cores lisas podem usar uma textura minúscula de 4x4 pixels apenas com a cor, isso deixa o uso de memória extremamente baixo! Muitas partes do interior podem usar isso para os celulares sem um grande prejuízo visual.
+
+Não use nenhuma textura com dimensões acima de 2048 pixels em mods para celular. Se for fazer texturas 4k para PC, por favor, lance uma versão lite do mod com texturas menores. As texturas acima de 2048 pixels de largura ou altura trazem transtornos diversos na maioria dos aparelhos, deixando o jogo instável e mais suscetível a crashes. Elas poderão ser ignoradas nas futuras versões. A forma mais prática é fazer o mod pensando no PC, depois duplicar a pasta e o ini, renomear e fazer a versão lite otimizando a partir do completo. Geralmente o processo oposto é mais difícil, já que é mais fácil tirar detalhes de um 3D do que adicionar, tendo que remodelar.
+
+----
+
+BÁSICO
+
+- Use uma escala correta, por favor: ônibus muito grande ou muito pequeno pode ser difícil de controlar nas vias. Considere 1 unidade de medida padrão do Blender como sendo um metro. Para comparar, adicione um cubo, defina a largura entre 2.5 e 2.6 metros, a altura para uns 3, e o comprimento para o tamanho do veículo desejado. Como 12 metros, 13.2, 15, 18, 23 etc. Nos sites dos fabricantes e/ou em blueprints normalmente constam as dimensões dos veículos.
+- Definição da massa: use um valor que corresponda ao ônibus vazio. Os passageiros vão adicionar uma massa cada vez que entrarem. Se configurar a massa como sendo o PBT do veículo cheio, depois que o pessoal entrar o ônibus pode ficar com a suspensão muito forçada ou lento, tendo maiores dificuldades nas subidas.
+- Definição do colisor com coordenadas (cubo) ou mesh collider. O mesh collider é muito importante para evitar as quinas, evitando que o veículo bata em coisas antes do tempo, como na borda de um carro estacionado em uma via esrtreita. Mas há uma limitação na engine física: o total de tris da peça não pode ser superior a 256. Se for com mais, não vai funcionar. O mesh collider precisa ser um modelo fechado, imagine algo que precisaria boiar com ar dentro ao ser jogado numa piscina. Se tiver buracos, pode não funcionar. Veja nos mosd de exemplo para ter uma ideia dele. Todavia usar o boxcollider continuará sendo suportado, onde você precisa acertar o centro e as dimensões dele nas coordenadas. Ou então use um mesh collider com a forma quadrada, pode ser mais fácil em último caso.
+- Nunca esqueça de configurar o aero surface nas posições dos eixos, para dar estabilidade em altas velocidades. Normalmente as coordenadas serão aproximadamente nas posições dos eixos. Adicione mais para os demais eixos, observando o 1 ou 2 nos articulados ou biarticulados. Veja os mods de exemplo para se orientar... Um número indica a parte do veículo onde a força será aplicada (no caso dos articulados, biarticulados, carretas etc), e o outro é o ponto em relação a cada parte (geralmente um para cada grupo de eixos, pelo menos dois, não precisa ser um por eixo... um na frente e outro na traseira geralmente já ajuda). Teste isso aumentando a força numa descida em alta velocidade, até o ponto em que conseguir manter o veículo estável. Esse aeroforce aplica uma força para baixo, simulando a pressão que a aerodinâmica causa. Normalmente não precisa mexer no drag e downforce padrão, eles valem para a maioria dos veículos.
+- Imagem preview.png na pasta, de preferência na proporção 16:9.
+- UseStandardShader=1 ou 0, que muda o comportamento dos materiais. Deixe em 0 se você não quiser configurar materiais para peças independentes, controlando o tanto de brilho/reflexo de luz, pode ser melhor deixar em 0 do que em 1 na maioria dos casos.
+- Configurações das rodas, raio, suspensão no arquivo wheels
+- Configuração do giro da roda dianteira no engine, na propriedade max_steer_angle. Em ônibus normais um bom valor é 35, enquanto que em superarticulados pode ser bom usar 42, a roda irá girar mais e facilitar nas curvas. Isso junto com o ackerman configura o veículo nas curvas.
+- O ackerman é MUITO IMPORTANTE, nunca o menospreze! Ele define a coordenada de um ponto de apoio para o giro do veículo, a partir do qual as rodas dianteiras vão se orientar para a esterção. Se não configurar isso o ônibus poderá ter dificuldade em curvas, especialmente grandes ou os que têm dois eixos na parte dianteira. Configure use_ackerman=1 e depois acerte a posição no [pos_ackerman]. O X quase sempre será ZERO, o centro do veículo, então não precisa colocar. Posicione o Y e Z perto do eixo ou do conjunto de eixos traseiros. Pode pegar a coordenada de uma roda traseira no wheels ou pelo 3D, o que ficar mais fácil. Imagine um ponto centrao bem no meio do eixo, é por ali que geralmente vai ficar esse valor, podendo ser levado mais pra frente ou pra trás dependendo do veículo. Teste sempre!
+- Configurações do motor com câmbio automático e manual no engine. Isso infelizmente é muito mais complicado para explicar, nem os criadores do jogo entendem direito. Veja nos links relacionados no final desse texto. 
+- Configuração do RPM máximo tanto no txt do motor como dos sons e dos modelos (para o ponteiro).
+- Configuração dos sons, remover os sons não utilizados para evitar um arquivo grande
+- NUNCA use sons em mp3, prefira WAV 44.1 kHz, os mp3 apresentam problemas e não tocam em vários celulares dentro do jogo.
+- Configuração do ar condicionado, no ini e no txt de som, e eventualmente o som do ar que fica na região das portas
+- Configuração dos espelhos: a posição deve aparecer na câmera principal para que a imagem do espelho seja atualizada pro jogador. Se necessário, mova a coordenada levemente mais para os lados, ou para cima/baixo, caso ela fique travada.
+- Posição do emissor da fumaça do escapamento.
+- Configuração dos faróis: tem os projetores, que são usados no modo leve ou no celular; e os spotlight, que são usados no PC no modo ultra. Para um mod bem configurado você precisa testar nos dois modos, baixo e ultra.
+- Configuração das luzes internas: três luzes para o PC no modo ultra e uma luz no meio para o celular ou PC no modo leve. É necessário ter todas; em articulados, recomendamos duas na parte da frente e uma na parte de trás; em biarticulados, uma em cada parte
+- Configuração das portas: não esquecer da luz da porta, que tem dois modos: a textura que aparece visualmente perto da peça da luz; e a luz real que é usada no PC no modo ultra, normalmente posicionada um pouco abaixo do modelo da luz (caso seja superior) ou acima (caso seja inferior, no degrau). Em ônibus com ar condicionado, não esqueça o som do ar para quando a porta está aberta. Os sons abrindo/fechando estão no txt dos sons, porém o da porta aberta, no txt da porta. Essa inconsistência foi mantida para não precisar reconverter os mods antigos da fase 1.
+- Configuração da câmera do motorista e do passageiro, do boneco do motorista e cobrador (necessário marcar cobrador na tela de escolha no jogo para aparecer).
+- Botões do painel animados: especialmente o freio de mão, botões de portas, chave de seta, chave de ignição, luzes dos marcadores.
+- Luz e som de parada solicitada (tem a luz do painel a do salão).
+- Opcional: som de porta aberta.
+- Opcional: som de ré.
+- Coordenadas das câmeras para os botões clicáveis do painel e ar condicionado: elas são alternadas apertando C no PC ou no botão de câmeras do Android. Configure pelo menos uma para o ar condicionado para ajudar o pessoal no controle.
+- Posição da catraca: ela deve estar bem no meio do caminho por onde as pessoas vão passar, um pouco antes da catraca. Assim as pessoas vão parar ali um tempo. Ainda que a catraca não seja animada, é interessante ter isso bem configurado para ter o tempo de espera e o som.
+- Tente configurar as posições dos sons no txt dos sons, fica mais realista e fiel.
+
+----
+
+BOAS PRÁTICAS PARA VOLANTE E PONTEIROS
+
+- Mantenha o volante centralizado com a câmera do motorista.
+- Os ponteiros giram de forma uniforme nas versões atuais. Nos ônibus reais há um intervalo de 0 a 20km e outro intervalo maior de 20 a 40, 40 a 60 etc. No Proton, deve-se considerar o mesmo intervalo para todos, inclusive do 0 a 20. Por isso o ponteiro em descanso fica mais para baixo, de forma que o espaço entre 0 a 20 seja o mesmo de 20 a 40 e por aí vai. Isso é necessário para manter a sincronia correta do ponteiro.
+- Para que o RPM funcione bem, o motor deve estar bem configurado, bem como o RPM máximo definido no txt dos modelos. As configurações do rpm máximo são duplicadas para permitir ajustes individuais, caso queira usar algum outro nível para o som. O ideal é manter tudo em sincronia.
+
+----
+
+BOAS PRÁTICAS PARA VIDROS E JANELAS
+
+- Use reflexos apenas do lado externo. Eles irritam muito no parabrisa interno. Deixe o reflexo levemente afastado da camada da chuva, senão as texturas vão ficar piscando no jogo (z-fight).
+- Use duas texturas bem pequenas para os vidros, uma para o interno e outra mais escura para o externo, caso não sejam mapeados (por exemplo, 4x4 pixels). Se forem mapeados para skins aí tudo bem usar uma textura grande.
+- Os vidros da chuva devem ser mapeados usando uma escala aproximadamente igual, para que não apareçam gotas muito grandes em um lado e pequenas em outros. É bom deixar um leve espaço entre a peça deles e a janela normal para que as texturas não fiquem piscando (z-fight).
+
+----
+
+BOAS PRÁTICAS PARA PASSAGEIROS
+
+- No txt da porta a coordenada dela é para onde o passageiro vai logo que sair do ponto. Normalmente em embarques normais deve ter a altura 0, para ficar no nível da rua. Em plataformas elevadas de BRTs, deixe na altura aproximada da plataforma (o piso mesmo). Esse valor incorreto pode fazer os passageiros entrarem inclinados demais.
+- Não coloque _pp_ muito perto dos paths de saída, do _waitdoor_ ou nos degraus, pois isso pode fazer com que desçam mesmo com a porta fechada.
+- Posição da catraca: apesar de não ter animação, a coordenada da catraca deve ficar no caminho entre dois pontos da passagem dos passageiros. Ajeite a altura para ficar certa, dando um leve espaço entre os pontos dos paths. Senão os passageiros vão ignorar, não vão parar. Deixe o ponto da catraca levemente para a frente dela, para que a barriga da pessoa não fique sobreposta a ela.
+- Nos bancos das janelas, deixe a posição um pouco mais pra dentro do que o normal, para evitar que fiquem com o braço para fora. Dica: teste com os passageiros em 200% e aumente a velocidade do jogo para testar mais rápido (na tela de ferramentas ou F4).
+
+----
+
+ANIMAÇÕES DIVERSAS
+
+- Não se esqueça das câmeras de posições dos botões clicáveis, a que aparece apertando C no jogo. É meio chato configurar elas, mas desejável.
+- Botão alternador de portas nos modelos que tiverem portas dos dois lados.
+- Se um botão tiver o on sem o off, ou vice-versa, pode dar erro no jogo causando com que outras animações não relacionadas não sejam carregadas. Se não for animar algum botão, use qualquer nome para o mesh que não seja uma palavra chave interna do jogo.
+
+----
+
+OUTRAS COISAS
+
+- Vai ter limitador de velocidade? Configure o speed_limit no txt do motor.
+- Configure o max_steer_angle para uma posição correta para o veículo em questão, aumentando um pouco o valor. Normalmente ônibus tocos terá o valor próximo a 35. Num superarticulado coloque algo próximo a 42, para que ele faça curvas com mais facilidade. Se quiser facilitar ainda mais o giro da roda você pode colocar um valor um pouco maior, pode não ficar realista mas vai ajudar nas curvas.
+- O ackerman ajuda no raio da curva das rodas dianteiras. Normalmente terá uma posição próxima ao eixo traseiro. Ele é muito importante nos veículos. Sem estar configurado corretamente as rodas dianteiras não vão girar de forma realista. Experimente levar a coordenada posZ dele mais pra frente ou mais pra trás para facilitar a curva. O ideal é ver uma gravação de um ônibus real visto de cima fazendo uma curva circular, com o volante todo estercido, para identificar melhor este ponto, e ir comparando. Quase sempre o ponto dele será no meio do eixo traseiro.
+- Se o motor for muito potente, experimente aumentar a força do freio com o max_brake_torque. Senão pode ficar difícil frear.
+
+=============================
+
+LINKS RELACIONADOS
+
+https://vehiclephysics.com/blocks/differential/
+https://vehiclephysics.com/blocks/engine/
+https://vehiclephysics.com/blocks/clutch/
+https://vehiclephysics.com/blocks/gearbox/
+
+SOM (vídeo ruim, desculpe, mas pode ajudar)
+https://www.youtube.com/watch?v=HgNX3AkQ1xU

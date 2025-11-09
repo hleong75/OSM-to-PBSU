@@ -1,0 +1,40 @@
+ENTRE NESSE GRUPO PARA AJUDA MAIS FÁCIL COM A CONVERSÃO:
+https://www.facebook.com/groups/pbsmods
+
+
+##################################################
+PLAYLIST GERAL DA ESTABILIDADE FÍSICA DOS VEÍCULOS
+
+https://www.youtube.com/watch?v=BgXbFPzKs0k&list=PLLYFgjkWst1qiBA4L4qN7z69ClUkcQZSd
+
+
+COLISOR:
+https://youtu.be/BgXbFPzKs0k?list=PLLYFgjkWst1qiBA4L4qN7z69ClUkcQZSd
+
+CENTRO DA MASSA:
+https://youtu.be/DNrVwgKHk8I?list=PLLYFgjkWst1qiBA4L4qN7z69ClUkcQZSd
+
+SUSPENSÃO:
+https://youtu.be/Myjuaaon4lY?list=PLLYFgjkWst1qiBA4L4qN7z69ClUkcQZSd
+
+DOWNFORCE PARA ESTABILIDADE EM ALTAS VELOCIDADES:
+https://youtu.be/RojdqmkVz1s?list=PLLYFgjkWst1qiBA4L4qN7z69ClUkcQZSd
+
+STEER ANGLE E ACKERMAN, essencial para dirigibilidade:
+https://youtu.be/B-m4FSLxJxk?list=PLLYFgjkWst1qiBA4L4qN7z69ClUkcQZSd
+
+INERTIA, DÁ MAIS ESTABILIDADE EVITANDO O L NA CARRETA:
+https://youtu.be/-9_BqMwTPsw?list=PLLYFgjkWst1qiBA4L4qN7z69ClUkcQZSd
+
+CONFIGURAÇÕES GERAIS DO CAMINHÃO: QUINTA RODA, ROLLING FRICTION, COLISOR etc:
+https://youtu.be/eif73yGeonA?list=PLLYFgjkWst1qiBA4L4qN7z69ClUkcQZSd
+
+
+###############
+MAPAS NA FASE 4
+
+Para o tutorial mais detalhado por favor veja o PDF na pasta da fase 4 dentro da ajuda - help! O tutorial completo está apenas em texto, fica mais fácil pesquisar e usar de referência do que em vídeos longos.
+
+VÍDEO mostrando o sistema de uso das árvores automáticas:
+https://youtu.be/zVd4RDVhisY
+

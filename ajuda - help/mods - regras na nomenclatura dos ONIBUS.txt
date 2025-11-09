@@ -1,0 +1,311 @@
+Documentação inicial sobre os mods:
+http://blog.protonbus.com.br/2018/09/primeira-fase-do-sistema-de-mods-de.html
+
+Templates:
+
+4x2			2 eixos, tração traseira (a maioria dos ônibus)
+4x2_forward	2 eixos, tração frontal (a maioria dos carros de passeio)
+4x4			2 eixos, tração em todas as rodas, diferencial tipo "Torque Splitter"
+4x4H			2 eixos, tração em todas as rodas, diferencial tipo "H-Drive"
+6x2			3 eixos, tração no segundo, último eixo direcional (útil para ônibus de 15m com eixo direcional)
+6x2_nodirectional	3 eixos, tração no segundo, último eixo fixo (útil para caminhões 6x2)
+6x4			3 eixos, tração nos dois últimos, sem eixo direcional (útil para caminhões 6x4)
+8x2			4 eixos, tração no penúltimo, ambos da frente são direcionais (ideal para rodoviários DD)
+8x2_nodirectional	4 eixos, tração no penúltimo, somente o primeiro é direcional (ideal para alguns caminhões)
+8x4			4 eixos, tração nos dois últimos, ambos da frente são direcionais (ideal para alguns caminhões)
+8x4_nodirectional	4 eixos, tração nos dois últimos, somente o primeiro é direcional
+articulated_puller	Articulado de 3 eixos, tração no segundo (Volvo ou dianteiros)
+articulated_pusher	Articulado de 3 eixos, tração no terceiro (motor traseiro)
+articulated_pusher_double	Articulado de 4 eixos, tração no terceiro (motor traseiro), último eixo direcional
+biarticulated		Biarticulado de 4 eixos (2 na frente e um em cada parte traseira), tração no segundo eixo (template não completo, as portas e luzes não funcionam ainda na terceira parte)
+
+Templates de caminhões com trailer embutido:
+
+truck_4x2_2		Cavalo 4x2 com carga de 2 eixos
+truck_4x2_3		Cavalo 4x2 com carga de 3 eixos
+truck_6x2_2		Cavalo 6x2 com carga de 2 eixos
+truck_6x2_3		Cavalo 6x2 com carga de 3 eixos
+truck_6x4_2		Cavalo 6x4 com carga de 2 eixos
+truck_6x4_3		Cavalo 6x4 com carga de 3 eixos
+
+NOTA: Os templates 4x4H, 6X4, 8x4 e 8x4_nodirectional foram adicionados a partir da v300 do Core. Não vão funcionar nas versões antigas. Por favor informe isso ao fornecer o download do seu mod.
+
+#############################
+
+NOMES DAS PECAS NO 3D:
+
+_emissive_		Texturas que acendem em geral (shader emissivo), como o letreiro eletrônico
+_transparent_		Texturas de vidro, ou com transparência, porém sem reflexos
+
+Atualmente estes coman dos aceitam de 001 até 010, mais serão adicionados no futuro:
+
+_skin001_		Peças com a skin 001 etc (definidos no arquivo da skin)
+_ref001_		Reflexos 001 etc (definidos no arquivo principal)
+_mat001_		Materiais 001 etc (definidos no arquivo principal)
+_glass001_		Vidros 001 etc com reflexos (definidos no arquivo principal)
+
+_anim001_on_		Pecas animadas 001 etc
+_anim001_off_		
+
+_click001_on_		Botão para animar a peça 001 etc
+_click001_off_
+
+Rodas:
+
+_wheel_fl_
+_wheel_rl_
+_wheel_rl2_
+_wheel_rl3_
+
+_wheel_fr_
+_wheel_rr_
+_wheel_rr2_
+_wheel_rr3_
+
+A partir da v300 do Core:
+
+_wheel_caliper_		Peça que segue a roda no giro do volante e na altura, mas não rolando no asfalto. Usado no freio.
+_wheel_suspension_		Peça que segue a roda apenas na altura, mas não no giro para os lados nem rolando.
+Para usar estes comandos, não use os outros das rodas! Adicione a eles o nome da roda sem a palavra wheel. Ficará assim, por exemplo:
+_wheel_caliper_rl_ para a roda "rear left" (traseira esquerda).
+_wheel_caliper_fr_ para a roda "front right" (frontal direita).
+E por aí vai. Confira os mods de exemplo quando estiverem disponíveis.
+
+Espelhos:
+
+_mirror1_
+_mirror2_
+_mirror3_
+
+Tela da câmera de ré:
+
+_reverse_camera_screen_		Importante: precisa ter um monitor apagado como fundo, sem ficar colado para não piscar
+
+Peças animadas que giram no painel (ajeite as coordenadas e rotações no arquivo do model):
+
+_steering_wheel_
+_speed_
+_rpm_
+
+Texturas que acendem no painel:
+
+_cockpit_panel_
+_cockpit_blinkers_combined_
+_cockpit_left_blinker_
+_cockpit_right_blinker_
+_cockpit_battery_
+_cockpit_handbrake_
+_cockpit_low_beam_
+_cockpit_high_beam_
+_cockpit_stop_request_
+_cockpit_brake_
+
+Texturas que acendem na carroceria:
+
+_tex_electric_
+_tex_external_lights_
+_tex_high_beam_
+_tex_low_beam_
+_tex_right_blinker_
+_tex_left_blinker_
+_tex_reverse_
+_tex_brake_
+_tex_brake2_
+_tex_light_1_
+_tex_light_2_
+_tex_light_3_
+_tex_stop_request_
+
+Texturas de letreiro (eletrônico):
+
+_display_front_
+_display_back_
+_scroll_panel1_
+_scroll_panel2_
+_scroll_panel3_
+
+Placas de itinerário (de plástico ou papel):
+
+_plate_front1_
+_plate_front2_
+_plate_side_
+_plate_route_small_
+
+Letreiro de lona:
+
+_old_display_route_
+_old_display_destination_
+
+_rdoor_1x1_	Comando das portas: folha 1 da porta 1... Veja os videos ou os mods livres de exemplo.
+_ldoor_1x1_
+
+Novo a partir da v300 do Core:
+_ramp_on_ e _ramp_off_	Rampas nas portas com animação brusca, estilo Curitiba. Confira os mods de exemplo quando disponíveis. O uso será neste formato, por exemplo:
+_rdoor_1_ramp_on_		Rampa acionada na porta direita 1
+_rdoor_1_ramp_off_		Rampa fechada na porta direita 1
+Troque rdoor por ldoor para as portas esquerdas.
+
+
+VÁRIAS ANIMAÇÕES ADICIONADAS NA FASE 2:
+
+MUITO IMPORTANTE: se tiver a peça ON, tem que ter a OFF correspondente, senão pode dar erros em várias outras animações! Se for fazer uma versão sem animações, renomeie as peças para qualquer coisa sem esses comandos.
+
+_airconditioner_button1_
+_airconditioner_button2_
+_airconditioner_down_
+_airconditioner_up_
+
+_vent1_on_
+_vent1_off_
+
+_sunshade_on_
+_sunshade_off_
+
+_driver_window_off_
+_driver_window_on_
+
+_passenger_windows_back_off_
+_passenger_windows_back_on_
+
+_passenger_windows_front_off_
+_passenger_windows_front_on_
+
+_blinkers_button_off_
+_blinkers_button_r_
+_blinkers_button_l_
+
+_key_off_
+_key_stage1_
+_key_stage2_
+
+_manualgear1_ até _manualgear6_
+_manualgearr_
+_manualgearn_
+
+_autogear_base_		(peça de plástico para ocultar se for manual)
+_autogear_d_on_
+_autogear_d_off_
+_autogear_n_on_
+_autogear_n_off_
+_autogear_r_on_
+_autogear_r_off_
+
+_parking_brake_on_
+_parking_brake_off_
+
+_btwipers1_on_		Limpador 1 normal
+_btwipers1_off_
+
+_btwipers1fast_on_		Limpador 1 rápido
+_btwipers1fast_off_
+
+_btwipers2_on_		Limpador 2 normal
+_btwipers2_off_
+
+_btwipers2fast_on_		Limpador 2 rápido
+_btwipers2fast_off_
+
+_btlight1_on_		Botão da luz 1 etc
+_btlight1_off_
+
+_btlight2_on_
+_btlight2_off_
+
+_btlight3_on_
+_btlight3_off_
+
+_btlowbeam_on_		Seletor antigo de farol baixo, não o redondo de 3 estágios
+_btlowbeam_off_
+
+_bthighbeam_on_		Seletor antigo de farol alto, não o redondo de 3 estágios
+_bthighbeam_off_
+
+_bthazardlight_on_	Botão de pisca alerta
+_bthazardlight_off_
+
+Botões das portas:
+
+_rdoorbutton1_on_	Dica: em alguns ônibus pode usar _emissive_ no botão ligado
+_rdoorbutton1_off_
+
+_rdoorbutton2_on_
+_rdoorbutton2_off_
+
+_rdoorbutton3_on_
+_rdoorbutton3_off_
+
+_ldoorbutton1_on_
+_ldoorbutton1_off_
+
+_ldoorbutton2_on_
+_ldoorbutton2_off_
+
+_ldoorbutton3_on_
+_ldoorbutton3_off_
+
+_btalldoors_on_		Botão de todas as portas
+_btalldoors_off_
+
+_switch_left_doors_on_		Botao de alternancia de portas esquerdas e direitas
+_switch_left_doors_off_
+
+_btdifferential_lock_on_	Botão da trava do diferencial
+_btdifferential_lock_off_
+
+_btretarder_on_		Botão do retarder automático ao frear
+_btretarder_off_
+
+Multiplex:
+
+_multiplex_	Tudo o que acender no multiplex, mesmo os botões inativos, e a tela
+_multiplex_mlight1_
+_multiplex_mlight2_
+_multiplex_mlight3_
+_multiplex_mfan1_
+_multiplex_mfan2_
+_multiplex_mfan3_
+_multiplex_mdestination_	Botão de ligar itinerário
+_multiplex_mclearstoprequest_	Botão de reset da parada solicitada
+_multiplex_mwiper1_		Ligar limpador 1
+_multiplex_mwiper1fast_		Limpador 1 rápido
+_multiplex_mwiper2_		Ligar limpador 2
+_multiplex_mwiper2fast_		Limpador 2 rápido
+_multiplex_mscreenstoprequest_		Tela indicadora de parada solicitada
+_multiplex_mscreensdestination_		Tela indicadora do itinerário ligado
+
+Chuva:
+
+_wipers1_00_ a _wipers1_99_	Peças dos limpadores na animação frame a frame (pode parar antes, não precisa ter 99)
+
+_wipers2_00_ a _wipers2_99_	Peças dos limpadores secundários
+
+_windows_wet_		Todas as janelas que molharem (tem que ter _transparent_ também)
+_windows_wetorclear1_	Área do parabrisa limpa com o limpador 1
+_windows_wetorclear2_	Área do parabrisa limpa com o limpador 2
+
+OBJETOS DE CAMINHOS DE PASSAGEIROS (múltiplos comandos)
+
+_pp_		ped_place
+_teleport_	teleport
+_release_	release
+_waitdoor_	wait_open_door
+_le_		left exit
+
+_r1a1_		paths de entrada, pra frente, porta direita 1
+_r1b1_		paths de entrada, pra trás, porta direita 1
+_r2z1_		paths de saída, de frente pra trás, porta direita 2
+_r2y1_		paths de saída, de trás pra frente, porta direita 2 //isso permite add mais dps
+
+_l1a1_ etc	Trocar r por l (L minúsculo) nas portas esquerdas
+
+OBJETOS DE PASSAGEIROS SENTADOS E EM PÉ (múltiplos comandos)
+
+_sit_		posição de passageiro sentado
+_stand_ 	posição de passageiro em pé
+
+_before_	posição antes da catraca, ou para a parte da frente
+_rot90_		virado para direita
+_rot-90_	virado para esquerda
+_rot180_	virado para trás
+
+_nolight_		Evita que a peça seja influenciada pelas luzes internas do veículo (ideal para peças onde a luz vaza, como o teto ou rodas). Introduzido a partir da v300 do PBS Core.

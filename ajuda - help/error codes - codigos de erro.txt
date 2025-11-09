@@ -1,0 +1,64 @@
+Error codes make it easier to find the cause and the solution online, just by searching on the Internet: at the game groups on Facebook, or YouTube/Google search. Those numbers don't have any special meaning, they are there just to help finding the solution easier.
+
+Os códigos de erros tornam mais fácil encontrar a causa e a solução online apenas pesquisando na internet: nos grupos do jogo no Facebook, ou na busca do YouTube/Google. Esses números não significam nada especial, é apenas para poder achar a solução do problema mais fácil.
+
+**********************************************
+ERROR 5119
+WHITE TEXTURES
+TEXTURAS BRANCAS
+
+Causa: A versão da Play Store aceita no máximo texturas 2048x2048 pixels.
+
+Solução: redimensione as texturas usando o otimizador do jogo no botão do tick azul na tela de escolha do mod. Se não funcionar (em alguns aparelhos não funciona nas texturas transparentes) então otimize usando um editor de imagens, outro app. Ou então procure uma versão lite previamente otimizada do mod, seja pelo autor ou pela comunidade. Fica o apelo aos criadores de mods: por favor, lancem uma versão com texturas menores para o celular!
+Solução não recomendada: a versão Insider, uma compilação de cortesia extra-oficial fora da Play Store pode aceitar texturas 4k. Mas elas podem deixar o jogo instável, crashando ou com comportamento estranho. O desempenho pode ser pior ao usar uma ou várias texturas 4k no celular, pois elas precisam de muito mais memória RAM e congestionam a banda entre a CPU, GPU e o armazenamento enquanto são processadas. Em alguns celulares elas nem abrem. Não serão aceitas reclamações de performance ou glitches caso use estas texturas. A primeira coisa é desativar elas caso sinta algo de anormal no jogo.
+ 
+
+**********************************************
+ERROR 4208
+THIS FEATURE REQUIRES SPECIAL VERSION
+ESTE RECURSO REQUER UMA VERSÃO ESPECIAL
+
+Causa: O recurso selecionado não pode ser ativado na versão da Play Store para seu dispositivo. Geralmente esta mensagem significa que o recurso é experimental ou pode causar instabilidades no jogo dependendo da categoria do aparelho, como modelos com pouca RAM ou GPUs básicas ou mais antigas. Por isso não pode ser carregado na versão da Play Store para alguns aparelhos ou todos.
+
+Solução: Baixe a versão Insider, extra oficial, fora da Play Store, no site do jogo. Este recurso geralmente fica liberado nela. Note que, apesar de estar liberado, não é garantido que vá funcionar: vai depender do peso do recurso (especialmente se for um mod). A equipe do jogo não tem controle sobre os mods.
+
+
+**********************************************
+ERROR 3091
+LOW RAM AVAILABLE
+POUCA MEMÓRIA RAM DISPONÍVEL
+
+Causa: O sistema detectou uma situação crítica de pouca RAM disponível. Nessa hora ele manda um aviso a todos os apps abertos. O jogo precisa responder a tempo para evitar ser fechado. Geralmente ocorre ao usar alguns recursos pesados para seu aparelho, como lotar de skins no tráfego na versão celular, algo que pode adicionar várias centenas de megabytes na RAM dependendo da quantidade e tamanhos das texturas.
+
+Solução 1: Caso seja relacionada às skins do tráfego, apenas desmarcando essa opção na tela de escolha de mapas geralmente já alivia, reduz bastante a frequência desse erro. Caso use muitas imagens, experimente usar uma ou duas apenas. Experimente redimensionar as imagens para um tamanho menor. Dependendo do celular e do tamanho da imagem não tem como resolver.
+
+Solução 2: Baixe a versão Insider, extra oficial, no site do jogo, fora da Play Store. Ela geralmente não mostra essa mensagem na maioria das situações. Todavia não exibir a mensagem não quer dizer que o recurso pesado vai funcionar: se lotar de skins do tráfego ou usar imagens grandes no celular muito provavelmente o jogo vai ser fechado sozinho pelo sistema, especialmente em aparelhos com menos RAM.
+
+
+**********************************************
+ERROR 2003
+COPYRIGHT CLAIM
+RECLAMAÇÃO DE DIREITOS AUTORAIS
+
+Causa: O recurso selecionado foi bloqueado por violar uma ou mais diretrizes de direitos autorais de empresas representadas nos Estados Unidos e/ou em alguns outros países. Isso pode ocorrer com mods convertidos que usam partes substanciais de modelos extraídos de outros jogos, sem autorização dos produtores. Sendo uma plataforma em contrato com uma empresa norte americana o jogo precisa se adequar às leis de direitos autorais dos Estados Unidos.
+
+Solução: Para bloqueios legítimos não há solução recomendada, apenas apague o conteúdo e deixe de utilizá-lo. Caso você ache que o bloqueio foi injusto ou um equívico técnico, entre em contato com a equipe pelo e-mail do jogo (disponibilizado nas telas dele, no site oficial ou na página do produto na Play Store).
+
+**********************************************
+ERROR 3119
+EXPIRED ACCESS
+ACESSO EXPIRADO
+
+Causa: Seu plano de acesso premium ou de colaborador era o temporal, e expirou. Os planos do ano corrente expiram na virada do dia 31 de dezembro do ano contratado. Nesse caso o jogo volta pra versão gratuita, com as propagandas e mensagens.
+
+Solução: Considere fazer uma nova assinatura para o ano seguinte, ou opte pela versão vitalícia, caso disponível. A disponibilidade de preços e planos pode variar dependendo do país, região ou da época do ano. Ou então continue na versão gratuita normalmente.
+
+
+**********************************************
+ERROR 4044
+SUSPENDED ACCOUNT
+CONTA SUSPENSA
+
+Causa: Sua conta foi suspensa por algum motivo. Isso pode ocorrer por pedidos de reembolso, fraudes no pagamento ou por pirataria (quem compartilha a senha do jogo com vários amigos ou deixa cair na internet). Em alguns casos mais graves pode ser por conduta inadequada nas comunidades do jogo.
+
+Solução: Entre em contato no e-mail informado na tela do jogo perguntando o motivo e aguarde alguns dias para obter uma resposta. Usuários que foram banidos várias vezes ou fizeram algo grave poderão não receber mais respostas. Usuários que pediram o reembolso e tiveram a conta cancelada talvez sejam impossibilitados de pagar novamente, caso haja suspeita de fraude. Afinal quem pediu o reembolso uma vez, o que garante que não irá pedir de novo, fazendo a gente perder tempo?! No entanto arrependimentos legítimos podem ser analisados caso a caso.

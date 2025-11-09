@@ -1,0 +1,676 @@
+﻿PROBLEMAS IMPORTANTES:
+Windows: Erro DX11 could not switch resolution (800x600 fs=1 hz=0)
+Por favor, atualize seu Windows ou tente isso, usando os bat que tem na pasta para outras APIs gráficas:
+http://blog.protonbus.com.br/2018/04/erro-dx11-could-not-switch-resolution.html
+
+LISTA DE ALTERAÇÕES MAIS IMPORTANTES:
+
+=====================================================
+
+BUG: algumas vezes os carros podem aparecer muito perto ou em cima do jogador. Com tráfego reduzido as chances são menores.
+"BUG": podem ocorrer inconsistências nas traduções: algumas coisas vão aparecer somente em português ou somente em inglês, especialmente itens de texto recém adicionados.
+
+v307
+2023-06-22
+* Um painel na tela inicial do jogo exibirá informações online: por ali serão postados avisos de novas versões ou chamados importantes, novos mods lançados pela equipe, etc.
+* Esta versão especial de junho de 2023 traz a base do Core reintegrada à do Urbano, com os mapas nativos. É uma versão de transição temporária! A ideia do sistema de mods é manter uma versão separada só para isso no futuro. Essa versão não tem o mapa Aricanduva porque ele está sendo reestilizado e será relançado futuramente. Caso goste dele, continue com a v290 por uma temporada em paralelo.
+* O sistema que sorteia os carros no tráfego foi refeito: antes eram sorteados alguns que ficavam se repetindo em toda a sessão atual. Agora o sorteio é 100% independente assim que vão aparecer. Na prática fica algo mais aleatório, evitando carros irritantes repetitivos como acontecia antes com a ambulância ou motos. A sensação ao jogar com tráfego baixo foi bastante melhorada com isso! Experimente usar 5, 10 ou 15 carros. Antes nessa situação ficava bem ruim porque só apareciam os mesmos.
+* Nova opção de rádio! Apenas na versão PC. Por enquanto está no atalho da tecla de igual: "=", sem interface visual. O jogo incluirá algumas músicas na versão PC. Apertando = algumas vezes você liga/desliga e alterna a rádio. EXPERIMENTAL: é possível usar sons personalizados na "radio1"! Coloque seus arquivos de música dentro da pasta radio1, que fica na pasta de mods (por padrão dentro da Proton Bus Mods nos documentos). Essa pasta deve ser criada automaticamente na inicialização. Dependendo do tamanho dos arquivos pode dar uma travada ao alternar de faixa, não sabemos ainda se isso vai prestar ou não. O recurso poderá ser removido em versões futuras se ficar ruim. Ao trocar as músicas na pasta use o menu segurando Alt - Menu do veículo - Recarregar Músicas (futuramente poderá estar em outro lugar). No teste inicial não tem como alterar o volume. As músicas embutidas poderão ser alteradas futuramente. Não use elas caso faça vídeos do jogo! Elas são licenciadas para uso dentro do jogo, não para vídeos. O leitor de mp3 não funcionou em alguns aparelhos depois de uma atualização da engine, mas parece que no PC não tem problemas.
+* A tão desejada opção de tocar sons apenas nas marchas específicas! Para evitar tocar sons indevidos nos mods antigos que porventura tinham a opção ativada, o nome do comando foi alterado para playOnlyOnSpecificGears. Assim a configuração anterior será ignorada. Isso vale para os sons em loop do motor (sound1, sound2 etc). É recomendável sempre ter um som pelo menos no neutro, caso contrário nas trocas de marchas pode ficar mudo. O ideal disso é usar em sons auxiliares característicos de alguma marcha, não em todos os sons! minGearToPlay define a marcha mínima e maxGearToPlay a máxima. Considere como -1 a ré e 0 o neutro, e os números positivos as marchas seguintes. Por exemplo, com o minGearToPlay=-1 e maxGearToPlay=1 esse som toca na ré, no neutro e na primeira. Use o mesmo valor no mínimo e no máximo caso queira que um som toque apenas em uma marcha específica. É necessário confirmar se funcina com o retarder, transmissão entre outros. Inicialmente foi projetado para os sons normais. Ao trocar de marcha será tocado o som do neutro por uma fração de segundo porque o câmbio é desengatado; por isso é importante testar bem. No PC com o câmbio físico o tempo que fica no neutro depende do tempo que a pessoa levar para trocar a alavanca de lugar. Resumindo, na seção do som no txt ficaria algo assim:
+playOnlyOnSpecificGears=1
+minGearToPlay=1
+maxGearToPlay=6
+* Controle para ativar alguns efeitos extras dependentes dos efeitos da Unity diretamente dentro do jogo: na tela de ferramentas (F4), botão efeitos, terá os itens para marcar o ambient occlusion (sombreados nas peças); bloom (deixa os brancos mais brilhantes, pode incomodar em calçadas muito brancas); e SSR (screen space reflections, ativada somente com a chuva para refletir no asfalto). Todos esses efeitos podem reduzir FPS, principalmente se usados nas GPUs de entrada ou antigas. O motion blur está disponível mas não é recomendado. Ele é uma desgraça nessa versão embutida da Unity e vai borrar os limpadores; a antiga versão que usávamos era melhor mas ela não funciona nas versões atuais da engine.
+* Tela de opções in-game: dentro do jogo será possível alterar algumas configurações que antes não dava! Começando pela densidade do tráfego e distância de visibilidade. Muitas opções só podem ser carregadas na inicialização para fins de otimização: os recursos não utilizados sequer são carregados, poupando RAM e processamento para os aparelhos mais fracos. Portanto, nem todas as opções serão refletidas no jogo na hora. A maioria requer que volte ao menu inicial para recarregar. Algumas outras serão implementadas no decorrer dos próximos anos. Isso foi feito agora só para o tráfego mesmo. Para zerar o tráfego ou aumentar ele após ter zerado é necessário voltar ao menu, pois os carros não ficam carregados quando está em zero.
+* Alterações expressivas nos sons dos carros do tráfego, com mais variedades (isso ainda será revisado e bastante alterado em versões futuras; os sons deles são mais simples para poupar processamento). O som da moto ainda é bem ruim, é difícil achar um som bom pra elas já que ficam atrás dos carros sem pegar o corredor. E isso nem vai dar pra fazer pela imensa complexidade. Os sons delas serão alterados em outro momento, ou serão removidas com alguma opção.
+* Sombra "fake" adicionada embaixo dos veículos do tráfego e estacionados.
+* Otimização automática em alguns objetos pequenos nos mods de mapas: eles poderão ficar escondidos mais cedo, antes do término da visão da câmera. Isso será ativado automaticamente ao usar a grid.
+* Otimização nos carros do tráfego e estacionados nativos: as peças pequenas deles ficarão escondidas mais cedo ao longe.
+* Reprogramação/reversão do controle de teclado com o retorno do método anterior, usando a sensibilidade parecida com a que tinha até a v299! Ao ir para a tela da sensibilidade (Backspace) dá para ativar ou desativar.
+* Experimento inicial do uso de splines para as curvas do tráfego (pode ser bom ou ruim). Em algumas curvas com waypoints bastante espaçados isso pode fazer os carros flutuarem um pouco ou subirem na calçada, sair do path etc. Isso ainda vai ser bastante alterado, o comportamento final desejado não é o mesmo dessa versão. É desejado usar um tipo diferente de spline que garanta a passagem em todos os pontos marcados, algo que não acontece com a suavização desta. Isso ainda é altamente experimental. Para não prejudicar os mapas existentes isso vem desativado por padrão. Caso queira, precisa ser adicionado ao txt principal do mapa o novo parâmetro useSplines=1 na seção [ai_traffic]. Ficaria assim:
+[ai_traffic]
+useSplines=1
+É no txt principal, o .map.txt. Isso afetará todos os paths de tráfego de carro ou ônibus do mapa, mas não os de trens nem pedestres.
+Alguns carros grandes podem girar um pouco mais a traseira dependendo de onde está o centro deles. No geral ficou bom, mas em alguns casos ficou ruim. Use por sua conta e risco sabendo que futuramente o comportamento poderá ser bastante alterado! É sempre bom lembrar que as splines podem fazer usar um pouco mais de processamento e memória RAM. Futuramente poderá ter uma opção de manter o sistema antigo para os usuários sem precisar alterar os txt dos mapas caso o recurso deixe de ser experimental.
+Esta versão irá adicionar alguns pontos a mais automaticamente em alguns casos para dar uma suavizada nas curvas.
+* Leve suavização da câmera ao girar na visão externa. Está em construção, ainda pode ter comportamentos inesperados, especialmente ao voltar depois de estar longe do veículo.
+* Redução de memória RAM ao desativar carros ou ônibus nas opções (deixando em 0). Isso facilita testar os recursos dos mods que não envolvam tráfego. Por exemplo, ao desenvolver o sistema de vegetação ou prefabs, já que o carregamento ficará mais rápido sem o tráfego.
+* Novo parâmetro no txt dos mods de mapas, na seção [ai_traffic] do arquivo .map.txt: disableNativeTraffic=1. Ficaria assim:
+[ai_traffic]
+disableNativeTraffic=1
+NOTA: só deve existir uma seção [ai_traffic]! Caso já tenha, reutilize a mesma colocando o novo item acima ou abaixo do último dela (aquele useSplines comentado acima).
+Deixando isso com o valor 1 o mapa irá ignorar totalmente o tráfego nativo, carregando só os carros personalizados. Deixando em 0 (o padrão atual) ele carrega os nativos também. É útil em mapas que tenham bastante carros. Isso pode ajudar a salvar RAM também caso os mods de tráfego usados forem bem leves, já que os modelos e texturas dos nativos não estarão disputando espaço na RAM.
+* Tentativa de correção do bug das luzes do painel não acendendo em algumas GPUs (especialmente integradas da Intel, mas ocorria em outros modelos também). O bug não ocorria na GPU do desenvolvedor, portanto não dá pra saber se a alteração corrigiu de fato. Foi um bug vindo direto da Unity visto que ocorreu com a atualização dela. O shader iluminado que estava em uso deixou de funcionar para algumas pessoas e foi trocado. Esperamos que dê certo!
+* Opção na tela Extras para ignorar o SDK da Logitech: assim o jogo não irá controlar a força da mola, isso fica a cargo do app da Logitech. Pode ser necessário ir no G Hub e marcar para centralizar a mola automaticamente em jogos sem feedback de força (o texto varia dependendo da versão do aplicativo). Isso é útil caso o G25/27 fique travado em 180 graus, ou caso use volantes que são de outras marcas sem force feedback.
+* Tentativa de evitar o crash/interrupção do jogo caso não consiga a comunicação com o controle da Logitech (mesmo item citado acima). Por padrão o forcefeedback virá DESATIVADO, evitando travar o jogo para quem teve os travamentos na versão 300. Caso queira testar o forcefeedback, vá até a tela de configurações Extras e marque ou desmarque a opção referente a Logitech. Pode ser necessário reiniciar o jogo para ter efeito. Infelizmente em vários computadores há uma inconsistência e o jogo não consegue se comunicar com ele. Não sei o que fazer, desenvolver jogos é uma desgraça nessas horas! Não sei se a culpa é da Logitech, da Unity, do Windows ou minha mesmo... Não acontece com todo mundo, somente uma parcela aleatória de pessoas. É decepcionante ver que não funciona para todo mundo algo essencial, mas não sei mais o que fazer mesmo. No fórum da Unity há um monte de relatos frustrantes de desenvolvedores diversos. Caso dê o erro ficará sem o forcefeedback. Aí utilize o software da Logitech para fixar o "peso" do volante igual era antes, assim ele não fica tão duro. Alguns relataram no fórum da Unity que resolveu reinstalando as bibliotecas de runtime ou end-user do DirectX a partir do site da Microsoft. Mas nem todos. É realmente frustrante, coisas que vem das grandes empresas deveriam funcionar "out of the box".
+COMO O BUG SE MANIFESTA: o G25 ou G27 pode ficar travado em 180 graus. Em outros casos o jogo trava as animações do painel, chuva, limpadores etc. Se isso acontecer com você, vá até o menu inicial do jogo, configurações, tela Extras, e marque a opção para ignorar o SDK da Logitech. Salve as opções e saia do jogo, ao recarregar o bug deve ter sumido. O volante provavelmente vai ficar duro: nesses casos precisa alterar a sensibilidade direto no aplicativo da Logitech. Veja aqui: https://youtu.be/A6PL1xLRBgU
+* Correção dum bug maldito que fazia algumas texturas não serem carregadas em outros mods caso os materiais tivessem o mesmo nome. Apenas o primeiro era carregado. Ao carregar o segundo ônibus algumas texturas podiam ficar brancas mesmo existindo corretamente na pasta. Agora isso acabou! Se ficar branca é porque realmente não existe ou tem alguma outra coisa incorreta, ou está acima do tamanho permitido para a plataforma (como as texturas acima de 2048 pixels de largura ou altura na versão da Play Store).
+* Correção em alguns casos onde os passageiros ficavam flutuando na traseira dos ônibus articulados ao embarcar pelas portas traseiras.
+* Reativação experimental do efeito "Test" nas opções gráficas. Ele funciona melhor em conjunto das luzes em tempo real. Não é possível usar junto com os efeitos da Unity porque um anula o outro. As opções de antialiasing, ambient occlusion e outras que dependem dos efeitos da Unity serão ignoradas nesse modo. O bloom dele está fixo, futuramente poderá depender da iluminação (pode ficar exagerado durante o dia).
+* Modo experimental de demonstração dos mods premium na versão gratuita (com opções de mensagens, tela monocromática ou por tempo limitado). Este modo poderá ser removido no futuro. Assim como tudo, é um experimento para ver a viabilidade. Ao carregar um mod com um arquivo C2 aparecerá esta mensagem nesta versão.
+* Novo efeito experimental nas opções gráficas: iluminação global indireta. Este recurso usa um asset de terceiros da Asset Store. Ele pode deixar o interior do ônibus mais claro em situações onde ficava escuro. Pode ser removido se não ficar legal. Pode pesar também em placas de vídeo fracas. Provavelmente ele será removido.
+* Impossibilidade de gerar a versão de 32-bit: depois de atualizar a engine a versão de 32-bit está com problemas gráficos sérios que impedem o seu uso. Ela já estava depreciada há algum tempo. Ainda há o desejo de postar algumas compilações de 32-bit, mas pode ser que a arquitetura seja "aposentada" mais cedo. De qualquer forma os requisitos do jogo requerem algo além do que as versões de 32-bit podiam suportar, especilamente com o fim do suporte ao Windows 7 por parte da Microsoft. A versão de 32-bit do Windows é limitada a 4 GB de RAM, se torna horrível para o padrão do jogo feito nas engines atuais.
+
+v300
+2023-01-13		CORE - EXPERIMENTAL
+* Esta v300 traz uma mudança expressiva: foi atualizada a engine do jogo na versão PC indo da Unity 2018.4 para a 2020.3. Muita coisa precisou ser refatorada para funcionar nessa versão. São esperados pequenos problemas a serem identificados ainda.
+* O mapa Aricanduva HD foi removido. Foi um experimento que não se mostrou viável, especialmente com os investimentos no sistema de mods de mapas.
+* O mapa Aricanduva normal está sendo detalhado com as árvores. Foi removido temporariamente para não gerar frustrações ao explorar um mapa que está em edição. Ele voltará dentro de alguns meses, sem uma previsão exata. Para continuar usando ele por enquanto, mantenha uma cópia dos arquivos da versão anterior do jogo.
+* Priorização da versão de 64-bit: a versão de 32-bit começará a ser descontinuada. A maioria dos PCs atuais de 64-bit são produzidos há mais de uma década. Isso já estava planejado para acontecer mais cedo ou mais tarde. Ainda terão algumas de 32-bit como cortesia, mas o lançamento dela poderá ser mais demorado ou interrompido nos meses seguintes.
+* Remoção do recurso bloom/glares/flares porque o asset utilizado não funcionou com a Unity mais nova. A opção não terá efeito nesta versão, e provavelmente durante alguns meses a frente continuará sem.
+* Remoção temporária do motion blur: o asset utilizado não funciona junto com os efeitos na Unity mais nova. Precisará ser substituído por algum outro método.
+* Incremental Garbage Collector: este foi o motivo da atualização da engine. Esse novo método substitui o antigo GC.Collect por um mais suave, que opera ao longo de vários frames. O objetivo é reduzir micro travadinhas que aconteciam com frequência em mapas maiores. Não faz milagre, apenas reduz as travadas decorrentes do GC.Collect! Provavelmente deixará os fps mais fluídos, porém ainda pode dar travadas por outros fatores (como ao carregar cenário, ao dar spawn em carros ou pedestres nos pontos lotados, etc). Nos testes internos o resultado foi promissor: um mapa cobaia de com uma estrada de 220km com cerca de 300 mil árvores era impossível de ser jogado na v299 por conta das travadas decorrentes do GC.Collect, mas na v300 rodou suave no PC e no Galaxy S20 Fe. O resultado final em aparelhos variados só será conhecido com mais tempo de teste.
+* A tão sonhada animação das sanfonas nos ônibus articulados! Consulte o tutorial ou eventuais mods de exemplo para entender como animá-las. É bem fácil, não precisa usar bones no 3D, só vai precisar de duas coordenadas e nomear as peças de acordo.
+* Fase 4 dos mods de mapas! É considerada experimental mas está bem funcional: agora tem um método para posicionar árvores automaticamente numa determinada área! Vai ficar muito fácil preencher a vegetação em grandes praças e parques e nas beiras das rodovias. Consulte os tutoriais assim que estiverem disponibilizados no canal do produtor ou nas páginas do jogo (pode levar uns dias). Além disso tem o sistema de prefabs, que permite ter objetos reutilizáveis, e mods de ônibus no tráfego dos mapas!
+* Método automático de divisão do mundo em "grids" para os mods de mapas: os objetos distantes serão desativados automaticamente para economizar processamento. Isso pode aliviar um pouco os fps em mapas grandes, com muitos spawners de carros, pedestres, luzes da rua, passageiros etc. Eles ainda estarão carregados na RAM porém ficarão "dormindo" quando ao longe, reduzindo expressivamente o tanto de operações que o jogo precisa ficar fazendo para decidir se vai aparecer tal objeto em tal lugar. Por conta deste recurso o sistema precisou de alterações profundas. São necessários testes em muitos aparelhos para ter certeza que funcionou. Caso veja objetos faltando ou sumindo no mapa após esta versão, ou anomalias no tráfego, pedestres ou passageiros não aparecendo, experimente desmarcar a opção de otimização em grade nas configurações Extras. Para que isso funcione com modelos 3D e colisores eles precisam ter no máximo uns 800 metros. Peças de ruas maiores que isso não serão inclusas na desativação, já que não caberiam na grade padrão usada por agora. Caso seu mapa tenha muitas ruas fundidas, experimente dividir em segmentos de até uns 800m aproximadamente. Não é bom ter um colisor gigante porque aumenta o processamento nos cálculos da engine. Mas por outro lado não é bom ter muitos colisores pequenos também: se dividir as ruas em peças de 10 metros acabaria tendo milhões de objetos e segmentos, trazendo outros transtornos. Um bom ponto de equilíbrio parece estar entre 100 a 700 ou 800 metros etc para os segmentos de ruas.
+* Testes BEM INICIAIS do sistema de caminhões e cargas: suspensão da cabine do motorista para caminhões cara chata (falta configurar as luzes e por enquanto os parâmetros da suspensão são fixos no jogo); separação do caminhão e da carga; suporte a algumas cargas nativas para ter conteúdo (futuramente haverão cargas na forma de mods, mas isso vai demorar mais). As luzes laterais e traseiras das cargas nativas não estão configuradas nesta v300. As luzes externas e algumas internas do caminhão não funcionam na cabine suspensa, serão criados novos comandos para elas em atualizações futuras.
+* Ajustes da carga: na tela de ferramentas (tecla F4) tem o botão Cargas/Trailers, onde você pode ajustar a dificuldade de conexão com a carga. Com o veículo alinhado e parado aperte G para acoplar ou desacoplar. No mod de exemplo terá o parâmetro necessário para os criadores de mods colocarem suporte a isso nos seus veículos, é bem simples bastando indicar a coordenada da quinta roda. Veja os tutoriais assim que forem disponibilizados. AVISO: pode ser que o sistema de caminhões seja desmembrado num jogo a parte no futuro, isso não está confirmado ainda. Durante o desenvolvimento estão sendo testados no PBSU e no Core. Novas cargas poderão ser adicionadas ou removidas a qualquer momento. Originalmente o prometido foi ônibus, então não espere perfeição logo de cara nos sistemas de caminhões. É algo extra que pode dar certo ou não.
+* Remoção da tela Input e Graphics por conta da atualização da engine. Isso exigiu reprogramar a forma de configurar os controles e a resolução.
+* Os controles agora são configurados dentro do jogo! Depois de carregado, vá ao menu segurando Alt - Controles - Remapear controles (algo assim, pode variar nas futuras versões). A configuração para os volantes da Logitech como G27/G29/G920 será mais automatizada. Ficou bem mais fácil alterar os comandos dessa forma! Note que alguns volantes ainda requerem que a opção "pedais combinados" esteja marcada. Isso pode ser feito no menu Controles - ajustes de sensibilidade ou apertando Backspace quando estiver dentro do jogo. IMPORTANTE: quando um novo comando for incluído ou alterado no jogo, talvez seja necessário resetar as configurações de controles para ele ser identificado. Isso pode ser feito na nova tela de controles no botão de Reset ou Restaurar, Redefinir etc (pode variar dependendo da versão).
+* A troca da resolução está sendo feita temporariamente dentro do jogo: segurando alt - menu do veículo - resolução. Ela será alterada em versões futuras. Você pode ir para o modo janela apertando Alt + Enter (padrão do Windows). Haverão algumas inconsistências caso use mais de um monitor com resoluções diferentes. Por padrão ele abre no principal. Isso vai levar um tempo para ser resolvido já que é algo chato/difícil de mexer na engine. A remoção a tela antiga foi decisão da Unity, não da gente. O Incremental Garbage Collector fez valer a pena a atualização mesmo tendo essas coisas removidas.
+* Force feedback experimental! Ao usar volantes da Logitech há a opção de ativar o force feedback dentro do jogo apertando Backspace. Isso vai demorar meses ou anos para ficar bom: serão evoluções graduais! O peso do volante mudará de acordo com a velocidade e/ou condições nas pistas, começando duma forma mais humilde. AVISO: a partir da v306 este recurso requer a opção marcada na tela Extras. Isso evita o travamento do jogo para algumas pessoas. Caso comece a travar o jeito vai ficar sem. Parece ser culpa da Logitech isso, não consegui entender e perdi meses tentando fazer essa coisa funcionar. Para algumas pessoas funciona, para outras não, é frustrante demais! :(
+* Alteração no comando do ESPAÇO: antes era usado para centralizar a câmera interna caso você tenha clicado e arrastado. Para resetar e centralizar ela agora clique em qualquer lugar com botão direito do mouse enquanto estiver na câmera do motorista. O espaço foi reservado para o freio de mão temporário, sem segurar ele como o freio de estacionamento na tecla do ponto final faz. Isso é para o futuro visando a adoção dos carros pequenos. Serve como um freio de emergência também, acionando o handbrake enquanto estiver apertado mesmo nos ônibus ou caminhões.
+* Nova configuração da barra estabilizadora das suspensões: anti rollbar! Ficará no arquivo do mod (ini). Ela é útil para evitar que a roda de tração levante do solo em curvas mais emocionadas. Nos caminhões permite manter maior estabilidade da conexão com a carga. Veja os tutoriais assim que forem disponibilizados (pode levar uns dias).
+* Nova configuração de aderência: rolling friction! Estes parâmetros exigem bastante testes durante a configuração, é bom mexer neles só depois que o veículo já estiver bem configurado nos demais itens. Eles deixam o veículo mais pesado, especialmente em arrancadas, sem necessariamente perder força. Tem sido muito útil para os caminhões. Há um modo fixo e um modo experimental adaptativo, com três configurações de acordo com a velocidade. Diferente do modo fixo, este adaptativo permite que o veículo atinja altas velocidades depois de passar de um certo patamar. Acompanhe os tutoriais assim que saírem (pode levar uns dias).
+* Nova configuração de inércia: é difícil explicar mas ela funciona para os caminhões e alguns veículos menores. Sem ela os caminhões "dão o L" muito facilmente em curvas. Com isso ficou estável. Claro que ainda podem dar o L se virar o volante com tudo bem como ocorre na vida real também nas estradas, mas nas condições normais será mais raro. Caso seu veículo já esteja estável não é necessário colocar isso, pois talvez piore ou mude o comportamento dele. Tem o tutorial de configuração dela aqui: https://youtu.be/-9_BqMwTPsw
+* Revisão das mensagens de demonstração em áudio da versão gratuita: elas serão substituídas por outros tipos de mensagens mais curtas, visto que atrapalha as pessoas que testam alterações nos mods como sons e física.
+* Opção de câmbio manual com troca de marchas automática (ver exemplos de carros liberados em breve): será possível usar a mesma configuração do câmbio manual com um outro parâmetro para troca das marchas, tendo um comportamento diferente do câmbio automático. É chatinho de configurar às vezes mas parece que ficou legal. Um exemplo disso será postado futuramente, ainda pode demorar um pouco mais do que os demais.
+* Exposição dos parâmetros do "torque splitter" para os veículos 4x4, 6x4 etc (veja os exemplos de carros a serem lançados).
+* Novo template 4x4H com o diferencial estilo "H Drive". O H no final é maiúsculo.
+* Novos templates 8x4 e 8x4_nodirectional ideais para caminhões 8x4 (os dois eixos de tração são os traseiros; o nodirectional esterce apenas o primeiro eixo em vez dos dois primeiros)
+* Correção do atalho da embreagem que às vezes podia deixar o veículo preso sem sair do lugar: era como se o TAB estivesse sempre pressionado mesmo sem estar.
+* Novos parâmetros no txt de sons dos motores em loop (válidos apenas nos sons de motor como aqueles sound1, sound2, etc): volumeMultiplierInt e volumeMultiplierExt. Isso permite economizar RAM evitando a duplicação do som interno e externo caso o arquivo seja o mesmo, evitando precisar de dois comandos para o mesmo som. Quando usado em conjunto com o whenToPlay=allCams, volumeMultiplierInt define o volume máximo dentro da cabine e volumeMultiplierExt define o volume na visão externa. Isso foi feito para os caminhões que reaproveitam os sons, mas pode ser usado também nos demais veículos. Caso o whenToPlay não seja allCams então o volumeMultiplier tradicional será usado.
+* Ao apertar a letra 'o' agora será feito um ciclo entre os controles: teclado, mouse e volante. Se o force feedback estiver ativado talvez o volante dê umas leves tremidas. Mexa nele e espere estabilizar antes de voltar para o teclado ou mouse.
+* Sempre saia do jogo na versão PC apertando Esc - Sair ou no menu Sair do jogo. Se fechar ele apertando Alt + F4 talvez corrompa as configurações porque pode não dar tempo do jogo salvar os dados.
+* Opção para desativar o Garbage Collector durante o carregamento de mods (na tela Extras). Isso pode ser bom e ruim: talvez poupe alguns segundos do carregamento em troca de usar mais memória RAM. O comportamento será analisado de acordo com os relatos para ver se vale a pena manter isso ou não. No celular provavelmente isso será liberado apenas nos modelos de muita RAM, visto que usará mais memória enquanto carrega, podendo aumentar o índice de crashes. Caso fique crashando com muita frequência para você, desmarque esta opção nas configurações Extras. Talvez crashe também nos PCs com pouca RAM.
+* Disponibilidade da configuração dos pneus no txt do engine/motor (consulte os mods de exemplo).
+* Novo comando nos 3D dos veículos: _nolight_ evita que as peças recebam a luz interna. Use em peças externas dos carros caso a carroceria fique acesa ao ligar a luz interna. Isso é útil nos carros menores, na traseira do caminhão, atrás da cabine, detalhes no teto, no objeto da sombra embaixo etc; isso já será aplicado nas rodas automaticamente, não precisa colocar nelas.
+* Novos comandos nos 3D dos veículos: _wheel_caliper_ e _wheel_suspension_ podem ser usados nas peças de acessório das rodas. A suspensão terá animação bruta, não serve em todos os casos. O caliper é uma parte do disco de freio da roda. Ele pode ser usado em conjunto com o rodoar: é uma peça que sobe e desce com a suspensão, gira para os lados, mas não faz o movimento circular em 360 da roda normal. 	Para usar eles, coloque o identificador da roda depois. Por exemplo: _wheel_caliper_rl_ para a roda "rear left" (traseira esquerda).
+* EXPERIMENTAL: sistema de marcas dos pneus no asfalto e fumaça ao derrapar, útil para carros esportivos. Isso pode ser configurado no ini do mod (veja os mods de exemplo). Este sistema precisará de ajustes futuros para se adequar ao tipo de solo, por enquanto só tem para asfalto e será aplicado em quase todos os pisos. Nas implementações atuais foi pensado apenas para os templates 4x2 e 4x4. Pode não funcionar nos demais templates.
+* Correção no giro do volante, apenas o mesh visual: ele estava dando o dobro de voltas do que deveria em algumas situações. Isso não afeta em nada as rodas, a configuração delas é no steering e ackerman no txt do motor/engine.
+* EXPERIMENTAL: Opção de neve no menu inicial do jogo. Não tem troca de texturas nos mapas nativos nos testes iniciais.
+* EXPERIMENTAL: Para os mods de mapas é possível colocar uma versão da textura para neve nomeada com o mesmo nome do arquivo original, porém terminada em .snow.png. Por exemplo: asfalto.png.snow.png. Essa textura será usada caso o usuário marque para carregar neve no início do jogo. Precisa terminar em .snow.png, repetido a extensão .png mesmo. Isso foi feito assim para evitar manipulação da string no carregamento, reduzindo o uso de RAM. Ao jogar com neve a textura original não vai ser carregada, ele já pega a versão de neve no lugar. Infelizmente não dá para fazer isso para as árvores nativas por agora, cada uma delas precisa ser editada :(
+* Novo comando para peças de ruas nos mods de mapas: _speedlimit_xx_. Isso permitirá que o jogo emita um aviso de que o motorista passou da velocidade permitida. Os números na sequência irão de 10 a 120, de dez em dez, indicando a velocidade máxima permitida em km/h. Por exemplo: _speedlimit_40_ para 40km/h. O aviso ainda não está implementado da forma definitiva e poderá sofrer alterações em versões futuras, mas o comando deve ser mantido. A ideia é que o GPS exiba a informação, mas pode ser bom orientar com placas também.
+* Novo comando para as rampas das portas no estilo de Curitiba: _rdoor_1_ramp_on_ e _rdoor_1_ramp_off_. A versão off é com a porta fechada, on aberta. Troque rdoor por ldoor para as portas esquerdas. O número é o número da porta, naturalmente (de 1 a 6 nas versões atuais). As peças das partes traseiras dos articulados/biarticulados precisam ter o t1 ou t2.
+* Possibilidade dos passageiros entrarem pela porta mais próxima deles caso o ônibus tenha várias portas de entrada configuradas.
+* Alteração no tempo de espera dos passageiros nas portas (um pouco mais rápido, mas podem entrar sobrepostos).
+* Tentativa de correção da massa ao descerem todos os passageiros: em algus mods a suspensão ficava desconfigurada quando todo mundo descia.
+* Mensagem experimental ao furar o semáforo vermelho. Infelizmente tanto o amarelo como o vermelho estão usando o mesmo identificador de bloqueio desde o começo do jogo. Isso não tem como alterar tão facilmente. Então será apenas um aviso educativo, mesmo que passe no amarelo a mensagem deve aparecer. Para ficar bom vai levar tempo, talvez seja removido do jogo se ficar ruim. Há desafios nas curvas com sobreposição do outro sentido. E também pode ter um comportamento variável dependendo do tamanho do trigger e da posição da câmera do motorista no veículo. Ela é usada como base para o trigger, porém alinhada no centro no sentido do eixo x. Talvez a mensagem apareça mesmo estando na via certa, caso o trigger do semáforo vermelho do outro sentido invada um pouco sua pista (isso varia de mapa para mapa).
+* ANDROID: atualização do SDK do Android 13 conforme as exigências da Google.
+* ANDROID: migração para o formato app bundle (aab) em vez de apk/obb. Todavia os apks ainda precisam ser gerados para distribuição das versões alternativas fora da Play Store.
+* Campo de busca nas telas de escolha de ônibus e mapa, ajudando quem tem muitos mods instalados!
+* Correção do bug das setas voltar/avançar nas listas de escolha de ônibus, skin, mapa e linha: algumas vezes clicando na seta para a direita a lista não levava para o primeiro item. Agora o ciclo fica completo em ambas as direções. É possivel navegar por ali apertando as setas no teclado e enter para o botão da tela seguinte, ou Esc para voltar.
+* Na tela inicial no PC ao apertar a seta para a direita é como se clicasse no Iniciar jogo, permitindo seguir a sequência do menu mais facilmente. Nas demais telas (ônibus, mapa, skin etc) use o Enter.
+* O tráfego de veículos terá mais carros brancos, pretos e cinzas refletindo o que vemos nas ruas hoje em dia. Nem todos os veículos suportam isso. O tráfego simples/lowpoly não terá essa alteração.
+* Sistema de mods para o tráfego! Será possível trocar os ônibus e/ou os carros do tráfego nos mods de mapas.
+* Migração para o IL2CPP da Unity. Isso altera radicalmente como o jogo funciona, precisa ser melhor experimentado. Parece que melhora a performance do processamento em vários casos.
+* TENTATIVA: No Windows o jogo irá funcionar em segundo plano durante o carregamento do mapa caso o usuário alterne para outro app. Porém depois de carregado ele ficará pausado para não ficar usando muito processamento enquanto não está em foco. Isso permite deixar carregando e ir fazer outra coisa nos mapas que demoram para carregar.
+* Nova opção para comprimir texturas ao carregar na tela Extras. Isso poupa memória RAM (podendo evitar crashes do jogo por falta de RAM) mas pode causar crashes inesperados em algumas raras situações. Se o jogo crashar do nada com mods que antes não crashava, experimente desmarcar isso. Essa opção não reduz o tamanho das imagens, isso se trata apenas do formato interno dela na memória temporária
+* O near clip plane da câmera será reduzido com o veículo parado ou enquanto o jogador estiver próximo da origem (0,0,0 mundo). Isso evita recortes nos objetos próximos da câmera. Infelizmente após 1km dirigidos isso não pode ficar muito baixo porque buga as sombras mais cedo (aquela treta eterna dos mundos grandes na engine, floating origin etc). Aí as faces muito próximas da câmera voltarão a ser cortadas.
+* Os passageiros somente cumprimentarão o motorista ao entrarem pela porta da frente.
+
+v299
+2022-07-09		CORE - EXPERIMENTAL
+* Mais uma correção no shader das luzes com texturas para os mods de mapas. Agora elas devem aparecer corretamente em mais situações. Na 298 bugou a cor que sempre ficavam brancas. Recomendamos usar o colorA=1 na definição da cor no txt da luz do mapa. Os exemplos postados como 0.5 deixam elas mais fracas, como se estivessem transparentes. Para deixar forte, use colorA=1.
+
+v298
+2022-07-07		CORE - EXPERIMENTAL
+* Alteração ns faróis dos mods de legado para evitar bugar com algumas árvores (o projector estava interferindo no shader de algumas árvores deixando as folhas brancas).
+
+v297
+2022-07-02		CORE - EXPERIMENTAL
+* Correção: ao apertar S mais algum número antes trocava o efeito gráfico sem querer (era um atalho de debug durante o desenvolvimento).
+* Opção para alternar entre o shader legacy/leve e o standard/melhor para os mods (tela Extras). Isso permite manter parte do gráfico antigo como um item opcional.
+* Opção para usar o mouse para girar a câmera no PC, sem precisar clicar. Na v296 estava forçado, nesta está opcional nas configurações da simulação. Isso será ignorado ao usar o controle por mouse.
+* Reversão/correção do shader dos planos dos faróis que estavam fracos antes (é uma inconsistência entre dois tipos de shaders da engine, um desktop e um mobile).
+* Correção do shader additive usado nos semáforos.
+* O otimizador de performance será ignorado ao usar o tempo acelerado, visto que nele é normal cair os fps mesmo.
+* Tentativa de correção das árvores que sumiram na versão Android.
+
+v296
+2022-04-06		CORE - EXPERIMENTAL
+* Modo de ajuste da iluminação com mais controle sobre a escuridão: foram adicionados sliders para ajustar a escuridão ao jogar no céu simples com imagem (PC e celular). Apertando U ou tocando no botão do ajuste da iluminação no botão da ferramenta (tela do F4) aparece um painel na parte inferior. Algumas opções ali são salvas separadamente para o dia ou para a noite. O objetivo é deixar a noite mais escura. No entanto por limitações das plataformas fica um pouco diferente entre PC e celular. No PC este modo só pega no céu simples com imagem, visto que os efeitos de iluminação do outro sistema são separados.
+* Tentativa de correção do fog (neblina) com as luzes e fumaça, onde aparecia o quadrado da textura na versão celular.
+* Tela de troca de efeitos dentro do jogo: no botão das ferramentas (F4) - botão Efeitos - dá para alterar outros presets de efeitos da Unity. Para isso a opção precisa estar previamente marcada lá nas configurações. Alguns efeitos são ruins e serão excluídos depois, deixando apenas os mais bonitos.
+* Correções nos materiais dos mods: quando uma mesma textura era usada em algumas peças com e outras sem os comandos _mat e _ref, elas ficavam inconsistentes sem o efeito. Isso deve ter sido corrigido nesta versão.
+* Modo de foto: aparece uma barra com opções para o zoom e FOV (field of view) no celular. No PC, altere esses itens antes de entrar no modo de foto. O olho no canto oculta a barra, para permitir tirar prints.
+* O botão de tirar fotos dentro do jogo não está funcionando na maioria dos celulares, não dá pra entender já que no PC funciona e é o mesmo comando. Pode demorar pra ser corrigido. Por enquanto tire prints usando a função do telefone mesmo. No PC basta apertar P, a imagem fica salva dentro da pasta screenshots nos Documentos - Proton Bus Mods.
+* Temporariamente estão liberados níveis mais exagerados para o FOV e distância visível ao deslizar o slider, mas eles bugam o jogo e os cálculos da distância dos objetos visíveis que podem desaparecer temporariamente. Serão estudados outros limites para o FOV depois.
+
+v293
+2022-03-30		CORE - EXPERIMENTAL
+* Preparação da fase 3.1 dos mods de mapas, com as árvores embutidas e materiais novos internos do jogo. Consulte o texto de ajuda dos mapas ou o vídeo de exemplo. O uso dos materiais será por um txt na pasta de texturas, não mais com comandos direto no 3D, para otimizar o carregamento.
+* Separação do sistema de mods apenas no "Core", que virá a ser um jogo independente do Proton Bus tradicional. A fase 2 continuará disponível por uma boa temporada nos jogos antigos.
+* Opção para limitar o valor "metallic" nos mods, que na versão Android fica extremamente exagerado aparentemente por bug da engine (comportamento diferente entre o PC e celular). Ela está no botão opções da tela de escolha de veículo na versão celular.
+* Inclusão do fog (neblina) no Core, com um botão dedicado a ele na interface principal do jogo (Android) ou no menu segurando Alt (PC). Ao usar o ciclo dia/noite do PC esse modo não está disponível, pois aquele sistema controla o fog diretamente. Bug: esse fog não se dá bem com algumas partículas, que podem aparecer bugadas (poeira ou fumaça).
+* Teste do efeito da Unity no celular (funcionou no Galaxy A80, requer aparelhos mais tops para rodar bem). Ele poderá ser removido caso traga problemas significantes. Aparentemente só é adequado para os aparelhos top de linha, desde que não exagere na distância visível e outras coisas.
+* Opção para reduzir a iluminação ao usar o efeito da Unity no celular, porque ficava exagerada aparentemente por bug da engine (comportamento diferente entre o PC e celular).
+* Uso do standard shader nos mods por padrão. Futuramente poderá ser desativado. Isso deixa os gráficos mais bonito mesmo quando não estão sendo usados os efeitos.
+* Correção do brilho indevido nos objetos dos mods ao usar esse standard shader.
+* Experimental: a câmera na versão PC fica livre com o mouse, sem precisar clicar no joystick invisível no meio da tela. Nessa versão está permanentemente assim, depois provavelmente será opcional. Ao usar o controle por mouse (apertando a letra o alterna entre teclado e mouse) não tem como usar o mouse pra mover a câmera senão perderia todo o controle do movimento. Com o controle por mouse a câmera responderá do modo antigo.
+* Novo modo de pausa experimental, permitindo tirar fotos: entre apertando CAPS LOCK (atalho temporário) ou use o botão de pause na versão Android. No celular ainda precisa ser feita uma tela para controlar o zoom nesse modo. Por enquanto, aplique o zoom na câmera externa antes de entrar. No PC use a rodinha do mouse. Para sair deste modo aperte CAPS LOCK novamente, ou Esc, ou o botão voltar do telefone caso seja no Android. Bug: ao voltar para o controle normal o controle da câmera pode ser perdido na versão PC porque a interface "some". Aperte Esc algumas vezes ou o botão "menu de contexto" que tem em alguns teclados entre as teclas Alt e Ctrl. Esse bug é meio obscuro, pode demorar um pouco pra resolver.
+* Agora a opção "Flat clouds" do Enviro (apertando U no ciclo dia/noite no PC) será salva, evitando ter que marcar novamente ao iniciar um novo jogo. Ela é mais leve, pode ajudar em algumas GPUs mais simples.
+
+=====================================================
+DAQUI PARA BAIXO ESTÃO OS RECURSOS CONGELADOS NO PBSU/PBSR NORMAL. AS MUDANÇAS NA BASE VIRÃO NO CORE POR UMA BOA TEMPORADA ANTES DE IREM PARA OS JOGOS ANTIGOS, PERMITINDO ANALISAR O IMPACTO DO PESO E DAS MUDANÇAS ANTES DE OFICIALIZÁ-LAS.
+=====================================================
+
+v291
+2022-02-19
+* Reversão do redimensionador de texturas para o anterior, visto que o novo bugava com texturas transparentes em alguns celulares.
+* Revisão na taxa de fps mínima do priorizador de performance: de 19 para 17 fps (antes ele começava a reduzir as coisas pesadas caso a média ficasse em 19fps; agora será a partir de 17fps).
+* Separação da seleção de cargas dos caminhões para a futura versão independente para mods.
+
+v290
+2022-01-11
+* Melhorias nas telas de configurações, trazendo uma explicação técnica sobre os 60fps e a resolução em 100% para os celulares.
+* Notificações com códigos de erro: algumas mensagens de erro apresentarão um código numérico. Isso facilita a busca pelos problemas e soluções no Google, no YouTube e nas comunidades do jogo no Facebook. Tem uma descrição de cada código no site do jogo e num arquivo na pasta que vem com ele na versão PC. Os erros mais comuns estão listados aqui:
+http://www.busmods.com/blog/static/1641904739/
+
+v287
+2021-11-28
+* Melhorias no controle por mouse no modo suave (padrão): agora é aplicada uma zona morta na vertical fixa do jogo. Isso permite manusear o mouse na metade da tela para os lados sem acelerar nem frear, facilitando imensamente o controle do veículo nas curvas. Para acelerar leve mais pra cima e para frear leve mais para baixo. Desse jeito dá para curtir um realismo maior visto que antes ele ficava sempre acelerando ou freando o tempo todo já que era impossível manter o mouse exatamente no meio da tela, quebrando a simulação tanto na física como nos sons.
+* Efeito motion blur: o desfoque do movimento passa uma sensação mais realista ao borrar os elementos nas bordas da tela, simulando a visão periférica que temos quando estamos em altas velocidades. Isso requer uma GPU boa, pode consumir vários fps. Algumas pessoas podem se sentir incomodadas com o efeito. Ative ou desative nas opções gráficas. Para ele funcionar a taxa de FPS precisa ser boa o suficiente. Se o jogo rodar em baixos fps o efeito fica ruim, aí precisa ser desativado.
+* Alguns recursos mais pesados poderão ser desativados automaticamente caso o jogo detecte que está rodando a baixos fps. Ao rodar abaixo de 20 fps várias coisas ficam ruins nos cálculos da física e controles. Não é uma experiência legal. Para tentar recuperar um pouco a fluidez em alguns casos, determinados recursos serão desativados ou reduzidos numa tentativa de fazer subir um pouco os fps. Isso pode incluir o motion blur, luzes, distância de visualização etc.
+* Agora as luzes em tempo real estão separadas do ciclo dia e noite no PC! Isso pode melhorar a performance em alguns computadores, já que ambos são recursos pesados e agora você pode optar por usar um ou o outro individualmente. Note que ambos ainda requerem uma GPU gamer para rodarem satisfatoriamente.
+
+v283
+2021-06-05
+* Opção de otimizar automaticamente as texturas dos mods ao instalar eles pelo botão do jogo. Ela será padrão no Android na versão da Play Store, mas pode ser desmarcada na tela Extras. No PC ficará desmarcada por padrão.
+* A cor do ambiente baseada no céu ficará ativa por padrão no PC, iPhone e na maioria dos Androids, exceto nos Motorola e LG já que em muitos modelos dessas marcas a tela do jogo fica preta ao usar isso. Todavia a opção pode ser marcada ou desmarcada pelo usuário nas opções gráficas. Ela deixa a cor do ambiente bem mais bonita. No PC ela é usada no modo de gráficos com o céu estático.
+
+v280:
+2021-06-02
+
+* Novo otimizador de texuras! O antigo foi removido a favor de um novo sistema que otimiza as texturas diretamente na pasta. Isso alivia o peso na hora de carregar, já que elas não precisam ser redimensionadas o tempo todo a cada vez que carrega. Use o botão de otimização na tela de escolha de ônibus ou mapas. Os arquivos originais não serão alterados, o jogo cria uma cópia com o mesmo nome porém outra extensão para não estragar o arquivo original. Se você fizer isso na versão PC, não se esqueça de apagar os arquivos otimizados antes de compartilhar o mod com alguém! Caso altere alguma textura ou skin no mod pode ser necessário aplicar o processo de otimização nele novamente, caso contrário a versão antiga da textura seria carregada. Normalmente no PC não precisa usar isso, é mais pro celular, mas talvez ajude nos PCs mais fracos. Reduzir texturas em geral sempre ajuda!
+* Agora a versão de Android da Play Store não vai mais carregar texturas 4k. Desde que o sistema de mods existe elas trazem problemas na versão do jogo no celular, prejudicando a reputação dele perante a Play Store. As texturas do celular serão no máximo 2048px de largura ou altura. Será postado um apk extra fora da Play Store sem garantias, sem o limite do tamanho para quem quiser continuar usando 4k. Todos os meses o índice de crashes do jogo ficava acima do nível permitido lá por conta das texturas grandes, elas aumentavam bastante os crashes. Caso o mod fique com texturas brancas, use o novo botão de otimização na tela de escolha do ônibus ou mapa. É chato, mas necessário: a Play Store não é nossa, precisamos manter o índice de crashes controlado. Com os mods ninguém tem como ter controle.
+* Os ajustes de sensibilidade dos controles das rodas nas curvas agora ficam desmarcados por padrão (resete as opções no menu inicial; ou use o botão da engrenagem ou Backspace dentro do jogo para desmarcá-los). Eles ajudam no tilt ou teclado, mas atrapalham no uso com mouse ou volante.
+
+v279:
+2021-05-21
+
+* Primeiro teste público no iPhone! O beta foi postado no TestFlight da Apple para ver a viabilidade.
+* Expansão no mapa Fiktivdorf, com uma área nova! Ela havia sido adiada para resolver os problemas que apareceram com a exigência da versão de 64-bit na Play Store e depois o Android 11, que tomaram preciosos meses do desenvolvimento.
+* Os ônibus T07, VIP2 e URPLUS nativos agora estão na fase 2! Eles demoraram para poder resolver os problemas citados. Foram "despriorizados" por conta do sistema de mods, que permite ter ilimitados ônibus. Então não havia urgência em animar eles, a performance de 64-bit e o instalador de mods foram muito mais importantes. Os demais da fase 1 foram removidos temporariamente da versão PC enquanto são animados. Caso use eles, continue com uma cópia da versão anterior.
+* Botão para instalar/desinstalar mods de ônibus e mapas! Agora tem um botão + e - nas telas de seleção de ônibus e mapa, que fará a instalação de mods em zip. Cuidado ao desinstalar pois a pasta do mod será apagada com tudo o que estiver dentro!
+* Remoção da pasta personalizada para mods no Android. Infelizmente a Google implementou mudanças mais drásticas no gerenciamento dos arquivos que os apps precisam seguir. Os mods ficarão apenas dentro da pasta do jogo. No PC nada muda, continuam dentro dos Documentos - Proton Bus Mods.
+* Correções ao engatar a marcha no modo manual em mods de ônibus articulados de motor traseiro no celular.
+* Opção de câmbio manual sequencial com setas para cima/baixo no Android (no PC já tinha com PageUp / PageDown). Ative ou desative nas opções da simulação.
+* Tela de progresso ao carregar mods de mapas, permitindo ter uma noção do que o jogo está fazendo em um dado momento. Isso tira ou minimza a sensação do jogo estar travado durante o carregamento, visto que é um processo demorado.
+* Otimizações internas no carregamento.
+* Ao iniciar com os mapas de teste vazios do PBSU completo as propagandas e mensagens de áudio do jogo não serão tocadas na versão gratuita. Isso permite que os usuários testem alterações nos mods de ônibus com mais liberdade, sem precisar esperar a mensagem passar para testar trocas no som do motor, por exemplo.
+* Suavização das faixas do asfalto nas curvas antigas do mapa Aricanduva (as pistas com as faixas duplas foram refeitas em algumas áreas, mas as calçadas continuam as mesmas).
+* Remoção dos recursos experimentais da 273 (voltarão em uma versão futura).
+* Melhorias e correções na iluminação padrão do jogo no celular ou no PC no modo simples. Antes a iluminação era meio amarelada, agora será mais neutra, deixando as cores mais naturais. O slider de iluminação na tela de ferramenta não permitirá mais usar valores exagerados. Antes as calçadas e objetos brancos podiam ficar estourados demais, com um branco forte bem acima do normal.
+* Os ônibus nativos da fase 1 que não tinham animações de chuva, janelas etc foram removidos da versão PC. Eles serão editados para receber as animações e voltarão em algum lançamento futuro. Ainda não está decidido se continuarão sendo nativos ou se serão mods. Na versão Android esses modelos vão continuar presentes por mais uma temporada. Se você gosta deles, mantenha a versão PC anterior também (a 272). Como no PC dá pra manter várias versões em paralelo, isto não será um problema.
+* Opções de sensibilidade em altas velocidades liberadas em todos os controles. Altere já com o jogo carregado no botão da engrenagem na parte superior da tela no Android, ou apertando Backspace no PC. Os controles nunca terão como agradar a todos, é necessário fazer vários testes em curvas abertas e fechadas com cada uma das opções ativada e desativada. Alguns limitadores funcionam melhor para uns veículos e pior para outros. Os limitadores da roda em altas velocidades estão destacados em amarelo na tela de opções de sensibilidade do controle. Agora ficarão liberados também para o volante e mouse. Eles são mais recomendados para uso com teclado, setas ou tilt, onde normalmente os toques são mais bruscos. Se você joga no mouse ou volante e quer o mesmo comportamento anterior, desmarque os itens em amarelo.
+* Experimento para interromper o carregamento ao receber o aviso de RAM esgotada no Android. Isso foi feito para evitar os crashes que causam dano à imagem do jogo perante a Play Store. Mods pesados, muitas skins no tráfego ou configurações exageradas não são adequados para alguns celulares. Prefira usar os mods lite e configurações mais modestas, se disponíveis. Se a mensagem aparecer para você em situações em que antes não aparecia, faça isso: na tela Extras, desative o redimensionador de texturas, marque para carregar originais ignorando as grandes; e na ela de escolha do mapa, desmarque a opção de skins personalizadas para o tráfego. Fazendo isso esta mensagem será ignorada temporariamente. Se as texturas dos mods ficarem brancas nesse caso, será necessário redimensioná-las direto na pasta do mod ou usar uma versão lite dele, se possível. Estamos orientando há anos para não usar texturas acima de 2048 pixels nos mods pro Android... Em aparelhos com mais de 3 GB de RAM esta mensagem será ignorada por agora, mas poderá ser ativada em alguma versão futura caso os crashes continuem crescendo.
+* Área de zoom visível na câmera externa na interface de celular. Antes já tinha isso mas ficava escondido.
+
+v272:
+2021-01-04
+
+* Correção na colisão, que ficava ativada em alguns carros mesmo com a opção desmarcada.
+* Correção nos carros do tráfego não "enxergando" o veículo do jogador em algumas situações.
+* Correção nas rodas aparecendo no teto do ônibus na câmera externa em algumas situações.
+
+v270:
+2020-12-30
+
+* As colisões estão melhores! Este é um recurso bem complexo feito em 2020. O sistema antigo foi excluído e um novo foi feito do zero. Ainda é um jogo indie em beta, então não espere muito, mas está bem melhor do que antes. Ela está ativada por padrão mas pode ser desativada nas opções do jogo. O sistema de veículos teve grandes melhorias para tentar não bater mais na traseira do jogador.
+* Mais correções nos bugs pendentes pós-otimizações a partir da v260, especialmente relacionados ao carregamento de sons, volante travado ou rodas fora do chão (embora isto ainda possa ocorrer, deve ser mais raro).
+* Redução de tamanho da versão Android usando outra compressão de texturas.
+* Correção do baixador de mods integrado ao jogo.
+* Correção dos sons aleatórios de freio que não tocavam todos, sempre faltava o último.
+* O som dos passageiros conversando no salão agora funciona também nos mods. Se não quiser isso no seu mod, adicione a diretiva pedsCanTalk=0 na seção [config].
+* Bloqueio dos sons em mp3 nos mods por padrão. Estes sons são problemáticos dentro do jogo, não funcionam em todas as plataformas e usam mais recursos durante a decodificação. É recomendável converter todos os sons dos mods para wav 44.1 kHz. Todavia ainda é possível tentar carregar os mp3 para não quebrar a compatibilidade com os mods antigos. No entanto esta opção na tela Extras é temporária e será removida em uma versão futura. Os sons em mp3 no jogo são uma causa de problemas devido os softwares que usamos e sua incompatibilidade com a engine em algumas plataformas. É melhor evitá-los.
+* Poeira nas estradas de terra! Isso também é suportado nos mods de mapas: adicione o comando _dustroad_ nas peças das ruas de terra. Ela é ativada junto com a fumaça do escape nas opções. Em futuras versões poderá ter uma opção própria. Por padrão a poeira é adicionada no pivot central do ônibus, 0,0,0. Se quiser trocar a posição em algum mod, insira esta seção no arquivo ini dele:
+
+[posDust1]
+enabled=1
+posX=0
+posY=0
+posZ=-12
+
+É recomendável deixar no meio ou no eixo traseiro. Se for articulado, não se esqueça de incluir a parte desejada com o item articulated_part. Deixe o enabled=0 para desativar a poeira para algum veículo específico.
+* Som de troca de marcha no modo manual, ideal para alguns VW.
+* Som de pente na turbina ao trocar de marcha, ideal para alguns VW ou caminhões.
+* Som fake de ar sendo liberado. Como o jogo não tem o sistema de ar, foi feito um som falso que toca em momentos aleatórios para fazer de conta que tem. É útil nos O500M e em alguns outros carros. Ele tocará em determinados intervalos caso o motor esteja ligado. Esses três sons suportam sons aleatórios a serem colocados numa pasta. O file= deve apontar para um dos arquivos existentes, enquanto que use_random_file ativa o sorteio aleatório e random_file_dir define a pasta onde serão colocados os sons (lembre-se, use WAV!).
+
+Exemplos dos parâmetros novos:
+
+##########################################################
+################ TROCA DE MARCHA (somente cambio manual)
+##########################################################
+
+[gearShift]
+file=troca de marcha/troca de marcha.wav
+use_random_file=1
+random_file_dir=troca de marcha
+posX=-0.830457
+posY=0.384191
+posZ=8.79247
+minDist=1
+maxDist=5
+spatialBlend=0.9
+volume=0.5
+pitch=1
+
+
+##########################################################
+################ TURBINA (somente cambio manual)
+##########################################################
+
+[gearTurbine]
+file=turbina/1.wav
+minRPMToPlay=1200
+use_random_file=1
+random_file_dir=turbina
+posX=0
+posY=1.3
+posZ=-6
+minDist=1
+maxDist=5
+spatialBlend=0.9
+volume=1
+pitch=1
+
+##########################################################
+################ COMPRESSOR FAKE LIBERANDO AR
+################ FAKE PQ NAO TEM O SISTEMA DE AR
+##########################################################
+
+[fakeAirRelease]
+file=soltando ar/1.wav
+use_random_file=1
+random_file_dir=soltando ar
+posX=0
+posY=1.3
+posZ=-6
+minDist=1
+maxDist=5
+spatialBlend=0.8
+volume=1
+pitch=1
+## Aleatorio? Deixe 1 para aleatorizar o tempo da primeira execução e 0 para o tempo uniforme:
+randomTimeToWaitAtStart=1
+## Segundos a esperar quando carregar o ônibus, para o primeiro som:
+playTimeToWaitAtStart=600
+## Segundos do intervalo de repetição do som:
+playTimeInterval=600
+
+v269:
+2020-12-25
+* Este é um teste do sistema de colisão dos carros que está sendo reprogramado do zero. A colisão está ativada por padrão, desative nas opções Extras se quiser. Reporte o comportamento dela nos grupos no Facebook, por favor! Há tentativas de melhorias no sistema de tráfego na detecção da traseira do ônibus e semáforos. Pode ser difícil fazer linhas em ruas apertadas com ônibus grandes. É uma versão EXPERIMENTAL, se a colisão estiver muito ruim ela será removida e não irá pra versão oficial por mais uma temporada. É normal nesta versão os carros afundarem um pouco depois da batida.
+
+v268:
+2020-12-14
+
+* Várias correções cumulativas referentes aos passageiros que surgiram após as otimizações feitas.
+
+v263:
+2020-12-10
+
+* Várias correções internas e refatoramento de códigos visando obter melhor performance, especialmente na versão de 64-bit para Android. As alterações ajudam o jogo como um todo, mas no PC os impactos não devem ser tão visíveis como no celular.
+* Opção de passageiros com máscaras! Marque ou desmarque no menu na entrada.
+* Agora as vozes de passageiros podem ser desativadas por categoria.
+* Reorganização geral da interface da tela inicial e das telas de seleção de ônibus, skin, mapa e linha.
+* Correções nos passageiros que travavam a porta de entrada! Esse era um bug bem antigo, desde que o jogo existe! Pode ser que ainda ocorra, mas deve ser bem mais raro.
+* Início do sistema de tradução da interface para outros idiomas em várias telas, a ser liberado em alguma versão futura.
+* Novo botão de configurações recomendadas para notebooks ou PCs com placa de vídeo mais fracas, que desativará as coisas que pesam mais na GPU. O jogo ainda requer uma placa boa para poder rodar bem, mas esta opção deve dar um alívio nas configurações mais modestas.
+
+v258:
+
+* Liberação experimental do mapa "Aricanduva HD" para PC. Este mapa experimental não será mantido, é só um teste interno liberado no estado a título de curiosidade. Ele tem grandes problemas com a questão de mundo aberto na Unity, oferecendo travadas maiores na hora de mover a origem do mundo (isso ocorre ao parar o ônibus, prejudicando a experiência). Para liberar o Aricanduva HD no menu de mapas, crie um arquivo de texto vazio chamado arihd.txt na pasta de mods do Proton (normalmente a Proton Bus Mods, dentro dos documentos... clique com o direito num local vazio dela, Novo > Documento de texto, e nomeie-o como arihd). Este arquivo é necessário por se tratar de um recurso extra oficial, não suportado oficialmente, que poderá ser descontinuado (ou não). É uma espécie de "cheat". Não há nenhuma garantia de que este mapa dará certo, dependemos de mudanças na engine Unity para poder terminá-lo a contento. Estamos tentando contato com o pessoal da engine para ver o que pode ser feito. Enquanto isso vamos focar no que deu certo (os mods de ônibus e mapas) em vez de insistir dando murro em ponta de faca nas coisas ruins. Já gastamos muito tempo no que não funciona tão bem nessa engine, uma hora temos que aceitar e seguir em frente de outra forma. Não serão aceitas reclamações referentes a este mapa, nem pressão para finalizá-lo, por ser um mero experimento. É recomendável ter pelo menos uma GTX 1050TI ou superior e um sistema de 64-bit para rodar este mapa. A única rota jogável é a 129I. A área da Cidade Universitária tem as ruas novas, mas não foi concluída.
+
+v256:
+
+* Correção na animação do volante nos ônibus antigos (fase 1), que não estava girando.
+
+v255:
+
+* Novo controle por mouse, com nível de sensibilidade e zona morta no centro, muito melhor! O antigo pode ser obtido usando a opção "bruto" nas configurações do controle (menu Alt - Controles - Sensibilidade, ou Backspace).
+* Agora são suportados os volantes baratos, aqueles que usam pedais combinados! Basta configurar de acordo na tela Input (siga os tutorais), e depois dentro do jogo marcar Pedais combinados na tela de ajuste dos controles (Alt - Controles - Sensibilidade... ou Backspace). Vídeo tutorial dos controles de volante: https://www.youtube.com/watch?v=8azo3TUArtE ou também esse: https://www.youtube.com/watch?v=ss7lR8yz654
+* Opção para inverter pedais e volantes, útil em algumas gambiarras de volantes caseiros feitos com mouse.
+* Volta da opção oclusão do ambiente - ambient occlusion no PC, porém agora não fica marcada por padrão. Ela é EXPERIMENTAL: poderá ser substituída, melhorada, piorada ou removida em versões futuras. A anterior havia sido removida porque bugou com uma atualização da Unity, esta usa outro sistema. Para ficar ativa os efeitos da Unity precisam estar ativados também. Ela adiciona algumas sombras no interior dos modelos nas junções das peças, mas em algumas situações pode ficar estranha (por isso mesmo é experimental).
+* Nova tela para alterar os mods de letreiro pelo número, sem precisar passar um por um!
+* No PC, agora os mods de letreiro ficam na pasta "dest" dentro da pasta de mods do jogo, não mais dentro da app data! Fica muito mais fácil localizar. Por padrão esta pasta fica dentro de Documentos - Proton Bus Mods. É necessário mover seus letreiros para lá manualmente.
+* As pastas de skins dos ônibus nativos e também do tráfego (skinsAI) também foram movidas para a pasta geral dos mods, facilitando a organização! É necessário mover seus arquivos para lá manualmente.
+* Tentativa de otimização do peso na região da Vila Sabrina, com remoção do terreno da Unity e da água por baixo da ponte (foi usado um modelo substituto mais leve).
+
+v254:
+
+* O atalho TAB dos slides para vídeos foi trocado para Espaço! Aperte espaço + a letra ou número de 1 a 9. Espaço + letra ou número cuja imagem não existir limpa a tela. Isso foi feito porque o TAB está associado à embreagem.
+* Mensagem de notificação ao ativar os presets de configurações na entrada, para não ficar parecendo que os botões não faziam nada.
+* No Android o redimensionador de texturas ficará desativado por padrão, já que ele fazia o jogo crashar em alguns aparelhos. Ative ou desative caso a caso para testar.
+* Pequenas otimizações internas no carregamento dos mapas.
+* Nova mensagem de áudio na primeira inicialização.
+* Melhor controle por mouse no PC (experimental).
+
+v253:
+
+* Várias correções e melhorias internas!
+* As telas de opções foram reorganizadas: as opções gráficas bagunçadas que estavam na tela Extras agora ficam de fato na seção das gráficas.
+* Opção para desligar a seta automaticamente, que pode ser agora desmarcada. Ela terá efeito ao usar o volante ou mouse; o desligamento não vai pegar no teclado ou setas porque neles é preciso dar alguns toques pro outro lado para acertar, o que atrapalharia caso desligasse.
+* Opção para voltar a câmera automaticamente, evitando a câmera fixa ao olhar para os lados no Android que foi introduzida na v252. Nos controles de PC ela sempre voltará.
+* Correções na animação dos passageiros ao entrar no ônibus, agora não devem ir se arrastando (era o has exit time na animação idle, uma tortura para algo tão simples...).
+* Novas possibilidades para os letreiros nos mods e nativos! Coloque um txt vazio chamado outofservice.txt na pasta do letreiro para que os passageiros não embarquem ao usar ele. Isso vale para letreiros tipo GARAGEM, RESERVADO etc. Se for uma rota rodoviária onde as pessoas só devem descer no ponto final, coloque um txt vazio chamado intercity.txt na pasta do letreiro. Desta forma as pessoas não vão ficar pedindo para descer no próximo ponto, evitando que fiquem em pé nos corredores dos ônibus. Isso vale tanto nos mapas nativos (dependendo das características de cada rota no PBSU ou PBSR) como nos mods de mapas, bem como nos mods de letreiros que os jogadores podem configurar.
+* Incluso um caminhão no tráfego ao usar a opção médio para os veículos (tanto no PC como no Android).
+* As opções de debug para criadores de mapas agora ficam escondidas, evitando que os usuários normais as ativem por engano e depois estranhem as coisas que aparecem na tela. Para liberar o console ou o modo debug dos mods de mapa é necessário ativar a opção correspondente no final da tela de opções Extras.
+* Opção para quem grava vídeos do jogo no PC: é possível exibir alguns slides na tela, evitando ter que fazer edições posteriores para apenas mostrar algo! Coloque imagens png na pasta slides (dentro da pasta dos mods) nomeadas de 1 a 9 ou de a a z (minúsculas). Por exemplo, a.png, 1.png, 2.png etc. Depois, dentro do jogo, segure Espaço e aperte o número ou letra do slide desejado. Ele será colocado na tela! Espaço + alguma letra ou número cuja imagem não existir, limpa a tela. A imagem pode ser uma PNG transparente, é só fazer em qualquer editor gráfico de sua preferência, mantendo a mesma proporção da tela em que for gravar. Serve para adicionar saudações, propagandas, endereços de sites ou e-mails, seu logotipo no canto etc... Assim você terá menos trabalho depois na edição, já gravando direto com as telas sobrepostas! IMPORTANTE: para isso funcionar, crie um txt vazio chamado enabled.txt e deixe dentro dessa pasta slides. O txt é necessário para facilitar ativar ou desativar isso, bastando renomeá-lo para qualquer coisa quando não quiser mais usar, evitando que aperte por engano.
+* Redimensionador de texturas embutido: o jogo irá tentar redimensionar automaticamente as texturas que excederem o tamanho máximo recomendado para cada plataforma. Antes elas não eram carregadas, ficando brancas no Android caso tivessem mais que 2048 pixels de largura ou altura. Agora serão carregadas e redimensionadas dentro do jogo de forma transparente. O arquivo original não será alterado, somente a versão dele na memória RAM do jogo. Infelizmente as texturas maiores de 2048 pixels não são suportadas em um monte de GPUs mobile. Além de consumir mais memória e potencialmente deixar o jogo lento, elas podem trazer artefatos gráficos (glitches) ou crashes aleatórios. Temos que evitar isso a todo custo para manter uma experiência mais saudável. Aos criadores de mods, sempre fica o aviso: evitem texturas maiores que 2048 pixels para os celulares!
+* Essa opção do tamanhho das texturas tem outra vantagem! Dá para usar isso para testar texturas menores nos mods! Marque 512 ou 256 e veja algumas texturas borradas, mais leves... Outras nem tanto. As que não ficarem tão borradas em resolução menor podem ser redimensionadas diretamente na pasta do mod para este tamanho! Muita coisa pode usar texturas 512 ou 256 de boa, não precisa forçar 1024 ou 2048 em tudo. Esse recurso permite experimentar isso de forma reversível, sendo perfeito para ajudar na tomada de decisões ao otimizar os mods de ônibus. Aí os criadores podem decidir quais texturas podem redimensionar sem perder tanta qualidade antes de lançar um mod.
+
+v252:
+* Câmera fixa ao girar pros lados (somente no Android isso, devido o maior incômodo para segurar o botão).
+* Volta das luzes dinâmicas à noite (mais perceptível ao utilizar os efeitos gráficos).
+* Menor perda de qualidade ao usar a resolução dinâmica/XFrame (um recurso de otimização das opções gráficas).
+* Correção no mapa Uipe que podia aparecer com cenário sobreposto em alguns casos, tendo um colisor invisível na entrada do último túnel na 77-02 (agora os savegames antigos podem não funcionar no Uipe devido a reestruturação dele; por favor, carregue como novo jogo e salve novamente).
+
+v251:
+
+* Novo ônibus, via3p!
+* A segunda fase dos mods de mapas! Agora são suportados tráfego básico de veículos, pedestres, passageiros e trens. Tutoriais sobre estes novos recursos serão carregados em breve.
+* Melhorias na tela de controles (Backspace no PC ou o ícone da engrenagem no Android): você pode ativar ou desativar o assistente de direção diretamente naquela tela. É recomendável desativá-lo ao usar o mouse para dirigir ou um controle de volante.
+* A colisão com os veículos era um experimento e ficará desativada por um tempo por conta de uma atualização na engine física.
+* Introdução de um sistema de anúncios próprios na versão PC! Agora são liberados mais recursos de graça em troca da visão dos anúncios.
+* Tentativas de correções no sistema do mapa contínuo.
+* Correção na função de cache dos objetos na RAM, que não estava sendo salva (isso acelera o carregamento da versão PC, mantendo na RAM os objetos dos veículos e pessoas).
+* Correções nos passageiros nos mods de mapas (obrigado, Bus Simulation Channel! Do protonbusmods.com)
+
+v247:
+
+* Novo mapa Uipe! É uma pequena e remota cidade industrial, com uma serra bem comprida. Dirija com cuidado nas curvas e leve os trabalhadores em segurança até o terminalzinho da cidade.
+* Leve mudança na textura dos reflexos.
+
+v244:
+
+* Novo mapa fictício europeu, Fikdorf, com uma linha. Este mapa faz parte de uma série nova de experimentos com mapas menores, porém melhores! Ele terá algumas novas linhas depois, e novos mapas menores serão lançados, inspirados em outros estilos.
+* Download de mods selecionados direto pelo jogo! Este recurso facilita muito a instalação dos mods da equipe. Ele é liberado como uma cortesia extra apenas para os colaboradores, por conta do custo do servidor. É um recurso experimental, sem garantias.
+* Melhor desempenho em geral quando comparada às últimas versões.
+
+v234:
+
+* Mais correções e estabilizações da base geral, sincronizando com a versão que foi pra Google Play nomeada como '2020'.
+
+v231:
+
+* Tentativa de correção nos giros dos carros do tráfego, em algumas situações em que "davam pirueta".
+
+v230:
+
+* Correções diversas em relação à v229
+* Correção dos vidros em alguns mods que ficavam todos cinzas
+* Mais otimizações nas pessoas do cenário: as animações serão desativadas ao longe, igual fizemos com os passageiros do ônibus
+* Agora o jogo não irá carregar texturas maiores que 2048 pixels de largura ou altura no Android, pois muitos aparelhos apresentavam bugs e glitches diversos ao usar texturas assim. Leia isto para entender o motivo:
+http://blog.protonbus.com.br/2019/10/importante-evitem-mods-com-texturas.html
+As texturas e skins nos mods de Android devem ter no máximo 2048 pixels de largura ou altura para funcionarem bem. Se você quiser forçar o carregamento delas mesmo assim, vá até as opções Extras do jogo e ative a opção de mostrar itens ocultos, lá no final, e a seguir marque a opção para carregar texturas grandes. Faça por sua conta e risco: o jogo fica comprovadamente mais instável em muitos aparelhos se estiver usando texturas grandes no celular.
+* BUG conhecido: a câmera do motorista fica mais pra trás no Mond08 ao usar o novo movimento da cabeça. Não tem solução por enquanto.
+
+v229:
+
+* Atualização da Unity para a 2018.4.10f1.
+* Centenas de alterações internas! Refatoração de códigos, muitas correções, novas otimizações em áreas específicas e vários novos recursos.
+* Mods de ônibus na fase 2! Agora os novos mods suportam várias animações dos nativos: vidros para chuva, limpadores, ar condicionado, janelas, botões, luzes nas portas e mais! A fase 2 dos mods de ônibus tomou boa parte do tempo de edição em 2019, por isso as atualizações foram mais demoradas. Agora que foi feito o recurso valerá por muitos anos à frente! Os tutoriais de conversão serão atualizados ao longo do tempo, bem como alguns novos mods serão lançados como exemplos para os criadores verem os novos comandos. Os conversores que não quiserem usar as novas animações podem pular elas, animando só com as antigas.
+* Suporte a até 6 portas de cada lado, permitindo uma maior variedade de ônibus. Em decorrência do aumento do limite, os atalhos mudaram: para abrir do lado esquerdo agora é necessário pressionar o botão alternador. Atalho atual: F11. As portas de 1 a 6 são abertas com as teclas de F5 a F10, ou / * e - do teclado numérico, para as três primeiras.
+* Botão para abrir todas as portas! Atalho atual: K.
+* Suporte a biarticulados nos mods!
+* Suporte a farol com luz diferente da antiga, incluindo ré (depende dos criadores de mods usarem ou não).
+* Suporte a colisor personalizado nos mods, permitindo à engine física tratar melhor o corpo do veículo, especialmente na região frontal e nas áreas dos parachoques.
+* Muitas otimizações no sistema de passageiros: agora as pessoas em pé e sentadas usarão um modelo estático, sem usar o Animator da Unity, evitando que a engine tenha que processar os códigos das animações. Provavelmente algumas pessoas poderão jogar com mais passageiros do que antes, em alguns aparelhos.
+* Mais otimizações nos pedestres e passageiros: serão escondidos antes da distância máxima de visualização da câmera, mas a um ponto praticamente imperceptível em condições normais. Futuramente isto será feito com alguns objetos de cenário pequenos.
+* Rebaixamento das plataformas do Terminal Monte da Rocha, evitando que os ônibus mais comuns raspem ali.
+* Cruise control, o famoso piloto automático! Ao acioná-lo o ônibus acelera sozinho até a velocidade em que estava quando foi acionado, ideal para pegar rodovias! Ao frear ele é desativado por segurança, como na vida real. Atalho atual: X. Só funciona a partir de uma certa velocidade, não pega se for muito baixa.
+* Limitador de velocidade manual, permitindo ter maior controle em áreas urbanas. Similar ao cruise control, só que limita (atalho atual: Z).
+* Retarder! Disponível em alguns ônibus (não todos), ele permite frear ou reduzir a velocidade sem precisar usar o freio de serviço tradicional, evitando desgastes e proporcionando uma frenagem mais tranquila. Há o modo manual em que o nível do retarder pode ser aumentado ou diminuído, útil ao descer serras e ladeiras íngremes, e o automático, conjugado ao freio. Os atalhos atuais para o manual são Y para subir de nível e T para reduzir ou desativar. J ativa ou desativa o retarder conjugado ao pedal do freio, mas para que o automático funcione é bom usar um freio do tipo progressivo, como ao usar o mouse ou um volante com pedais reais. No teclado ou em controles bruscos ele vai ser ativado no nível máximo ao apertar o botão, o que pode não ser tão legal. Na barra de informações de velocidade e fps aparecerão ícones indicadores do retarder (tecla Menu, aquela geralmente entre Alt e CTRL da direita... ou ative na tela de ferramentas do F4, botão FPS).
+* Bloqueio do diferencial! Isso permite tirar o ônibus de alguns atolamentos quando uma roda de tração gira em falso e outra está em contato com o solo. Ao ativar, dirija para a frente e depois desative, pois esta função não deve ser usada o tempo todo. Como na vida real, em alguns casos não tem jeito, mas ela ajuda na maioria dos atolamentos comuns. Este item não tem atalho porque é pouco usado, acesse pelo menu.
+* As teclas CTRL, SHIFT e ALT eram usadas de forma livre em algumas ações do jogo: tanto fazia uma ou a outra. Agora foram reajustadas: ALT será usado para o menu da versão PC (segurando). CTRL é para clicar com o mouse nas coisas clicáveis do ônibus (botões, janelas etc), e SHIFT ficou para algumas ações menos utilizadas, incluindo o reposicionamento enquanto estiver na câmera livre (I). Desta forma o ônibus não será jogado de qualquer jeito apenas por apertar CTRL ou ALT.
+* Barra de botões na versão PC, com botões um pouco mais inacessíveis no teclado, como as animações personalizadas que alguns mods suportam, limpador secundário, velocidade do limpador etc.
+* A pasta de screenshots agora fica dentro da pasta de mods, mais acessível para o usuário!
+* Screenshots em 360 graus! Apertando apenas P você tira um screenshot normal, e Alt + P um em 360. Ele pode ser postado em algumas redes sociais que aceitam o formato, como o Facebook.
+* Melhor sensibilidade do controle em altas velocidades, dando um menor giro para as rodas dianteiras. Ative ou desative isso nas opções dos controles (a engrenagem no Android, ou o menu Alt - Controles - Sensibilidade, no PC). Em altas velocidades ficou um pouco melhor para controlar o ônibus, assim ele fará menos curvas porque as rodas vão estercer menos.
+* Nova tela de opções unificada, com rolagem! Ficou mais acessível para usar em resoluções diversas, sem cortar alguns elementos como antes.
+* Correções em algumas telas que não funcionavam na resolução 1024x768.
+* Opção de raios e trovões adicionais, para quando estiver chovendo.
+* Novo movimento da cabeça do motorista, respondendo melhor à aceleração e ao freio.
+* Mais modelos de passageiros e pedestres! Atualmente ativando a opção para os completos serão carregadas até 40 pessoas diferentes, e marcando Extras, até 80! Quarenta homens e quarenta mulheres. Note que ao usar mais variações o jogo precisará de mais memória RAM.
+* Correções no uso dos efeitos Sleek em conjunto com as luzes da noite dinâmicas no modo de gráficos simples.
+* Opção experimental emergencial para GPUs integradas ou antigas: marcando a opção Vertex Lit na tela Extras, o jogo rodará usando uma renderização mais leve. Só que algumas luzes e outras coisas não funcionam com ela, é algo experimental que não sabemos se dará certo. O jogo requer um PC com placa de vídeo boa, não tem jeito, mas esta opção pode dar uma aliviada momentânea.
+* Algumas das novidades ficarão restritas aos colaboradores, afinal eles nos apoiaram para chegarmos até aqui! No Android está sendo oferecida uma campanha promocional para liberar estes recursos mediante a visualização de mais anúncios. Marcando a opção, os novos recursos ficarão liberados, só que o jogo irá passar mais propagandas. Não gostamos de lotar de propagandas mas é necessário um equilíbrio, isso permite que mais gente acesse os recursos de graça. Em condições normais os colaboradores não verão nenhuma dessas propagandas. Este recurso não está disponibilizado no PC, então alguns recursos ficarão restritos mesmo na versão gratuita.
+* Agora é possível personalizar a pasta dos mods, tanto no Android como no PC! Fica melhor para colocar em outro HD ou partição. Altere isso no botão Mods da tela de entrada.
+
+v224:
+
+* Atualização da Unity para a 2018.4.6f1 (corrige vários bugs internos, esperamos que não traga novos!)
+* Espelhos virtuais! Facilitam as manobras, especialmente nos ônibus onde não dá para ver o espelho direito muito bem. Ative individualmente para cada ônibus no botão de ferramentas > espelhos virtuais. É possível ativar só o esquerdo, só o direito ou ambos, e ainda marcar para aparecer só na ré. Importante: os espelhos virtuais só funcionam se os espelhos normais estiverem ativados nas opções do jogo. Ao mostrar os dois na tela ao mesmo tempo pode ficar mais pesado nos aparelhos fracos.
+* Suporte experimental a mods de mapas simples! Este recurso EXPERIMENTAL não foi originalmente projetado para a primeira grande versão, devido sua enorme complexidade. Mas queremos muito fazer, mesmo que seja algo mais simples! Os mapas via mod não suportarão várias coisas durante a fase beta do jogo, é apenas um teste para ver se dá certo. O recurso poderá ser melhorado no futuro ou até mesmo removido do jogo, dependendo do andamento. Encare ele como um bônus extra, totalmente extra, sem nenhuma promessa ou garantia. O que vier é lucro. Todavia faremos o possível para manter e melhorar. Utilize nossos canais oficiais para se informar sobre como usar os mods.
+* Unificação das telas de seleção de recursos nativos e mods (ônibus e mapas).
+
+v219:
+
+* Atualização da Unity para a 2018.4.1f1 (corrige vários bugs internos, esperamos que não traga novos!)
+* Inclusão de um ônibus rodoviário do PBSR! Em troca o MiBRTS foi para ele.
+* Novos efeitos com destaque para as luzes da noite, ao ativar Bloom/Flares/Glares nas opções extras (isso requer placa de vídeo boa/moderna e funciona melhor quando utilizado em conjunto com os efeitos da Unity). O resultado varia de PC para PC, este efeito não é definitivo. Se o bloom ficar exagerado, mantenha ele desativado.
+* Opção de qualidade do tráfego em baixo/médio/alto para os veículos genéricos e os ônibus! O modo médio tem alguns modelos adicionais (motos e ônibus rodoviários, e o Citimax) e o modo alto contém ônibus mais detalhados em caráter experimental. São usados os mesmos modelos dos dirigíveis. Nessa versão ficam o PBC, Mi2U11 e o VIP4. Não será possível personalizar quais ônibus serão usados por conta da complexidade. Este modo alto pode ser bastante pesado por conta dos ônibus com interior. Em futuras versões eles serão editados para ficarem mais adequados para o tráfego. Usar esta opção no modo alto poderá causar quedas de FPS sem solução imediata, esteja avisado. Se seu PC não aguentar isso, use as opções baixo (igual antigamente) ou só o médio.
+* Alguns passageiros acenarão para o ônibus (recurso em teste, não identificam o sentido nem o letreiro).
+* Algumas pessoas estarão sentadas nos bancos nos terminais e no cenário (opção 'pessoas extras').
+* O modo de 'céu simples com imagem' agora conta com a iluminação mais escura, tendo três modos na tela Extras: clara, escura e dinâmica, que fica mais clara quando perto dos postes. Essa iluminação não tem como ser tão boa quanto a do modo completo, mas já dá um efeito interessante sem pesar tanto.
+* Efeitos Sleek (mobile): os efeitos que foram levados pro celular estão também no PC! Não temos certeza se funcionam bem ainda. Pode ser uma opção de efeito mais leve do que os da Unity. Com ele a tela pode ficar mais escura. Se for o caso, use o botão de troca de céu (na tela do F4) para escolher um mais claro, especialmente se a opção 'usar cor do ambiente baseada no céu' estiver marcada nos Extras.
+* A oclusão do ambiente usava um asset de terceiros que tem vários problemas com as versões atuais da Unity. Esse efeito foi removido nesta versão, pois com ele não dava para compilar mais o jogo.
+* Mais anúncios fictícios nos pontos de ônibus e relógios.
+* Algumas novas vozes femininas nas reclamações dos passageiros (ainda há muitas outras na fila de edição que virão gradualmente em atualizações futuras).
+* Oferta para virar "premium" ou "colaborador" com mais consistência em outros momentos do jogo, chamando a atenção e apresentando alguns dados dos bastidores da produção do simulador. O PBS tem e sempre terá sua versão grátis, mas precisamos dos pagamentos de uma parte dos usuários para poder realizá-lo! Mas fique tranquilo, a viagem não será interrompida para mostrar anúncio não! Isto só aparecerá em algumas outras telas do jogo, similar aos jogos de celular.
+
+v206:
+
+* O giro da câmera com o volante ficou opcional, ative nas opções da simulação.
+* Botão para resetar configurações e controles na tela de entrada.
+* Opção de iniciar o ônibus ligado e/ou soltar o freio de mão, ideal para iniciantes. Marque ou desmarque na tela de escolha de um ônibus nativo, depois vale para os mods também.
+* Tentativa de solução da rua preta em GPUs integradas da Intel: crie um arquivo vazio chamado "intelgpu.txt" na pasta Proton Bus Mods dentro da Documentos. Isto deverá ativar o shader padrão para as ruas (em troca elas não ficarão molhadas). Não é certeza que corrige, é uma tentativa. Oficialmente o Proton Bus requer uma GPU dedicada boa e recente para rodar com todo seu potencial.
+* Tentativa de correção no tráfego parado em alguns pontos das linhas do Jd Noronha e Jd Iguatemi, entre outros.
+
+
+v205:
+
+* A câmera do motorista agora gira junto com o volante: novo recurso pode facilitar as manobras. A visão lateral foi melhorada, voltando sozinha. O giro automático pode ser desativado nas opções da simulação.
+* Sistema de mods para os colaboradores, começando com o SU12. Baixe em busmods.com.
+
+v202/203:
+
+* Várias otimizações no sistema de ruas utilizado, removido código de legado das ferramentas de ruas antigas.
+* Melhorias no carregamento de terreno contínuo.
+* Mapas antigos removidos (os que foram integrados ao Aricanduva).
+
+v200:
+
+* Novo terminal Monte da Rocha, numa expansão de cerca de 7km ao sul do mapa com corredor de porta esquerda, indo para o fundão do Jardim das Rosas. Por enquanto só tem a linha 3005, futuramente poderá ter as linhas do corredor que hoje param no Jardim das Rosas.
+* Opção de usar paradas à direita ao longo do corredor, permitindo aproveitar o trecho com os ônibus de portas direitas. Nestes pontos podem aparecer menos passageiros. Esta opção vem primeiro para os colaboradores (ative nas opções da simulação).
+* Inserção de áudio chamando para colaborar ao jogar com certos recursos. Desta forma podemos oferecer o jogo de graça para a maioria das pessoas, equilibrando um pouco as coisas.
+* Bug da Unity: a opção da API gráfica Vulkan não está presente nesta versão para Windows, pode ficar um tempo sem ela, pois deu erro na compilação de alguns shaders. Experimente as outras opções.
+
+v199:
+
+* Mais templates de veículos para os mods: 4x4, 4x2 de tração dianteira, 6x2 sem eixo direcional, 8x2 e suporte a caminhões com cavalos de 2 ou 3 eixos e cargas também de 2 ou 3 eixos. Confira a documentação no site para aprender sobre eles.
+* Correções no sistema de mods de articulados do tipo "puller" (com a tração no segundo eixo da parte da frente).
+
+v195:
+
+* Suporte experimental a ônibus articulados nos mods! Esses mods ficarão sem a animação correta da sanfona (esta animação poderá demorar muito para vir, ou talvez nem conseguiremos fazer devido as limitações técnicas para carregar o modelo do Blender com os bones em runtime).
+* Correções nos sons de freio raspando e bateção da carroceria nos mods (o arquivo elevador.wav tinha um espaço antes do .wav... remova o espaço).
+* Correções no som de catraca e validador dos ônibus nativos.
+
+v192:
+
+* Correções no salvamento de controles e posição da câmera.
+* Correções no sistema de mods caso o volante não tivesse sido configurado (dava um erro no som).
+* Correções na câmera interna que aparecia no meio em alguns casos.
+
+v188:
+
+* Correções nas opções que não salvavam.
+* Nesta versão o arquivo de configurações é o settings.txt na pasta de dados do jogo, facilitando backups/restaurações.
+* Correções na animação das portas dos ônibus antigos.
+* Correções no sistema de espelhos dos mods.
+
+v186:
+
+* Sistema de mods de ônibus na fase 1! Confira detalhes sobre como funciona no blog.protonbus.com.br.
+* VIP IV animado.
+* Correção na iluminação escura (especialmente no Polo Industrial).
+
+v182:
+
+* Todos os novos carros extras da versão PC agora estão animados (rodas e luzes).
+* Últimas otimizações para ficar a par com a versão de Android.
+* Melhorias no sistema de floating origin (pode reduzir os bugs do ônibus caindo no infinito ao reposicionar ou carregar um savegame).
+* Ao selecionar a opção "Lite" o ônibus rodará sem animações extras, para ficar mais leve em PCs fracos.
+* Correção do bug da sombra sempre ativa ao jogar com o ciclo dia/noite para PCs medianos.
+* Corrigido bug no carregamento da 5367-10 TS.
+
+v173/174:
+
+* Opções coloridas ajudam a identificar o que pesa mais, dando uma ideia do que ativar ou desativar dependendo do hardware.
+* Nova otimização de visiblidade dinâmica (marcada por padrão): neste modo a visibilidade será aumentada ou reduzida dinamicamente de acordo com os FPS. Em geral esta opção oferece uma boa relação de qualidade vs desempenho na maioria dos casos. Desative caso queira continuar usando uma distância fixa (não recomendado).
+* Os espelhos renderizam uma distância menor agora, para melhorar o desempenho. Há uma opção para aumentá-la.
+* Opção de otimizar as luzes ao longe (recomendado para a maioria das placas de vídeo de entrada e intermediárias).
+* Opção de carregar o mapa continuamente na tela Extras 2. Desta forma o bug de não carregar cenário não acontece mais, além de permitir voar livremente pelo mapa sem dar com a borda dos terrenos.
+
+v172:
+
+* Rua opcional para quem não consegue fazer o ônibus subir, depois da ponte entre a Vila Sabrina e Iguatemi.
+* Sons alterados novamente no Mond08 (não o lite) e no Mi2U11.
+* O viaduto no metrô Iguatemi foi movido para a camada de detalhes extras, podendo deixar aquela área um pouco mais leve.
+
+v171:
+
+* Mudanças/melhorias nos sons de vários ônibus (mas ainda serão alterados bastante nos próximos meses).
+* Botão para mostrar/ocultar a nova barra de FPS e velocidade nas ferramentas (a tela do F4).
+* Novo modo experimental para os ônibus automáticos (pode ser desativado na tela Extras 2). Ele usa o mesmo sistema do manual, com a suspensão melhor e maior estabilidade em diversas velocidades. A relação de marchas ainda será trabalhada. Isto funciona somente nos ônibus que têm a nova suspensão. IMPORTANTE: os novos automáticos iniciam desligados. Para engatar, coloque no neutro e aperte D (na tela do Android) ou o botão da marcha 1 caso use o teclado (no PC). Nele o M liga o motor, como no manual.
+* Opções novas na tela Extras 2, permitindo desativar o ESC (estabilidade), ASR (anti-spin), TCS (traction control) e ABS (anti-lock braking system). É recomendável deixar estas quatro marcadas, mas eventualmente vale testar caso a caso. Elas se aplicam ao script do manual e dos novos automáticos.
+* Opção para desativar o assistente de controle na Extras 2. Isso pode dar maior liberdade no giro das rodas em alta velocidade, especialmente no controle com um volante real. Vale experimentar e ver como você prefere. Faça o teste com as quatro opções anteriores marcadas, para ter certeza de qual afetou ou não o controle.
+* Várias correções referentes à v170.
+
+
+v170:
+
+* VIP1 1721 para os colaboradores, com duas variações de portas! Um de duas portas na direita e outro com duas de cada lado (padrão São Paulo para corredores). Quem não é colaborador também pode jogar, porém ficará com a mensagem ocasional na tela. Ela poderá aparecer menos se assistir os vídeos até o fim (no Android).
+* MiBRTS agora é grátis (sem a mensagem na tela).
+* Animações no PBC e T14: agora eles funcionam com a chuva e outras coisas mais, incluindo alguns botões e janelas! Receberam também a suspensão melhorada.
+* Melhorias experimentais na estabilidade dos ônibus em alta velocidade (somente os últimos com a nova suspensão: Mi2M, MiBRTS, pbc, t14, vip14p e vip12p)
+* Skins variadas no tráfego no mapa Aricanduva: cada região usará skins próprias, dividindo a cidade com cores. É possível trocar as imagens para as suas favoritas, consulte o tutorial no site. Usar isto gera maior uso de memória RAM, deixe desmarcado caso seu aparelho tenha pouca RAM ou o jogo fique fechando.
+* Savegames: no mapa contínuo (Aricanduva) é possível salvar o ônibus, skin e lugar para retornar depois. Este recurso será aprimorado com o tempo. No PC aperte CTRL + S, no Android clique no ícone de salvamento.
+* Integração dos mapas antigos (MOBILE1_cidade e Terminal Shaze) ao Aricanduva: agora é possível dirigir de um ponto a outro! Com isso chegaram novas linhas aproveitando a extensão, incluindo uma bem extensa do Jd das Rosas ao Metrô Carrãozinho (7700-51). Beta: falta adicionar os pedestres e detalhes menores nas áreas integradas.
+* Novos mapas de corridas para testar controles, velocidade e curvas (menos variações no Android para poupar espaço).
+* Novo sistema de som para os motores que trará mais qualidade assim que conseguirmos as gravações boas (atualmente no pbc, Mi2U11, Mond08 e t14).
+* Trens no cenário: na região da Vila Sabrina há um trem experimental. Isto será aprimorado e levado a outras partes do mapa futuramente. Desative nas opções caso seu aparelho tenha pouca RAM.
+* Nova tela de km/h e fps: muito mais leve para renderizar do que aquela mensagem no meio da tela. No PC, use a tecla de menu de contexto para desativá-la (uma que geralmente fica perto do Ctrl da direita). No Android no momento ela só fica oculta ao esconder os controles.
+* Novos carros do tráfego na versão PC: eles são mais bonitos e detalhados, porém muito mais pesados. Beta: falta animar as rodas e luzes de alguns deles. Estes carros não devem ir pro Android agora por conta do peso.
+* Os passageiros não irão mais bugar no teto ao andar no corredor com um ônibus sem portas esquerdas.
+* Melhorias na frequência da reclamação de baixa velocidade.
+* Melhorias no tráfego em algumas curvas e fusões em Y (na Radial e na rodovia). Beta: ainda há bugs consideráveis nos semáforos.
+* Os passageiros não devem mais cumprimentar o motorista ao embarcar pela esquerda (é bem raro na vida real)
+* Mais sons de freio dos BT5 no VIP4 e T14
+* Pré carregamento dos carros e pedestres na versão PC (para otimizar o tempo de carregamento, visto que os carros novos são mais pesados). Configure na tela Extras. Fazer isso pode usar mais RAM no início, mas alivia o tempo de carregamento do mapa em alguns segundos. Desative se encontrar problemas ou se usar os carros leves.
+* Correção do neutro no controle de câmbio (Logitech), antes não voltava para o neutro ao desengatar a marcha, fazendo o ônibus morrer facilmente (verifique a marcha atual pressionando Z, temporariamente, quando estiver no modo manual).
+* Correção da chuva no vidro do MiBRTS
+* Opção de chuva moderna no PC, permitindo desativá-la em PCs fracos
+* Várias outras correções menores
+
+Bugs mais graves da v170:
+
+* Carros estacionados somem ao reposicionar o ônibus (o pool deles precisa ser refeito do zero)
+* Ao passar de 99999m o floating origin forçado pode fazer o ônibus pular (talvez ficará só para o ônibus parado mesmo). Depois de dirigir por alguns km é bom parar totalmente o ônibus para resolver isso (bug/limitação antiga da Unity com mapas grandes).
+* Em alguns semáforos os veículos não param ou não respeitam as fases de bloqueio
+* O efeito bloom do Beautify pode ficar muito forçado em determinados horários, a calçada fica branca. Se isso incomodar, temporariamente escolha os efeitos da Unity na tela Extras, em vez do Beautify.
+​
+
+v169:
+
+* Melhorias na rodovia: os carros na pista da esquerda estão mais rápidos, e os passageiros não irão reclamar da velocidade alta nela.
+* Novo terminal Vila Sabrina no mapa Aricanduva! Ele tem três linhas que aproveitam bastante o cenário atual do jogo, e uma numa região nova:
+407U-51 - Metrô Carrãozinho
+2027-10 - Jd. Novo Horizonte
+127TRO - Vl. Octavia
+880 - Hospital Aricanduva
+
+v168
+
+* Mais detalhes no trecho da rodovia, e início de umas ruas melhores do que as antigas (gradualmente outras áreas serão substituídas)
+* Correção da perda gradativa de performance: a v164 tinha um bug no mapa Aricanduva que não ia descarregando os cenários que ficaram para trás. Isso fazia perder fps depois de dirigir por uma área extensa, especialmente ao chegar no final de uma linha longa.
+* A versão Windows passa a ser oferecida também com a API gráfica OpenGL, além da Vulkan. Pode ser uma solução para usuários que tiveram problemas com o DX11.
+
+v164
+
+* Muitas correções internas e melhorias nos códigos!
+* Integração do mapa Test Track ao Aricanduva! Pela primeira vez o Proton recebe uma linha intermunicipal pegando uma rodovia (123TRO). Há também uma circular mais curta, 768. Cuidado para não errar o caminho no GPS, não há retornos fáceis, em alguns casos poderá ser necessário reposicionar o ônibus e começar de novo, ou voltar de ré. Sendo um jogo mobile, não podemos detalhar todo o cenário facilmente para possibilitar ilimitados retornos. Futuramente o GPS será melhorado.
+* Controle do ar condicionado no MiBRTS (veja vídeo em breve de como controlá-lo). Basicamente ligue, configure a temperatura alvo e, se quiser, aumente a velocidade do ventilador para acelerar a mudança de temperatura. Ele não funciona no urplus mais, virá para ele só quando ele for animado. Os atalhos ficaram: v junto com 1 para ligar/desligar, v junto com 5 ou 6 para reduzir ou aumentar, e v junto com 9 para alterar a velocidade do ventilador. Segure V e aperte um dos números na fileira de números normais.
+* Ciclistas (para aparecerem é necessário escolher os passageiros detalhados na tela Extras).
+* Placas das linhas! As placas podem ser personalizadas junto com os letreiros, basta nomear placa1.png (proporção recomendável de 450x400) para a placa lateral; placa2.png (proporção 720x200) para a placa dianteira inferior; e placa3.png (proporção 720x200) para a placa dianteira superior. Os tamanhos não precisam ser estes, podem ser maiores ou menores, desde que a proporção seja mantida. Atualmente usamos 512x455 para a lateral e 512x142 para as demais. Imagens muito grandes usam mais RAM no carregamento, podendo deixar o jogo fechando mais frequentemente nos Androids de pouca memória.
+* Cobradora nos ônibus! Ela avisará quando todo mundo descer, podendo então fechar a porta. Gradualmente este recurso será aprimorado com mais coisas.
+* Ao desligar o ônibus o letreiro apaga (futuramente terá um botão dedicado para eles, como na vida real)
+* Chuva muito mais bonita no vidro do TGV (isso é experimental, futuramente será opcional; pode ser pesado e não funciona no Android justamente por conta do peso; no MiBRTS virá futuramente, os vidros dele precisam ser refeitos para permitir este efeito).
+
+v162
+
+* Versão compilada com a Unity 2018.1. Foi removido o suporte ao DirectX 9 e Windows XP na base da engine. Os usuários do XP ou de placas de vídeo mais velhas precisarão fazer upgrade, ou continuar nas versões antigas do jogo. É necessário uma placa de vídeo com suporte ao DirectX 11.
+* Várias pequenas correções dos bugs das v160/161.
+
+v160
+
+* Novo ônibus para os colaboradores! MiBRTS. Quem não é colaborador pode jogar com ele também, porém ficará uma mensagem na tela. Ela será removida em alguns meses ou quando chegar um novo modelo.
+* Opção do anti-aliasing ao usar os efeitos ou gráficos extras: na tela Extras é possível optar entre alguns modos de anti-serrilhado, visando tirar o borrão das versões anteriores e/ou melhorar o desempenho.
+
+v157
+
+* O TGV agora é grátis para todos! Logo logo chegará um novo ônibus para os colaboradores.
+
+* Correções nos efeitos: escolha entre dois tipos de efeitos (PostProcessing da Unity e Beautify, um script pago extra). No console você pode usar e0, e1 ou e2 para os efeitos normais da Unity, e eb para ativar/desativar o Beautify.
+
+* Correção na grade do motor do Mi2M.
+
+v156
+
+* Novo ônibus leve! Mi2M, o Mi2 de 3 portas na direita. Este modelo usa menos texturas e traz cores lisas no interior, tendo só a versão lite por enquanto - a detalhada ficará para o futuro. Ele tem a suspensão bem melhor configurada. Gradualmente esta suspensão será levada aos demais modelos.
+* Novo efeito gráfico com cores menos exageradas, mais naturais, e bloom leve (se não funcionar na sua GPU, por favor, desative Efeitos nas configurações gráficas temporariamente). No modo de gráficos extras para PCs gamers o anti-serrilhado só funciona ao usar os efeitos.
+* Aviso na primeira inicialização sobre o estado beta do jogo e o compromisso futuro (ideais gerais bem resumidos do projeto).
+* Algumas correções nos mapas Polo Industrial e Aricanduva.
+
+
+v152
+
+* Novo mapa! O Polo Industrial traz linhas com um estilo diferente. Este foi um mapa adquirido graças aos colaboradores do jogo, para irmos curtindo enquanto os mapas originais não possuem tantas linhas. Há seis linhas, sendo quatro com ida e volta e duas circulares. Morros, curvas... Um ambiente mais tranquilo e favorável para dar uma acelerada!
+* Som de raspada da sanfona (será útil no futuro, quando tivermos muitas valetas...). Ele pode ser curtido nas lombadas e em áreas do mapa novo.
+* Experimento: APIs gráficas opcionais no Windows. Por meio do parâmetro ou arquivo .bat você pode experimentar rodar o jogo usando outras APIs gráficas, caso sejam suportadas por sua placa de vídeo. As opções são DirectX 11 e Vulkan. DirectX 9 está presente nesta versão, mas provavelmente o suporte será removido numa atualização futura (as versões novas da Unity não suportam mais DirectX 9, por ser muito antigo). Isto é experimental e pode não funcionar bem para todos.
+
+v142
+
+* Correção do WASD no controle pelo teclado. Agora as teclas são definidas na aba Input na entrada. Pode usar qualquer tecla ou botão configurado para acelerar, frear ou ir para os lados.
+* Flat clouds: se usar o modo dia/noite, experimente apertar U e escolher Flat clouds em vez de Volume. Ela é bem mais leve, podendo chegar ao dobro de FPS em alguns casos. Esta configuração não é salva ainda, tem que escolher toda vez. Futuramente será padrão.
+
+v141
+
+* Novos gráficos para PC! (serão experimentais e mudarão ao longo do tempo; os efeitos podem ser alterados pelo console)
+* Controle experimental de volante genérico, sem depender dos códigos exclusivos do G27/29/920! Configure na aba Input na primeira tela do jogo, escolhendo a ação e pisando no pedal (steering = volante, gire..., throttle = acelerador, brake = freio, clutch = embreagem). Depois dentro do jogo aperte Alt e escolha Controles - Volante Genérico.
+* Muitas otimizações de desempenho! LOD para os pedestres e passageiros (ao longe é usado um modelo mais simples), otimizações no PBC do tráfego e nos estacionados, otimizações em propriedades dos modelos 3D dos ônibus.
+* Correções nos pedestres em vários lugares do mapa Aricanduva.
+* Nova opção "Otimizador XFrame" na seção de gráficos: ele renderiza uma imagem menor do jogo, aplica anti-serrilhado e escala a imagem para a tela completa. Isto pode fazer ganhar desempenho em algumas placas de vídeo, porém a imagem pode ficar um pouco borrada dependendo da resolução do monitor. É uma opção mais destinada aos celulares, mas funciona no PC também. Esta opção pode bugar o clique nos botões do ônibus. Não marque se você gosta de clicar nos botões.
+
+v137
+
+* Correção do bloom ao olhar para o sol (bug da v136), usando efeitos com o modo de gráficos extras.
+
+v136
+
+* TGV para os colaboradores L3, com muitas animações! Ao longo dos próximos meses todos os ônibus terão a maioria das animações. Em algumas semanas ele será grátis.
+* Mapa Longeee (mapa temporário enquanto há poucas rotas). Ele será atualizado em breve com mais detalhes.
+* Volta da chuva! No modo Ultra há asfalto com efeito molhado dependendo da chuva (futuramente poderá ser opcional). Isso só tem no mapa Aricanduva por enquanto.
+* Limpadores: o atalho padrão do limpador é Q, só funciona no TGV por enquanto.
+* Câmera dos botões: aperte C e clique neles (apenas no TGV por enquanto). Bug: alguns botões só pegam com o ônibus ligado.
+* Na câmera normal, segure Ctrl, Shift ou Alt para clicar nos botões (o clique no meio da tela serve para o movimento, isto mudará no futuro).
+* Scroll do mouse dá zoom também na câmera interna.
+* Tecla de espaço agora reseta a câmera interna para a posição salva/padrão (mais prático).
+* Para ocultar o GPS, aperte Ctrl + Espaço (bug: aperte duas vezes).
+* Animações no TGV (segure Ctrl e clique): freio de mão, botões das portas, tampões no teto, janela do motorista, janelas dos passageiros e parasol, entre outros botões.
+* Pedestres no mapa Aricanduva! Este é um recurso experimental que ainda precisará de muitos meses de trabalho. Coloque um número razoável, mas não muito alto, nas opções de pedestres. Se lotar de pedestres (mais de 60, 80, 100...) vai ficar difícil passar nas travessias, pois eles não param e isso não será feito tão cedo. Para aparecerem é necessário marcar os detalhes extras em alguns mapas, na tela Extras.
+* Atualização do Enviro, sistema gráfico do jogo no modo ciclo dia/noite, com melhorias nas nuvens e chuva, dando um gráfico mais bonito.
+* Console: apertando Pause Break aparece um campo de texto na tela, onde o jogo pode receber alguns comandos "secretos" para facilitar testes internos. Atualmente e0 desativa os efeitos, e1 aplica os efeitos padrões e e2 aplica um outro efeito gráfico. Futuramente poderá ter mais. Digite e dê enter para ativar, ou Esc para sair. Enquanto o console estiver na tela o ônibus não responde aos comandos (visto que as teclas serão usadas para digitar). Prefira chamá-lo com o ônibus parado :p Bug temporário: na câmera livre o Pause Break reposiciona o ônibus, isto será resolvido futuramente. Prefira usar na interna.

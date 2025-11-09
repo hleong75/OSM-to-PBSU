@@ -1,0 +1,3 @@
+v264
+
+* A luz dos botões de câmbio automático N/D/R não acendem nesta versão. Sem previsão de volta por enquanto.

@@ -1,0 +1,8 @@
+Documentação inicial sobre os mods de mapas:
+http://blog.protonbus.com.br/2019/09/experimental-mods-de-mapas-no-pbs.html
+
+_gencol_	Peças com colisor (chão, muro etc)
+_emissive_	Peças com textura sempre acesa (propagandas)
+_transparent_	Peças com textura transparente (vidros)
+
+Mais comandos serão adicionados ao longo do tempo. Por favor, confira o link relativo ao sistema de mods.

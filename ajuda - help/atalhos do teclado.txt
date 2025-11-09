@@ -1,0 +1,109 @@
+Atalhos sujeitos a alterações, mas a ideia é essa.
+
+Dica: os atalhos funcionam na maioria dos Androids caso você use um teclado conectado! Ou se usar o Android direto no PC ou notebook. Não sei se pega nos emuladores. Para jogar controlando o ônibus pelo teclado, escolha Teclado na lista de controles, caso contrário não pegará.
+
+---
+
+Para sair com o ônibus, ligue a elétrica apertando E e depois o motor com M (caso não tenha marcado para iniciar ligado). Solte o freio de mão no ponto final (.), aperte N e depois a marcha desejada (1, 2, 3 etc na fileira de números). E então acelere. Por padrão o ônibus não sai com a porta aberta. Alt abre o menu (segurando), por onde você pode selecionar o controle, resetar a posição do ônibus ou alterar outras coisas.
+---
+
+Rodinha do mouse = zoom na câmera
+
+Segurar Alt = Menu da versão PC
+Segurar Ctrl = Permite clicar com o mouse nos botões animados, portinholas, janelas etc (não funciona junto com o XFrame)
+Segurar Shift + clique do mouse: reposicionar ônibus quando estiver na câmera livre
+
+Esc = Pause
+F1 = Câmeras
+F2 = Olhar para a esquerda (cam interna)
+F3 = Olhar para a direita (cam interna)
+F4 = Extras, controles, etc
+C = Câmeras dos botões no painel, passando uma por uma (para clicar sem precisar alpertar Ctrl / Shift / Alt). F1 ou clique com o direito para a do motorista normal.
+Ctrl/Shift/Alt + 1/2/3/etc na fileira de números: câmeras dos botões, uma para cada posição
+
+Os atalhos das portas mudaram! Com o suporte a mais portas na fase 2, ficaram de F5 a F10 para as seis portas. Se o ônibus tiver portas dos dois lados, aperte e solte F11 antes de abrir o botão da porta, para alternar o lado. Aperte F11 novamente só quando for trocar de lado. Os atalhos podem ser trocados na aba Input. Note que em alguns noteboks é necessário apertar Fn junto com as teclas F..., pois elas são associadas a outros comandos em alguns aparelhos.
+Numpad / * e - podem ser usados para as primeiras 3 portas.
+K = Abrir/fechar todas as portas (respeitando o lado escolhido com F11)
+
+Tecla do menu de contexto (geralmente fica entre Control e Alt da direita): mostrar FPS e velocidade
+Botão direito do mouse = Centralizar câmera interna (depois de zoom ou giro)
+Ctrl/Shift/Alt + Espaço = Ocultar controles como o GPS (toque no meio da tela para funcionar, caso algum controle tenha sido tocado, senão ele é ativado)
+Backspace = Ativar/desativar seleção de controle
+Home/End = trocar letreiro (avança/retrocede)
+E = Ligar/Desligar ônibus
+L = Farol baixo
+F = Farol alto
+N = Neutro
+R = Ré
+M = Marcha automática
+WASD ou setas: controle do ônibus
+. = freio de estacionamento ou freio de mão (tecla do ponto final)
+Espaço = Freio de mão ou tradicional handbrake (enquanto estiver segurando... útil para drift em carros em versões futuras). Caso jogue com um volante ou joystick não funcionará o espaço do teclado. Aí é necessário configurar um eixo/axis no joystick para isso nas configurações de controles. 
+Num 7 = Seta esquerda
+Num 9 = Seta direita
+Num , = desligar setas
+B = pisca alerta
+H = buzina
+7, 8 e 9 = luzes internas
+Y = Aumentar nível do retarder ou ativá-lo (se suportado pelo ônibus)
+T = Diminuir nível do retarder ou desativá-lo
+J = Retarder automático ao frear
+X = Cruise control (controle de cruzeiro ou popularmente "piloto automático", configura na velocidade atual)
+Z = Limitador de velocidade (limita à velocidade atual)
+G = Conectar/desconectar carga (apenas em caminhões compatíveis)
+= (tecla igual) Rádio (na versão PC é possível personalizar as músicas da rádio colocando elas na pasta radio1, dentro da pasta de mods)
+
+Controle por teclado numérico (caso escolhido): Num 4 = esquerda, Num 6 = direita, Num 2 = freio, Num 8 = acelerador, Num + = pisar fundo, Num 5 = centralizar volante
+Controle por mouse = mover para cima/baixo acelera e freia; mover para os lados controla o volante.
+Controle por teclado + mouse: W/S ou setas para cima/baixo acelera e freia, e o mouse move para os lados.
+P = Tira screenshot (agora ficam salvos na pasta Documentos\Proton Bus Mods\screenshots)
+Alt ou Ctrl ou Shift + P = Tira screenshot em 360 graus para postar no Facebook e em apps que aceitam isso (ficam na pasta Documentos\Proton Bus Mods\screenshots360)
+U = Controle do tempo e clima (somente com recursos Experimentais ligados)
+V = ar condicionado (segure V e aperte 1 para ligar/desligar, 5 ou 6 para reduzir ou aumentar o alvo, e 9 para controlar o ventilador)
+Q = Limpador principal (acesse os demais pelo menu do Alt)
+I = câmera livre (somente no PC). Use WASD + o mouse para se mover; shift corre; ctrl anda mais devagar; clique com o botão direito em qualquer lugar da tela = soltar a câmera do ônibus: dá para fazer manobras e se assistir! É recomendável usar o freio de mão para o ônibus não se mover indevidamente, já que ele também é movido com WASD no controle por teclado. Na câmera livre, se segurar Shift e clicar com o botão normal do mouse o ônibus é reposicionado onde a câmera estiver apontando. Este recurso não está pronto mas quebra o galho.
+
+CAPS LOCK: Pausa do tempo em movimento, para poder tirar prints. Dá para usar a câmera livre nesse modo.
+
+MODO MANUAL:
+1 2 3 4 5 6 = marchas
+N = neutro
+R = ré
+Page Up / Page Down = aumentar/reduzir marcha
+Tab = Embreagem
+M = ligar motor (segure)
+Ctrl + M = desligar motor (segure)
+Espaço = freio extra
+\ = Mensagens de status do script de controle
+
+==== COMO ALTERAR OS ATALHOS ====
+
+A partir da versão 104, no PC você pode alterar os atalhos na aba Input, na primeira tela.
+A partir da versão 300, no PC tem o menu de configuração de controles dentro do jogo: segure Alt e vá ao menu Controles... Remapear, algo assim.
+
+Este vídeo antigo é para as versões antes da 300:
+
+Veja em vídeo, serve também para configurar o volante Logitech e os botões:
+https://www.youtube.com/watch?v=ss7lR8yz654
+
+Cada entrada pode ter dois atalhos: o primário (primary) e o secundário (secondary). Ambos funcionam para o mesmo comando, facilitando o acesso dependendo da mão mais próxima ou da vontade. Você pode usar um para o teclado e outro para o joystick, por exemplo.
+
+Role a tela até achar o item desejado e dê um duplo clique na área referente ao atalho primário ou secundário. A seguir, aperte o botão desejado para a função. Cuidado que não tem um desfazer: coloque o atalho original de volta, se for o caso.
+
+Cuidado para não atribuir o mesmo atalho para duas funções distintas, senão ambas as ações serão feitas ao mesmo tempo no jogo (como por exemplo, abrir uma porta e mudar a câmera).
+
+Se precisar resetar, delete as preferências do jogo referentes ao Input no seu perfil de usuário.
+
+No Windows fica no registro:
+
+HKEY_CURRENT_USER\Software\Via Mep\Proton Bus Simulator
+
+No Linux, pode ser neste lugar:
+
+~/.config/unity3d/Via Mep/Proton Bus Simulator
+
+E no Mac fica no arquivo:
+
+~/Library/Preferences/unity.Via Mep.Proton Bus Simulator.plist
+
+Se você deletar todo o arquivo de preferências ou entradas do registro, você resetará todas as opções do game.

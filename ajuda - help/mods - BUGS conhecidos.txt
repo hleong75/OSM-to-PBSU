@@ -1,0 +1,23 @@
+Apertar CTRL + Enter ou CTRL + Shift + Enter (recarregando texturas também) recarrega o ônibus, sem precisar recarregar o mapa. Fica muito mais rápido para testar a maioria das alterações. Porém, depois de algumas vezes pode ser necessário reiniciar o jogo, ou voltar pra entrada (apertando Esc). Essa função dá spawn no mesmo lugar iniciado. Se tiver ido para outro ponto do mapa e apertar isso, o ônibus vai cair no limbo, nesse caso volte para a Home.
+
+---
+
+Dos sons dos limpadores só está funcionando um, mas recomendamos configurar com os dois. Um dia o recurso será corrigido. Um toca quando ele sai do descanso, e o outro toca quando ele atinge o limite, pronto para voltar. Ambos são opcionais, há limpadores que podem fluir bem com um som só.
+
+---
+
+Algumas funções aceitam números sequenciais, como por exemplo, luzes de textura do tipo [doorlight_tex_1] e [doorlight_tex_2] (útil para ônibus antigos que tinham 2 luzes no degrau, em vez de uma em cima). Ou então a maioria das luzes externas, como [brake_1], [brake_2] [brake_3] etc, adicionando mais para outros pontos.
+
+Algumas luzes, no entanto, suportam apenas uma peça:
+[emergency_lights_1] e [stop_request_1], por exemplo. Isso poderá (ou não) ser alterado. A maioria das luzes de textura reconhecem os comandos _2, _3 etc. Estas que reconhecem um só são projetadas mais para a área do painel mesmo, então não faz tanto sentido ter várias.
+
+
+---
+
+MUITO IMPORTANTE:
+
+Alguns comandos de reflexos ou materiais não podem ser usados em conjunto com luzes que acendem, pois poderão ser substituídos por elas ou vice-versa. São destinados a peças estáticas. Vou fazer os tutorais em vídeo deles assim que der.
+
+OUTRA COISA MUITO ESSENCIAL:
+
+Testem no modo ultra e também no modo simples, aquele menu de opções baixas que tem no botão da tela inicial do jogo, no topo à esquerda. A chuva no modo simples usa a textura definida no material, porque a outra é muito pesada pro celular. Tem que testar as luzes das portas no modo ultra também, pois se estiverem fora do lugar, vai ficar bem feio. São vários comandos novos nos arquivos txt, se usar a base de um ônibus para fazer outro, tem que se atentar a esses detalhes. Algumas animações podem ser puladas, não precisa animar tudo (se quiser deixar sem chuva, por exemplo, pode).

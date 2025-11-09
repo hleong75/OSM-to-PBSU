@@ -1,0 +1,108 @@
+All these keyboard shortucts are subject to change.
+
+Tip: most shortcuts also work on Android, if you have a keyboard! Or when using Android installed directly on PC or notebook. I don't know if it will work with emulators. To control the bus using keyboard input, please select Keyboard at the controls list, otherwise it will won't move (default is tilt).
+
+----
+
+To drive, turn on electric on E and engine on M (if you have unchecked to start them automatically). Release the parking brake at full stop key (.), press N and later the gear (1, 2, 3, on the main keyboard). So press the gas button. By default buses cannot move if there is an open door. Alt (holding) goes to the menu, where you may select control, reset bus position or change other things.
+
+----
+
+Scroll wheel = internal camera zoom
+
+Holding Alt = Menu on the PC version
+Holding Ctrl = Allows clicking on animated objects of the bus, like buttons, windows etc (it does not work with XFrame)
+Holding Shift + mouse click: place the bus anywhere while on the free camera
+
+Esc = Pause
+F1 = Cameras
+F2 = Look to left (internal cam)
+F3 = Look to right (internal cam)
+F4 = Extras, some controls etc
+C = Buttons camera cycle, one by one (to click without pressing Ctrl / Shift / Alt). F1 or Mouse Right Click goes back to normal view.
+Ctrl/Shift/Alt + 1/2/3/etc (not on Keypad): buttons cameras, one for each position
+
+Doors shortcuts changed! Since the project supports more doors now, F5 to F10 will open the first six doors. Press and release F11 before to switch side, if the bus has doors at both sides. Press F11 again only when switching side. You may change shortcuts at the Input screen. Please note that in some notebooks you must hold Fn key with F..., since they are used to control other functions.
+Numpad / * and - may be used for the first 3 doors.
+K = Open/close all doors (select the side first with F11)
+
+Context menu key (generally it is between right Control and Alt): show FPS and speed
+Mouse Right Click = Reset internal camera position (after looking to mirrors...)
+Ctrl/Shift/Alt + Space = Hide controls (touch/click anywhere on the screen, if you have selected another menu item before... Because space will activate it again... This will change later)
+Backspace = Enable/disable the controls selection screen
+Home/End = change destination display (up/down)
+E = Turn the bus on/off
+L = Low beams
+F = High beams
+N = Neutral
+R = Reverse
+M = Automatic Drive
+WASD or arrows: control the bus
+. = Handbrake or parking brake (the period key)
+Space = Handbrake (while holding... useful for drifting with cars in future versions). While playing with a steering wheel or joystick the space key on keyboard will not work. You must set up an axis on the joystick at controls settings.
+Num 7 = Left blinker
+Num 9 = Right blinker
+Num , = Turn off blinkers
+B = Emergency blinkers
+H = horn
+7, 8 e 9 = internal lights
+Y = Up retarder level or enable it (if supported by bus)
+T = Down retarder level or disable it
+J = Automatic retarder when braking
+X = Cruise control (set at current speed)
+Z = Speed limit (set at current speed)
+G = Attach/Detach trailer (on compatible trucks only)
+= (equal key) Radio (on the PC version it is possible customizing the radio by placing your music inside radio1 folder at the mods directory)
+
+Numeric Keypad control: Num 4 = left, Num 6 = right, Num 2 = brake, Num 8 = accel, Num + = accel more, Num 5 = center steering wheel
+Mouse control = moving top/bottom accelerates or brakes; moving to left/right steers.
+Keyboard + mouse control: W/S or up/down arrows accelerates or brakes, and mouse steers.
+P = Take screenshot (it will be saved at Documents\Proton Bus Mods\screnshots)
+Alt or Ctrl or Shift + P = Take screenshot in 360 degree (useful for Facebook, they will be saved at Documents\Proton Bus Mods\screenshots360)
+U = Time and climate settings (only with Experimental features active)
+V = air conditioning (press and hold V while type 1 to turn it on/off, 5 or 6 to up/down desired temperature, and 9 to control vent speed).
+Q = Main wiper (access more options on the Alt menu).
+I = free camera (PC only). Use WASD + mouse to move; shift to run; ctrl to go slowly; right click anywhere on the screen to release the camera from bus: you may drive and watch yourself as a pedestrian! It is recommended using parking brake, so bus won't move while pressing WASD when using keyboard control. On the free camera, if you hold shift and click with the first mouse button, the bus will be positioned anywhere where the screen is pointing at. This feature is not complete but it is usable.
+
+MANUAL GEARBOX:
+1 2 3 4 5 6 = gears
+N = neutral
+R = reverse
+Page Up / Page Down = gear up/down
+Tab ou Ctrl = clutch
+M = turn engine on (hold)
+Ctrl + M = turn engine off (hold)
+Space = extra brake
+\ = Status messages about the vehicle system
+
+==== HOW TO CHANGE SHORTCUTS ====
+
+From version 104+, you may change your controls in the Input tab at the first screen.
+From version 300+, you may change controls inside the game: hold Alt and go to Controls... Remap, something like that.
+
+This is an old video for versions before 300:
+
+Watch this video, it may be useful to set up Logitech steering wheels too: (sorry but it is in Portuguese)
+https://www.youtube.com/watch?v=ss7lR8yz654
+
+Each entry may have two shortcuts: primary and secondary. Both will work for the same command, so you can use the easiest or closest to your hand at a given time. You may use one for keyboard and another for a joystick, for example.
+
+Scroll that screen to find the desired item and double-click it in the area corresponding to primary or secondary key. Then press the desired key. Warning: there is no undo: if you need, enter the old key again to restore it.
+
+Be careful to not reuse the same key for two different functions. If you allow this, both things will occur at the same time (for example, opening a door and changing the camera).
+
+If you need to reset defaults, you may remove the preferences related to Input in your user's profile.
+
+On Windows it will be in registry:
+
+HKEY_CURRENT_USER\Software\Via Mep\Proton Bus Simulator
+
+On Linux, it may be in this place:
+
+~/.config/unity3d/Via Mep/Proton Bus Simulator
+
+And on Mac:
+
+~/Library/Preferences/unity.Via Mep.Proton Bus Simulator.plist
+
+If you delete the entire preferences file or registry, you'll reset all settings in game.
