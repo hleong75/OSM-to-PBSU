@@ -320,8 +320,20 @@ This route was automatically generated from OpenStreetMap data using osm_to_pbsu
         
         print(f"\n✓ Conversion complete!")
         print(f"Output directory: {base_dir}")
-        print(f"\nIMPORTANT: You still need to create the 3D models in Blender 2.79")
-        print(f"See {readme_file} for detailed instructions")
+        print(f"\n{'='*60}")
+        print("Next Steps:")
+        print(f"{'='*60}")
+        print("\n1. Run post-conversion automation:")
+        print(f"   python automate_post_conversion.py {base_dir}")
+        print("\n2. (OPTIONAL) Run AI-powered automation for complete generation:")
+        print(f"   python ai_automation.py {base_dir} {route_name}")
+        print("\n   This will automatically:")
+        print("   - Generate 3D models using Blender")
+        print("   - Create procedural textures")
+        print("   - Generate destination displays")
+        print("   - Create preview image")
+        print(f"\n3. OR manually create 3D models in Blender 2.79")
+        print(f"   See {readme_file} for detailed instructions")
 
 
 def main():
@@ -354,6 +366,10 @@ Note: Input file should be OSM JSON format (from Overpass API or exported from J
                        help='Origin latitude (default: first bus stop)')
     parser.add_argument('--origin-lon', type=float,
                        help='Origin longitude (default: first bus stop)')
+    parser.add_argument('--run-ai-automation', action='store_true',
+                       help='Automatically run AI automation after conversion')
+    parser.add_argument('--blender-path', default='blender',
+                       help='Path to Blender executable for AI automation')
     
     args = parser.parse_args()
     
@@ -371,6 +387,37 @@ Note: Input file should be OSM JSON format (from Overpass API or exported from J
             args.origin_lat,
             args.origin_lon
         )
+        
+        # Run AI automation if requested
+        if args.run_ai_automation:
+            print("\n" + "="*60)
+            print("Running AI Automation...")
+            print("="*60 + "\n")
+            
+            map_dir = os.path.join(args.output, args.map_name)
+            
+            # Import and run AI automation
+            try:
+                # First run post-conversion setup
+                from automate_post_conversion import PostConversionAutomator
+                post_automator = PostConversionAutomator(map_dir)
+                post_automator.run_all(enable_ai=False)
+                
+                # Then run AI automation
+                from ai_automation import AIAutomation
+                ai_automator = AIAutomation(map_dir, args.blender_path)
+                ai_automator.run_full_automation(args.route_name)
+                
+            except ImportError as e:
+                print(f"Error: Could not import automation modules: {e}")
+                print("Make sure ai_automation.py and automate_post_conversion.py are in the same directory")
+            except Exception as e:
+                print(f"Error during AI automation: {e}")
+                import traceback
+                traceback.print_exc()
+                print("\nYou can manually run automation later with:")
+                print(f"  python ai_automation.py {map_dir} {args.route_name}")
+        
     except Exception as e:
         print(f"Error during conversion: {e}")
         import traceback

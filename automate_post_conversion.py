@@ -782,7 +782,7 @@ This checklist guides you through all steps needed after running the OSM to PBSU
         
         print(f"  Created: POST_CONVERSION_CHECKLIST.md")
     
-    def run_all(self) -> None:
+    def run_all(self, enable_ai: bool = False, route_name: str = None) -> None:
         """Run all automation tasks"""
         print(f"\n{'='*60}")
         print(f"Post-Conversion Automation for: {self.map_name}")
@@ -811,12 +811,29 @@ This checklist guides you through all steps needed after running the OSM to PBSU
         print("✓ Post-conversion automation complete!")
         print(f"{'='*60}")
         print()
-        print("Next steps:")
-        print(f"1. Read: {os.path.join(self.map_dir, 'POST_CONVERSION_CHECKLIST.md')}")
-        print(f"2. Open Blender 2.79 and use scripts in: {os.path.join(self.map_dir, 'blender_scripts/')}")
-        print(f"3. Replace placeholder textures in: {os.path.join(self.map_dir, 'textures/')}")
-        print(f"4. Customize destination displays in: {os.path.join(self.map_dir, 'dest/')}")
-        print(f"5. Replace preview.png with actual map preview")
+        
+        if enable_ai and route_name:
+            print("🤖 AI Automation is available!")
+            print()
+            print("To run complete AI automation (3D models, textures, etc.):")
+            print(f"  python ai_automation.py {self.map_dir} {route_name}")
+            print()
+            print("This will:")
+            print("  - Automatically generate 3D models in Blender")
+            print("  - Create procedural textures")
+            print("  - Generate destination displays")
+            print("  - Create preview image")
+            print()
+        else:
+            print("Next steps:")
+            print(f"1. Read: {os.path.join(self.map_dir, 'POST_CONVERSION_CHECKLIST.md')}")
+            print(f"2. Open Blender 2.79 and use scripts in: {os.path.join(self.map_dir, 'blender_scripts/')}")
+            print(f"3. Replace placeholder textures in: {os.path.join(self.map_dir, 'textures/')}")
+            print(f"4. Customize destination displays in: {os.path.join(self.map_dir, 'dest/')}")
+            print(f"5. Replace preview.png with actual map preview")
+            print()
+            print("💡 TIP: For fully automated generation, use:")
+            print(f"   python ai_automation.py {self.map_dir} <route_name>")
         print()
 
 
@@ -844,6 +861,10 @@ This script automates the tedious post-conversion tasks:
     
     parser.add_argument('map_dir', 
                        help='Path to map directory (e.g., output/My_City)')
+    parser.add_argument('--enable-ai', action='store_true',
+                       help='Show AI automation option in output')
+    parser.add_argument('--route-name',
+                       help='Route name for AI automation suggestion')
     
     args = parser.parse_args()
     
@@ -853,10 +874,19 @@ This script automates the tedious post-conversion tasks:
         print("Make sure you've run osm_to_pbsu.py first to create the map structure.")
         sys.exit(1)
     
+    # Auto-detect route name if not provided
+    route_name = args.route_name
+    if not route_name:
+        tiles_dir = os.path.join(args.map_dir, 'tiles')
+        if os.path.exists(tiles_dir):
+            routes = [d for d in os.listdir(tiles_dir) if os.path.isdir(os.path.join(tiles_dir, d))]
+            if routes:
+                route_name = routes[0]
+    
     automator = PostConversionAutomator(args.map_dir)
     
     try:
-        automator.run_all()
+        automator.run_all(enable_ai=args.enable_ai or True, route_name=route_name)
     except Exception as e:
         print(f"Error during automation: {e}")
         import traceback

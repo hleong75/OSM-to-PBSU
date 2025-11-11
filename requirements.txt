@@ -1,0 +1,7 @@
+# Optional dependencies for OSM to PBSU Converter
+
+# For better texture quality in AI automation
+Pillow>=8.0.0
+
+# For fetching OSM data via Overpass API
+requests>=2.25.0
