@@ -2,25 +2,36 @@
 
 ## Date: 2025-11-11 (Latest Update)
 
-### Fix: Blender 3DS Export Error
+### Fix: Blender 3DS and OBJ Export Errors (Enhanced)
 
-**Issue**: Blender's `bpy.ops.export_scene.autodesk_3ds()` operator was not available, causing the 3D model generation to fail with:
+**Issue**: Blender's export operators were not available, causing 3D model generation to fail with:
 ```
 AttributeError: Calling operator "bpy.ops.export_scene.autodesk_3ds" error, could not be found
+AttributeError: Calling operator "bpy.ops.export_scene.obj" error, could not be found
 ```
 
+**Root Cause**: Export addons were not properly enabled before attempting to export. The original fix only enabled the 3DS addon but didn't properly enable the OBJ fallback, and didn't check if addons were already enabled.
+
 **Solution**:
-- Added automatic enablement of the `io_scene_3ds` addon before export
-- Added fallback to OBJ format export if 3DS export fails
-- Improved error handling and user messaging
+- Enable multiple export addons (3DS, OBJ, FBX, glTF) at startup
+- Check if addons are already enabled before attempting to enable them
+- Implement robust fallback chain with 4 export formats
+- Provide clear error messages and conversion instructions
+- Use dynamic operator access for better error handling
 
 **Changes**:
-- Modified `ai_automation.py` to enable the 3DS addon using `addon_utils.enable()`
-- Wrapped 3DS export in try-except block for graceful failure handling
-- Added OBJ export as fallback with clear instructions for manual conversion
-- Added success tracking to ensure export completion
+- Modified `ai_automation.py` to enable 4 export addons: `io_scene_3ds`, `io_scene_obj`, `io_scene_fbx`, `io_scene_gltf2`
+- Added `addon_utils.check()` to verify addon state before enabling
+- Created an export attempts list that tries formats in order: 3DS → OBJ → FBX → glTF
+- Added dynamic operator access using `getattr()` to handle different Blender versions
+- Improved error messages to inform users which format was used and if conversion is needed
+- Added comprehensive logging of addon status and export attempts
 
-**Impact**: Users with newer Blender versions or missing 3DS addon can now successfully generate 3D models, either in 3DS format (preferred) or OBJ format (fallback).
+**Impact**: 
+- Users can now successfully export 3D models even if preferred formats are unavailable
+- The script automatically finds and uses any available export format
+- Clear instructions are provided if format conversion is needed
+- More robust against different Blender versions and configurations
 
 ---
 
