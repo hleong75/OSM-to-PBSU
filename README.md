@@ -33,7 +33,7 @@ This program converts OpenStreetMap (OSM) data containing bus routes and bus sto
 - Python 3.6 or higher
 - No external dependencies for basic conversion
 - **For AI Automation (optional):**
-  - Blender 2.79 (for automatic 3D model generation)
+  - Blender 2.8 or higher (for automatic 3D model generation)
   - PIL/Pillow (optional, for better texture quality): `pip install Pillow`
   - Google Street View API key (optional, for realistic textures)
 

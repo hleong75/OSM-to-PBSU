@@ -55,7 +55,7 @@ class AIAutomation:
         """Generate comprehensive Blender automation script"""
         script = '''"""
 Comprehensive Blender Automation Script for PBSU Map Generation
-This script runs in Blender 2.79 and automatically creates:
+This script runs in Blender 2.8+ and automatically creates:
 - Road meshes from entrypoints
 - Bus stop objects with triggers and spawn points
 - Realistic buildings with actual heights from OSM data
@@ -166,11 +166,11 @@ def create_road_mesh(points, road_width=6.0, name="Road"):
     mesh.update()
     
     obj = bpy.data.objects.new(name, mesh)
-    bpy.context.scene.objects.link(obj)
+    bpy.context.collection.objects.link(obj)
     
     # Add UV mapping
-    bpy.context.scene.objects.active = obj
-    obj.select = True
+    bpy.context.view_layer.objects.active = obj
+    obj.select_set(True)
     bpy.ops.object.mode_set(mode='EDIT')
     bpy.ops.mesh.select_all(action='SELECT')
     bpy.ops.uv.smart_project(angle_limit=66.0, island_margin=0.02)
@@ -227,12 +227,12 @@ def create_sidewalk(points, road_width=6.0, sidewalk_width=2.0, name="Sidewalk")
             mesh.update()
             
             obj = bpy.data.objects.new(f"{name}_{side_name}", mesh)
-            bpy.context.scene.objects.link(obj)
+            bpy.context.collection.objects.link(obj)
             sidewalks.append(obj)
             
             # UV mapping
-            bpy.context.scene.objects.active = obj
-            obj.select = True
+            bpy.context.view_layer.objects.active = obj
+            obj.select_set(True)
             bpy.ops.object.mode_set(mode='EDIT')
             bpy.ops.mesh.select_all(action='SELECT')
             bpy.ops.uv.smart_project()
@@ -276,8 +276,8 @@ def create_simple_building(location, width=10, depth=10, height=15):
     building.scale = (width/2, depth/2, height/2)
     
     # UV mapping
-    bpy.context.scene.objects.active = building
-    building.select = True
+    bpy.context.view_layer.objects.active = building
+    building.select_set(True)
     bpy.ops.object.mode_set(mode='EDIT')
     bpy.ops.mesh.select_all(action='SELECT')
     bpy.ops.uv.smart_project()
@@ -339,11 +339,11 @@ def create_building_from_footprint(footprint, height, name="Building"):
     mesh.update()
     
     obj = bpy.data.objects.new(name, mesh)
-    bpy.context.scene.objects.link(obj)
+    bpy.context.collection.objects.link(obj)
     
     # UV mapping
-    bpy.context.scene.objects.active = obj
-    obj.select = True
+    bpy.context.view_layer.objects.active = obj
+    obj.select_set(True)
     bpy.ops.object.mode_set(mode='EDIT')
     bpy.ops.mesh.select_all(action='SELECT')
     bpy.ops.uv.smart_project(angle_limit=66.0, island_margin=0.02)
@@ -360,8 +360,8 @@ def create_ground_plane(center, size=500):
     ground.scale = (size, size, 1)
     
     # UV mapping
-    bpy.context.scene.objects.active = ground
-    ground.select = True
+    bpy.context.view_layer.objects.active = ground
+    ground.select_set(True)
     bpy.ops.object.mode_set(mode='EDIT')
     bpy.ops.mesh.select_all(action='SELECT')
     bpy.ops.uv.unwrap()
