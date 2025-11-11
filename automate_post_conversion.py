@@ -218,7 +218,7 @@ def import_entrypoints(entrypoints_file):
         bpy.ops.object.empty_add(type='SPHERE', location=blender_pos)
         obj = bpy.context.object
         obj.name = f"BusStop_{name}"
-        obj.empty_draw_size = 2.0
+        obj.empty_display_size = 2.0
         
         print(f"Created marker: {name} at {blender_pos}")
     
@@ -273,7 +273,7 @@ def create_busstop_objects(busstop_name, location):
         bpy.ops.object.empty_add(type='PLAIN_AXES', location=spawn_loc)
         spawn = bpy.context.object
         spawn.name = f"{busstop_name}.{i:03d}"
-        spawn.empty_draw_size = 0.3
+        spawn.empty_display_size = 0.3
     
     print(f"Created objects for bus stop: {busstop_name}")
 
