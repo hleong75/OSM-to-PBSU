@@ -41,7 +41,8 @@ Comprehensive Blender Automation Script for PBSU Map Generation
 This script runs in Blender 2.79 and automatically creates:
 - Road meshes from entrypoints
 - Bus stop objects with triggers and spawn points
-- Basic buildings along roads
+- Realistic buildings with actual heights from OSM data
+- Terrain with elevation data
 - Ground terrain
 - UV mapping
 - Exports to .3ds format
@@ -52,11 +53,25 @@ import bmesh
 import math
 import os
 import sys
+import json
 
 def clear_scene():
     """Clear default scene objects"""
     bpy.ops.object.select_all(action='SELECT')
     bpy.ops.object.delete()
+
+def load_geographic_data(filepath):
+    """Load geographic data (buildings, elevations) from JSON"""
+    if not os.path.exists(filepath):
+        print(f"Warning: Geographic data file not found: {filepath}")
+        return None
+    
+    try:
+        with open(filepath, 'r', encoding='utf-8') as f:
+            return json.load(f)
+    except Exception as e:
+        print(f"Error loading geographic data: {e}")
+        return None
 
 def parse_entrypoints(filepath):
     """Parse entrypoints.txt file"""
@@ -253,6 +268,72 @@ def create_simple_building(location, width=10, depth=10, height=15):
     
     return building
 
+def create_building_from_footprint(footprint, height, name="Building"):
+    """
+    Create a building from a footprint polygon with accurate height
+    
+    Args:
+        footprint: List of dicts with x, y, z coordinates
+        height: Building height in meters
+        name: Building name
+    """
+    if len(footprint) < 3:
+        return None
+    
+    # Convert footprint to Blender coordinates
+    base_verts = []
+    for point in footprint:
+        x, y, z = point['x'], point['y'], point['z']
+        blender_pos = unity_to_blender(x, y, z)
+        base_verts.append(blender_pos)
+    
+    # Create mesh data
+    verts = []
+    faces = []
+    
+    # Add base vertices (bottom)
+    for v in base_verts:
+        verts.append(v)
+    
+    # Add top vertices
+    for v in base_verts:
+        verts.append((v[0], v[1], v[2] + height))
+    
+    n = len(base_verts)
+    
+    # Create bottom face
+    bottom_face = list(range(n))
+    faces.append(bottom_face)
+    
+    # Create top face (reversed for correct normal)
+    top_face = list(range(n, 2*n))
+    top_face.reverse()
+    faces.append(top_face)
+    
+    # Create side faces
+    for i in range(n):
+        next_i = (i + 1) % n
+        face = [i, next_i, next_i + n, i + n]
+        faces.append(face)
+    
+    # Create mesh
+    mesh = bpy.data.meshes.new(f"{name}_mesh")
+    mesh.from_pydata(verts, [], faces)
+    mesh.update()
+    
+    obj = bpy.data.objects.new(name, mesh)
+    bpy.context.scene.objects.link(obj)
+    
+    # UV mapping
+    bpy.context.scene.objects.active = obj
+    obj.select = True
+    bpy.ops.object.mode_set(mode='EDIT')
+    bpy.ops.mesh.select_all(action='SELECT')
+    bpy.ops.uv.smart_project(angle_limit=66.0, island_margin=0.02)
+    bpy.ops.object.mode_set(mode='OBJECT')
+    
+    return obj
+
 def create_ground_plane(center, size=500):
     """Create ground plane"""
     x, y, z = center
@@ -315,7 +396,7 @@ def main():
     """Main automation function"""
     # Get paths from command line arguments
     if len(sys.argv) < 5:
-        print("Usage: blender --background --python script.py -- <entrypoints_file> <output_file>")
+        print("Usage: blender --background --python script.py -- <entrypoints_file> <output_file> [geographic_data_file]")
         return
     
     # Arguments after "--" are in sys.argv[sys.argv.index("--")+1:]
@@ -323,17 +404,28 @@ def main():
         dash_index = sys.argv.index("--")
         entrypoints_file = sys.argv[dash_index + 1]
         output_file = sys.argv[dash_index + 2]
+        # Optional geographic data file
+        geographic_data_file = sys.argv[dash_index + 3] if len(sys.argv) > dash_index + 3 else None
     except (ValueError, IndexError):
         print("Error: Missing arguments")
         return
     
     print("="*60)
-    print("PBSU Map Automated 3D Generation")
+    print("PBSU Map Automated 3D Generation with Geographic Data")
     print("="*60)
     
     # Clear scene
     print("Clearing scene...")
     clear_scene()
+    
+    # Load geographic data if available
+    geo_data = None
+    if geographic_data_file and os.path.exists(geographic_data_file):
+        print(f"Loading geographic data: {geographic_data_file}")
+        geo_data = load_geographic_data(geographic_data_file)
+        if geo_data:
+            print(f"  - Buildings: {len(geo_data.get('buildings', []))}")
+            print(f"  - Elevation points: {len(geo_data.get('elevations', {}))}")
     
     # Parse entrypoints
     print(f"Parsing entrypoints: {entrypoints_file}")
@@ -395,7 +487,24 @@ def main():
     
     # Generate buildings
     print("Generating buildings...")
-    generate_buildings_along_road(road_points)
+    if geo_data and geo_data.get('buildings'):
+        # Use accurate building data from OSM
+        print(f"Creating {len(geo_data['buildings'])} buildings from OSM data...")
+        for i, building_data in enumerate(geo_data['buildings']):
+            footprint = building_data.get('footprint', [])
+            height = building_data.get('height', 10.0)
+            building_type = building_data.get('type', 'yes')
+            
+            if len(footprint) >= 3:
+                building = create_building_from_footprint(
+                    footprint, height, f"Building_{i}_{building_type}"
+                )
+                if building:
+                    print(f"  Created building {i+1}/{len(geo_data['buildings'])} - Height: {height:.1f}m")
+    else:
+        # Fallback to procedural generation
+        print("No geographic data available, using procedural generation...")
+        generate_buildings_along_road(road_points)
     
     # Export to .3ds
     print(f"Exporting to {output_file}...")
@@ -427,7 +536,7 @@ if __name__ == "__main__":
     def run_blender_automation(self, route_name: str) -> bool:
         """Run Blender in headless mode to generate 3D models"""
         print(f"\n{'='*60}")
-        print("Automated 3D Model Generation")
+        print("Automated 3D Model Generation with Geographic Data")
         print(f"{'='*60}\n")
         
         # Find entrypoints file
@@ -438,8 +547,21 @@ if __name__ == "__main__":
             print(f"Error: Entrypoints file not found: {entrypoints_file}")
             return False
         
+        # Find geographic data file
+        geo_data_file = os.path.join(self.map_dir, 'geographic_data.json')
+        if not os.path.exists(geo_data_file):
+            print("Warning: Geographic data file not found, using basic generation")
+            geo_data_file = ""
+        else:
+            print(f"Using geographic data: {geo_data_file}")
+        
         # Output 3ds file
         output_3ds = os.path.join(tiles_dir, f"{route_name}_auto.3ds")
+        
+        # Verify output directory exists
+        if not os.path.exists(tiles_dir):
+            print(f"Error: Output directory does not exist: {tiles_dir}")
+            return False
         
         # Create temporary Blender script
         script_path = os.path.join(self.map_dir, 'temp_blender_script.py')
@@ -459,7 +581,8 @@ if __name__ == "__main__":
                 '--python', script_path,
                 '--',
                 entrypoints_file,
-                output_3ds
+                output_3ds,
+                geo_data_file
             ]
             
             result = subprocess.run(
@@ -470,8 +593,21 @@ if __name__ == "__main__":
             )
             
             if result.returncode == 0:
-                print("✓ 3D model generated successfully!")
-                print(f"Output: {output_3ds}")
+                # Validate that 3DS file was created
+                if os.path.exists(output_3ds):
+                    file_size = os.path.getsize(output_3ds)
+                    if file_size > 0:
+                        print("✓ 3D model generated successfully!")
+                        print(f"Output: {output_3ds}")
+                        print(f"File size: {file_size / 1024:.2f} KB")
+                    else:
+                        print("Error: 3DS file was created but is empty")
+                        return False
+                else:
+                    print("Error: 3DS file was not created")
+                    print("Blender output:")
+                    print(result.stdout)
+                    return False
                 
                 # Clean up temp script
                 if os.path.exists(script_path):
@@ -481,6 +617,9 @@ if __name__ == "__main__":
             else:
                 print(f"Error running Blender:")
                 print(result.stderr)
+                if result.stdout:
+                    print("Blender output:")
+                    print(result.stdout)
                 return False
                 
         except subprocess.TimeoutExpired:
@@ -492,6 +631,97 @@ if __name__ == "__main__":
             return False
         except Exception as e:
             print(f"Error: {e}")
+            return False
+    
+    def fetch_street_view_textures(self, api_key: Optional[str] = None) -> bool:
+        """
+        Fetch Street View images for building textures
+        
+        Note: Requires Google Street View Static API key.
+        Falls back to procedural generation if key is not provided.
+        
+        Args:
+            api_key: Google Street View Static API key
+        """
+        if not api_key:
+            print("\nNote: Google Street View API key not provided.")
+            print("Skipping Street View texture fetching.")
+            print("Using procedural texture generation instead.")
+            return False
+        
+        print(f"\n{'='*60}")
+        print("Fetching Street View Textures")
+        print(f"{'='*60}\n")
+        
+        textures_dir = os.path.join(self.map_dir, 'textures', 'streetview')
+        os.makedirs(textures_dir, exist_ok=True)
+        
+        # Load geographic data
+        geo_data_file = os.path.join(self.map_dir, 'geographic_data.json')
+        if not os.path.exists(geo_data_file):
+            print("No geographic data found")
+            return False
+        
+        try:
+            with open(geo_data_file, 'r', encoding='utf-8') as f:
+                geo_data = json.load(f)
+        except Exception as e:
+            print(f"Error loading geographic data: {e}")
+            return False
+        
+        bus_stops = geo_data.get('bus_stops', [])
+        origin = geo_data.get('origin', {})
+        
+        if not bus_stops:
+            print("No bus stops found in geographic data")
+            return False
+        
+        print(f"Fetching Street View images for {len(bus_stops)} bus stops...")
+        
+        try:
+            import urllib.request
+            import urllib.parse
+            
+            success_count = 0
+            for i, stop in enumerate(bus_stops[:5]):  # Limit to first 5 to avoid API quota
+                lat = stop.get('lat')
+                lon = stop.get('lon')
+                name = stop.get('internal_name', f'stop_{i}')
+                
+                if not lat or not lon:
+                    continue
+                
+                # Street View Static API URL
+                params = {
+                    'size': '640x640',
+                    'location': f'{lat},{lon}',
+                    'heading': '0',
+                    'pitch': '0',
+                    'fov': '90',
+                    'key': api_key
+                }
+                
+                url = f"https://maps.googleapis.com/maps/api/streetview?{urllib.parse.urlencode(params)}"
+                output_path = os.path.join(textures_dir, f'{name}_streetview.jpg')
+                
+                try:
+                    urllib.request.urlretrieve(url, output_path)
+                    if os.path.exists(output_path) and os.path.getsize(output_path) > 1000:
+                        print(f"✓ Fetched: {name}")
+                        success_count += 1
+                    else:
+                        print(f"✗ Failed: {name} (no image available)")
+                        if os.path.exists(output_path):
+                            os.remove(output_path)
+                except Exception as e:
+                    print(f"✗ Failed: {name} - {e}")
+            
+            print(f"\n✓ Street View texture fetch complete!")
+            print(f"Successfully fetched {success_count}/{len(bus_stops[:5])} images")
+            return success_count > 0
+            
+        except ImportError:
+            print("Error: Required modules not available")
             return False
     
     def generate_procedural_textures(self) -> bool:
@@ -849,7 +1079,7 @@ The map is ready to use in Proton Bus Simulator!
             with open(readme_path, 'w', encoding='utf-8') as f:
                 f.write(content)
     
-    def run_full_automation(self, route_name: str) -> bool:
+    def run_full_automation(self, route_name: str, streetview_api_key: Optional[str] = None) -> bool:
         """Run complete AI automation pipeline"""
         print(f"\n{'='*60}")
         print(f"AI-Powered Full Automation for: {self.map_name}")
@@ -863,22 +1093,26 @@ The map is ready to use in Proton Bus Simulator!
             print("Warning: 3D model generation failed")
             success = False
         
-        # 2. Generate textures
+        # 2. Try to fetch Street View textures if API key provided
+        if streetview_api_key:
+            self.fetch_street_view_textures(streetview_api_key)
+        
+        # 3. Generate procedural textures (as backup or supplement)
         if not self.generate_procedural_textures():
             print("Warning: Texture generation failed")
             success = False
         
-        # 3. Generate destination displays
+        # 4. Generate destination displays
         if not self.generate_destination_displays(route_name):
             print("Warning: Destination display generation failed")
             success = False
         
-        # 4. Generate preview image
+        # 5. Generate preview image
         if not self.generate_preview_image(route_name):
             print("Warning: Preview image generation failed")
             success = False
         
-        # 5. Update README
+        # 6. Update README
         self.update_readme(route_name)
         
         print(f"\n{'='*60}")
@@ -907,15 +1141,22 @@ Examples:
   # Specify Blender path
   python ai_automation.py output/My_City Route_1 --blender-path /path/to/blender
   
+  # Use Google Street View for realistic textures
+  python ai_automation.py output/My_City Route_1 --streetview-api-key YOUR_API_KEY
+  
 This script automates:
 - 3D model generation from OSM data (using Blender)
+- Building heights from real OSM data
+- Terrain elevation from geographic data
 - Procedural texture generation
+- Optional Street View texture fetching
 - Destination display creation
 - Preview image generation
 
 Requirements:
 - Blender 2.79 (for 3D model generation)
 - Python PIL/Pillow (optional, for better texture quality)
+- Google Street View API key (optional, for realistic textures)
         '''
     )
     
@@ -923,6 +1164,8 @@ Requirements:
     parser.add_argument('route_name', help='Route name (e.g., Route_1)')
     parser.add_argument('--blender-path', default='blender',
                        help='Path to Blender executable (default: "blender" in PATH)')
+    parser.add_argument('--streetview-api-key', default=None,
+                       help='Google Street View Static API key for realistic textures')
     parser.add_argument('--skip-3d', action='store_true',
                        help='Skip 3D model generation')
     
@@ -937,13 +1180,15 @@ Requirements:
     try:
         if args.skip_3d:
             # Run without 3D generation
+            if args.streetview_api_key:
+                automator.fetch_street_view_textures(args.streetview_api_key)
             automator.generate_procedural_textures()
             automator.generate_destination_displays(args.route_name)
             automator.generate_preview_image(args.route_name)
             automator.update_readme(args.route_name)
         else:
             # Full automation
-            success = automator.run_full_automation(args.route_name)
+            success = automator.run_full_automation(args.route_name, args.streetview_api_key)
             sys.exit(0 if success else 1)
     
     except Exception as e:

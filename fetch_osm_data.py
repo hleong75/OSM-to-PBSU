@@ -36,7 +36,7 @@ def fetch_osm_data(bbox: str, output_file: str = "osm_data.json"):
     
     # Build Overpass query
     overpass_query = f"""
-    [out:json][timeout:60];
+    [out:json][timeout:90];
     (
       // Get all bus stops
       node["highway"="bus_stop"]({south},{west},{north},{east});
@@ -45,6 +45,16 @@ def fetch_osm_data(bbox: str, output_file: str = "osm_data.json"):
       
       // Get roads
       way["highway"~"motorway|trunk|primary|secondary|tertiary|unclassified|residential"]({south},{west},{north},{east});
+      
+      // Get buildings with all tags (including height information)
+      way["building"]({south},{west},{north},{east});
+      relation["building"]({south},{west},{north},{east});
+      
+      // Get natural features for terrain
+      way["natural"~"water|wood|grassland|scrub"]({south},{west},{north},{east});
+      
+      // Get land use for better context
+      way["landuse"~"residential|commercial|industrial|retail"]({south},{west},{north},{east});
       
       // Get bus routes
       relation["type"="route"]["route"="bus"]({south},{west},{north},{east});
@@ -85,6 +95,18 @@ def fetch_osm_data(bbox: str, output_file: str = "osm_data.json"):
                        e.get('tags', {}).get('highway') == 'bus_stop' or
                        e.get('tags', {}).get('public_transport') in ['platform', 'stop_position'])
         print(f"  - Bus stops: {bus_stops}")
+        
+        # Count buildings
+        buildings = sum(1 for e in elements 
+                       if e.get('tags', {}).get('building'))
+        print(f"  - Buildings: {buildings}")
+        
+        # Count buildings with height data
+        buildings_with_height = sum(1 for e in elements 
+                                   if e.get('tags', {}).get('building') and 
+                                   (e.get('tags', {}).get('height') or 
+                                    e.get('tags', {}).get('building:levels')))
+        print(f"  - Buildings with height data: {buildings_with_height}")
         
         # Save to file
         with open(output_file, 'w', encoding='utf-8') as f:
