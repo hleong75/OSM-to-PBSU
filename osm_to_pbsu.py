@@ -22,6 +22,7 @@ class OSMToPBSUConverter:
         self.output_dir = output_dir
         self.bus_stops = []
         self.route_ways = []
+        self.buildings = []
         self.entrypoints = []
         
     def parse_osm_json(self, osm_data: Dict) -> None:
@@ -49,6 +50,8 @@ class OSMToPBSUConverter:
         for element in elements:
             if element['type'] == 'way':
                 tags = element.get('tags', {})
+                
+                # Collect roads
                 if tags.get('highway') in ['primary', 'secondary', 'tertiary', 'residential', 'trunk']:
                     way_nodes = []
                     for node_id in element.get('nodes', []):
@@ -64,6 +67,138 @@ class OSMToPBSUConverter:
                             'nodes': way_nodes,
                             'tags': tags
                         })
+                
+                # Collect buildings
+                if tags.get('building'):
+                    way_nodes = []
+                    for node_id in element.get('nodes', []):
+                        if node_id in nodes_dict:
+                            node = nodes_dict[node_id]
+                            way_nodes.append({
+                                'lat': node['lat'],
+                                'lon': node['lon']
+                            })
+                    if way_nodes:
+                        # Extract height information
+                        height = self._extract_building_height(tags)
+                        self.buildings.append({
+                            'id': element['id'],
+                            'nodes': way_nodes,
+                            'tags': tags,
+                            'height': height
+                        })
+    
+    def _extract_building_height(self, tags: Dict) -> float:
+        """
+        Extract building height from OSM tags
+        
+        Tries multiple sources:
+        1. height tag (in meters)
+        2. building:levels tag (floors * 3.5m average)
+        3. building:height tag
+        4. Default to 10m for generic buildings
+        """
+        # Direct height in meters
+        if 'height' in tags:
+            try:
+                height_str = tags['height'].replace('m', '').replace('M', '').strip()
+                return float(height_str)
+            except (ValueError, AttributeError):
+                pass
+        
+        # Building height tag
+        if 'building:height' in tags:
+            try:
+                height_str = tags['building:height'].replace('m', '').replace('M', '').strip()
+                return float(height_str)
+            except (ValueError, AttributeError):
+                pass
+        
+        # Number of levels (assume 3.5m per floor)
+        if 'building:levels' in tags:
+            try:
+                levels = float(tags['building:levels'])
+                return levels * 3.5
+            except (ValueError, AttributeError):
+                pass
+        
+        # Default heights based on building type
+        building_type = tags.get('building', 'yes')
+        default_heights = {
+            'house': 7.0,
+            'residential': 10.5,  # 3 floors
+            'apartments': 21.0,   # 6 floors
+            'commercial': 14.0,   # 4 floors
+            'retail': 7.0,
+            'industrial': 10.0,
+            'warehouse': 8.0,
+            'office': 35.0,       # 10 floors
+            'hotel': 28.0,        # 8 floors
+            'school': 10.5,
+            'university': 14.0,
+            'hospital': 21.0,
+            'church': 15.0,
+            'cathedral': 25.0,
+        }
+        
+        return default_heights.get(building_type, 10.0)
+    
+    def fetch_elevation_data(self, locations: List[Tuple[float, float]]) -> Dict[Tuple[float, float], float]:
+        """
+        Fetch elevation data for a list of lat/lon coordinates
+        Uses Open-Elevation API (free and open source)
+        
+        Args:
+            locations: List of (latitude, longitude) tuples
+        
+        Returns:
+            Dictionary mapping (lat, lon) to elevation in meters
+        """
+        if not locations:
+            return {}
+        
+        elevations = {}
+        
+        try:
+            import urllib.request
+            import json
+            
+            # Open-Elevation API endpoint
+            url = "https://api.open-elevation.com/api/v1/lookup"
+            
+            # Batch requests in groups of 100 (API limit)
+            batch_size = 100
+            for i in range(0, len(locations), batch_size):
+                batch = locations[i:i+batch_size]
+                
+                # Format locations for API
+                locations_data = [{"latitude": lat, "longitude": lon} for lat, lon in batch]
+                data = json.dumps({"locations": locations_data}).encode('utf-8')
+                
+                req = urllib.request.Request(url, data=data, headers={'Content-Type': 'application/json'})
+                
+                try:
+                    with urllib.request.urlopen(req, timeout=30) as response:
+                        result = json.loads(response.read().decode('utf-8'))
+                        
+                        for loc_data in result.get('results', []):
+                            lat = loc_data['latitude']
+                            lon = loc_data['longitude']
+                            elevation = loc_data['elevation']
+                            elevations[(lat, lon)] = elevation
+                            
+                except Exception as e:
+                    print(f"Warning: Could not fetch elevation data for batch: {e}")
+                    # Use default elevation of 0 for failed fetches
+                    for lat, lon in batch:
+                        elevations[(lat, lon)] = 0.0
+        
+        except ImportError:
+            print("Warning: Could not import required modules for elevation data")
+            for lat, lon in locations:
+                elevations[(lat, lon)] = 0.0
+        
+        return elevations
     
     def lat_lon_to_unity_coords(self, lat: float, lon: float, 
                                 origin_lat: float, origin_lon: float) -> Tuple[float, float, float]:
@@ -219,6 +354,11 @@ class OSMToPBSUConverter:
         
         print(f"Found {len(self.bus_stops)} bus stops")
         print(f"Found {len(self.route_ways)} road segments")
+        print(f"Found {len(self.buildings)} buildings")
+        
+        # Count buildings with height data
+        buildings_with_height = sum(1 for b in self.buildings if b.get('height', 0) > 0)
+        print(f"  - {buildings_with_height} buildings have height information")
         
         if len(self.bus_stops) == 0:
             print("Warning: No bus stops found in OSM data!")
@@ -268,6 +408,83 @@ class OSMToPBSUConverter:
                 f.write(busstop_txt)
         print(f"Created {len(self.bus_stops)} bus stop configuration files")
         
+        # Fetch elevation data for bus stops and key points
+        print("\nFetching elevation data...")
+        locations = [(stop['lat'], stop['lon']) for stop in self.bus_stops]
+        # Add some road points for terrain mapping
+        for way in self.route_ways[:10]:  # Sample first 10 road segments
+            for node in way['nodes'][::5]:  # Every 5th node
+                locations.append((node['lat'], node['lon']))
+        
+        elevations = self.fetch_elevation_data(locations)
+        print(f"Fetched elevation data for {len(elevations)} points")
+        
+        # Export geographic data (buildings, elevations) for 3D generation
+        geographic_data = {
+            'origin': {'lat': origin_lat, 'lon': origin_lon},
+            'buildings': [],
+            'elevations': {},
+            'bus_stops': []
+        }
+        
+        # Convert buildings to Unity coordinates with height
+        for building in self.buildings:
+            if not building['nodes']:
+                continue
+            
+            # Calculate building center
+            center_lat = sum(n['lat'] for n in building['nodes']) / len(building['nodes'])
+            center_lon = sum(n['lon'] for n in building['nodes']) / len(building['nodes'])
+            center_x, center_y, center_z = self.lat_lon_to_unity_coords(
+                center_lat, center_lon, origin_lat, origin_lon
+            )
+            
+            # Convert footprint nodes
+            footprint = []
+            for node in building['nodes']:
+                x, y, z = self.lat_lon_to_unity_coords(
+                    node['lat'], node['lon'], origin_lat, origin_lon
+                )
+                footprint.append({'x': x, 'y': y, 'z': z})
+            
+            geographic_data['buildings'].append({
+                'center': {'x': center_x, 'y': center_y, 'z': center_z},
+                'footprint': footprint,
+                'height': building['height'],
+                'type': building['tags'].get('building', 'yes'),
+                'name': building['tags'].get('name', '')
+            })
+        
+        # Add elevation data
+        for (lat, lon), elevation in elevations.items():
+            x, y, z = self.lat_lon_to_unity_coords(lat, lon, origin_lat, origin_lon)
+            geographic_data['elevations'][f"{lat},{lon}"] = {
+                'x': x, 'y': elevation, 'z': z, 'elevation': elevation
+            }
+        
+        # Add bus stop data with positions
+        for stop in self.bus_stops:
+            x, y, z = self.lat_lon_to_unity_coords(
+                stop['lat'], stop['lon'], origin_lat, origin_lon
+            )
+            internal_name = stop['name'].replace(' ', '_').replace('-', '_')
+            internal_name = ''.join(c for c in internal_name if c.isalnum() or c == '_')
+            geographic_data['bus_stops'].append({
+                'name': stop['name'],
+                'internal_name': internal_name,
+                'position': {'x': x, 'y': y, 'z': z},
+                'lat': stop['lat'],
+                'lon': stop['lon']
+            })
+        
+        # Save geographic data
+        geo_data_file = os.path.join(base_dir, 'geographic_data.json')
+        with open(geo_data_file, 'w', encoding='utf-8') as f:
+            json.dump(geographic_data, f, indent=2)
+        print(f"Created {geo_data_file}")
+        print(f"  - Exported {len(geographic_data['buildings'])} buildings with heights")
+        print(f"  - Exported {len(geographic_data['elevations'])} elevation points")
+        
         # Create README with instructions
         readme_content = f"""# PBSU Route: {map_name} - {route_name}
 
@@ -278,6 +495,8 @@ This route was automatically generated from OpenStreetMap data using osm_to_pbsu
 ### Statistics:
 - Bus stops: {len(self.bus_stops)}
 - Road segments: {len(self.route_ways)}
+- Buildings: {len(self.buildings)} ({buildings_with_height} with height data)
+- Elevation points: {len(elevations)}
 - Origin coordinates: {origin_lat}, {origin_lon}
 
 ### Next Steps:
@@ -370,6 +589,8 @@ Note: Input file should be OSM JSON format (from Overpass API or exported from J
                        help='Automatically run AI automation after conversion')
     parser.add_argument('--blender-path', default='blender',
                        help='Path to Blender executable for AI automation')
+    parser.add_argument('--streetview-api-key', default=None,
+                       help='Google Street View Static API key for realistic textures')
     
     args = parser.parse_args()
     
@@ -406,7 +627,7 @@ Note: Input file should be OSM JSON format (from Overpass API or exported from J
                 # Then run AI automation
                 from ai_automation import AIAutomation
                 ai_automator = AIAutomation(map_dir, args.blender_path)
-                ai_automator.run_full_automation(args.route_name)
+                ai_automator.run_full_automation(args.route_name, args.streetview_api_key)
                 
             except ImportError as e:
                 print(f"Error: Could not import automation modules: {e}")

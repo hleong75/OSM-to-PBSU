@@ -16,12 +16,17 @@ This program converts OpenStreetMap (OSM) data containing bus routes and bus sto
 ## Features
 
 - ✅ Extracts bus stops from OSM data
+- ✅ Extracts buildings with accurate height information
+- ✅ Fetches terrain elevation data from geographic services
 - ✅ Converts GPS coordinates to Unity/PBSU coordinate system
 - ✅ Generates proper PBSU file structure
 - ✅ Creates configuration files for all bus stops
 - ✅ Supports custom origin points for coordinate conversion
 - ✅ Generates README with next steps and bus stop positions
-- ✨ **NEW: AI-Powered Automation** - Automatically generates 3D models, textures, and assets!
+- ✨ **ENHANCED: AI-Powered Automation** - Automatically generates 3D models with real-world dimensions, textures, and assets!
+- 🌍 **NEW: Geographic Data Integration** - Real building heights and terrain elevation
+- 🏢 **NEW: Accurate 3D Buildings** - Buildings created with actual footprints and heights from OSM
+- 🗺️ **NEW: Street View Textures** - Optional realistic textures from Google Street View
 
 ## Requirements
 
@@ -30,6 +35,7 @@ This program converts OpenStreetMap (OSM) data containing bus routes and bus sto
 - **For AI Automation (optional):**
   - Blender 2.79 (for automatic 3D model generation)
   - PIL/Pillow (optional, for better texture quality): `pip install Pillow`
+  - Google Street View API key (optional, for realistic textures)
 
 ## Installation
 
@@ -53,19 +59,25 @@ chmod +x osm_to_pbsu.py
 python osm_to_pbsu.py <osm_file.json> -m "Map Name" -r "Route Name"
 ```
 
-### ✨ AI-Powered Automation (NEW!)
+### ✨ Enhanced AI-Powered Automation with Geographic Data
 
-Run complete automation in one command:
+Run complete automation in one command with real-world accuracy:
 
 ```bash
-# Convert OSM data AND automatically generate everything
+# Convert OSM data AND automatically generate everything with accurate dimensions
 python osm_to_pbsu.py route_101.json -m "My_City" -r "Route_101" --run-ai-automation
+
+# With Google Street View for realistic textures
+python osm_to_pbsu.py route_101.json -m "My_City" -r "Route_101" --run-ai-automation --streetview-api-key YOUR_API_KEY
 ```
 
 This will automatically:
 - Convert OSM data to PBSU format
-- Generate 3D models using Blender
-- Create procedural textures
+- **Fetch building heights from OSM data (building:levels, height tags)**
+- **Fetch terrain elevation data from geographic services**
+- Generate accurate 3D models using Blender with real dimensions
+- Create buildings with actual footprints and heights
+- Create procedural textures (or fetch from Street View)
 - Generate destination displays
 - Create preview image
 
