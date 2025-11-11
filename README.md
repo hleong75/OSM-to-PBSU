@@ -107,13 +107,13 @@ out skel qt;
 2. Download the area you're interested in
 3. File → Save As → Choose OSM JSON format
 
-## Workflow
+## Complete Workflow
 
 1. **Get OSM Data**: Use one of the methods above to download bus route data
 2. **Run Converter**: Execute `osm_to_pbsu.py` with your OSM data
-3. **Create 3D Models**: Use Blender 2.79 to create the map geometry
-4. **Add Textures**: Place texture files in the textures folder
-5. **Configure Destinations**: Add destination displays
+3. **Run Automation**: Execute `automate_post_conversion.py` to create templates and helpers
+4. **Create 3D Models**: Use Blender 2.79 with the generated helper scripts
+5. **Customize Assets**: Replace placeholder textures and destination displays
 6. **Test**: Copy to PBSU mods folder and test in the simulator
 
 ## Output Structure
@@ -138,30 +138,60 @@ output/
                     └── ...
 ```
 
+## Post-Conversion Automation
+
+After running the converter, use the **automation script** to prepare your map:
+
+```bash
+python automate_post_conversion.py output/My_City
+```
+
+This automation script will:
+- ✅ Create placeholder textures (ready-to-use PNG files)
+- ✅ Generate destination display templates
+- ✅ Create preview image template
+- ✅ Generate Blender helper scripts for 3D modeling
+- ✅ Create a detailed checklist for manual work
+
+### Blender Helper Scripts
+
+The automation creates Python scripts for Blender 2.79:
+
+1. **import_entrypoints.py** - Import bus stop positions as markers
+2. **create_busstop_markers.py** - Create trigger objects and passenger spawn points
+3. **create_road_mesh.py** - Generate basic road mesh connecting bus stops
+
+These scripts dramatically speed up the 3D modeling process!
+
 ## Next Steps After Conversion
 
-The converter creates the file structure and configuration, but you still need to:
+The converter and automation create the file structure and templates, but you still need to:
 
 1. **Create 3D Models in Blender 2.79**:
+   - Use the provided Blender helper scripts in `blender_scripts/`
    - Model roads, buildings, and scenery
    - Place bus stop objects at the coordinates from `entrypoints.txt`
    - Each bus stop needs a trigger object and passenger spawn points
    - Export to `.3ds` format
 
-2. **Add Textures**:
-   - Create or download textures for roads, buildings, etc.
-   - Place in the `textures/` folder
+2. **Replace Placeholder Textures**:
+   - Placeholder textures are already created in the `textures/` folder
+   - Replace them with your own designs or downloaded textures
    - Use PNG format (JPG may cause issues)
+   - Keep under 2048x2048 pixels for mobile compatibility
 
-3. **Configure Destinations**:
-   - Create folders for each route destination in `dest/`
-   - Add destination display images
+3. **Customize Destination Displays**:
+   - Templates are created in `dest/` folder
+   - Replace with your own destination text/graphics
+   - Common size: 512x64 pixels PNG
 
-4. **Add Preview Image**:
-   - Create `preview.png` (recommended size: 640x360px, 16:9 ratio)
-   - Place in the map base directory
+4. **Update Preview Image**:
+   - Replace the template `preview.png` with actual map screenshot
+   - Recommended size: 640x360px, 16:9 ratio
+   - Shows in map selection screen
 
 5. **Test in PBSU**:
+   - Follow the detailed checklist in `POST_CONVERSION_CHECKLIST.md`
    - Copy the generated folders to your PBSU installation:
      - Windows: `Documents/Proton Bus Mods/maps/`
      - Android: `/Android/data/com.viamep.p.../files/maps/`

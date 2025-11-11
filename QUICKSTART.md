@@ -57,32 +57,52 @@ ls output/Manhattan/tiles/M42_Bus/
 # You should see: entrypoints.txt  entrypoints_list.txt  aipeople/
 ```
 
+## Step 6: Run Post-Conversion Automation
+
+```bash
+python automate_post_conversion.py output/Manhattan
+```
+
+This creates:
+- ✅ Placeholder textures (ready to use!)
+- ✅ Destination display templates
+- ✅ Preview image template
+- ✅ Blender helper scripts
+- ✅ Detailed checklist
+
 ## What's Next?
 
-The converter creates the **configuration files**, but you still need to:
+The converter and automation create **configuration files and templates**, but you still need to:
 
 ### 1. Create 3D Models (Required)
 - Download [Blender 2.79](https://download.blender.org/release/Blender2.79/)
-- Model the roads using the coordinates from entrypoints.txt
-- Create bus stop trigger objects
+- **Use the generated Blender scripts** in `blender_scripts/` folder!
+  - `import_entrypoints.py` - Import bus stop markers
+  - `create_road_mesh.py` - Generate basic road mesh
+  - `create_busstop_markers.py` - Add trigger objects
+- Model the roads using the scripts and coordinates from entrypoints.txt
+- Refine and add buildings, scenery
 - Export to .3ds format
-- See: `ajuda - help/ENGLISH - Map Tutorial - Step 2.pdf`
+- See: `blender_scripts/README.md` and `POST_CONVERSION_CHECKLIST.md`
 
-### 2. Add Textures (Required)
-- Create or download road/building textures
-- Save as PNG (not JPG) in the textures/ folder
+### 2. Customize Textures (Required)
+- Placeholder textures already created in textures/ folder
+- Replace with your own designs or downloaded textures
+- Use PNG (not JPG) format
 - Keep under 2048x2048 pixels for mobile compatibility
 
-### 3. Configure Destinations (Required)
-- Create destination display images
-- Place in dest/ subfolders
-- One folder per route destination
+### 3. Customize Destinations (Required)
+- Templates already created in dest/ folder
+- Replace with your destination text/graphics
+- Common size: 512x64 pixels PNG
 
-### 4. Add Preview (Recommended)
-- Create preview.png (640x360px recommended)
-- Shows in map selection screen
+### 4. Update Preview (Recommended)
+- Template preview.png already created
+- Replace with actual screenshot of your map
+- Size: 640x360px recommended
 
 ### 5. Test in PBSU (Final Step)
+- Follow the checklist in `POST_CONVERSION_CHECKLIST.md`
 - Copy map folder to PBSU mods/maps/
 - Launch Proton Bus Simulator
 - Select your map!
@@ -98,7 +118,7 @@ A:
 - Android: `/Android/data/com.viamep.p.../files/maps/`
 
 **Q: Can I skip the 3D modeling?**
-A: No, PBSU requires 3D models. The converter just automates the tedious configuration file creation.
+A: No, PBSU requires 3D models. But the automation script generates Blender helper scripts to make it much easier!
 
 **Q: What if I don't know Blender?**
 A: Start with the PBSU tutorials in `ajuda - help/` folder. The community is also helpful on Facebook groups!
