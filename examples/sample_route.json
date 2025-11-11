@@ -1,0 +1,100 @@
+{
+  "version": 0.6,
+  "generator": "Example OSM Data",
+  "elements": [
+    {
+      "type": "node",
+      "id": 1001,
+      "lat": 40.7580,
+      "lon": -73.9855,
+      "tags": {
+        "highway": "bus_stop",
+        "name": "Central Station",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 1002,
+      "lat": 40.7590,
+      "lon": -73.9850,
+      "tags": {
+        "highway": "bus_stop",
+        "name": "Main Street",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 1003,
+      "lat": 40.7600,
+      "lon": -73.9845,
+      "tags": {
+        "highway": "bus_stop",
+        "name": "City Hall",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 1004,
+      "lat": 40.7610,
+      "lon": -73.9840,
+      "tags": {
+        "highway": "bus_stop",
+        "name": "Park Avenue",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 1005,
+      "lat": 40.7620,
+      "lon": -73.9835,
+      "tags": {
+        "highway": "bus_stop",
+        "name": "Shopping Center",
+        "public_transport": "platform"
+      }
+    },
+    {
+      "type": "node",
+      "id": 2001,
+      "lat": 40.7580,
+      "lon": -73.9855
+    },
+    {
+      "type": "node",
+      "id": 2002,
+      "lat": 40.7590,
+      "lon": -73.9850
+    },
+    {
+      "type": "node",
+      "id": 2003,
+      "lat": 40.7600,
+      "lon": -73.9845
+    },
+    {
+      "type": "node",
+      "id": 2004,
+      "lat": 40.7610,
+      "lon": -73.9840
+    },
+    {
+      "type": "node",
+      "id": 2005,
+      "lat": 40.7620,
+      "lon": -73.9835
+    },
+    {
+      "type": "way",
+      "id": 3001,
+      "nodes": [2001, 2002, 2003, 2004, 2005],
+      "tags": {
+        "highway": "primary",
+        "name": "Main Road"
+      }
+    }
+  ]
+}
