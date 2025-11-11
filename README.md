@@ -21,11 +21,15 @@ This program converts OpenStreetMap (OSM) data containing bus routes and bus sto
 - ✅ Creates configuration files for all bus stops
 - ✅ Supports custom origin points for coordinate conversion
 - ✅ Generates README with next steps and bus stop positions
+- ✨ **NEW: AI-Powered Automation** - Automatically generates 3D models, textures, and assets!
 
 ## Requirements
 
 - Python 3.6 or higher
 - No external dependencies for basic conversion
+- **For AI Automation (optional):**
+  - Blender 2.79 (for automatic 3D model generation)
+  - PIL/Pillow (optional, for better texture quality): `pip install Pillow`
 
 ## Installation
 
@@ -49,7 +53,27 @@ chmod +x osm_to_pbsu.py
 python osm_to_pbsu.py <osm_file.json> -m "Map Name" -r "Route Name"
 ```
 
-### Examples
+### ✨ AI-Powered Automation (NEW!)
+
+Run complete automation in one command:
+
+```bash
+# Convert OSM data AND automatically generate everything
+python osm_to_pbsu.py route_101.json -m "My_City" -r "Route_101" --run-ai-automation
+```
+
+This will automatically:
+- Convert OSM data to PBSU format
+- Generate 3D models using Blender
+- Create procedural textures
+- Generate destination displays
+- Create preview image
+
+**Your map will be ready to use in PBSU without manual work!**
+
+### Manual Step-by-Step
+
+If you prefer manual control or want to customize:
 
 ```bash
 # Convert a bus route from OSM data
@@ -70,6 +94,8 @@ python osm_to_pbsu.py route_101.json -m "My_City" -r "Route_101" -o ./my_pbsu_ma
 - `-o, --output` - Output directory (default: `output`)
 - `--origin-lat` - Origin latitude for coordinate conversion (default: first bus stop)
 - `--origin-lon` - Origin longitude for coordinate conversion (default: first bus stop)
+- `--run-ai-automation` - Automatically run AI automation after conversion (NEW!)
+- `--blender-path` - Path to Blender executable for AI automation (default: `blender`)
 
 ## Getting OSM Data
 
@@ -109,9 +135,30 @@ out skel qt;
 
 ## Complete Workflow
 
+### Option A: AI-Powered Automation (Recommended) ✨
+
+1. **Get OSM Data**: Use one of the methods above to download bus route data
+2. **Run with AI Automation**: 
+   ```bash
+   python osm_to_pbsu.py route.json -m "My_City" -r "Route_1" --run-ai-automation
+   ```
+3. **Done!** Your map is ready to test in PBSU
+
+### Option B: Semi-Automated (More Control)
+
 1. **Get OSM Data**: Use one of the methods above to download bus route data
 2. **Run Converter**: Execute `osm_to_pbsu.py` with your OSM data
-3. **Run Automation**: Execute `automate_post_conversion.py` to create templates and helpers
+3. **Run AI Automation**: Execute `ai_automation.py` to generate 3D models and assets
+   ```bash
+   python ai_automation.py output/My_City Route_1
+   ```
+4. **Test**: Copy to PBSU mods folder and test in the simulator
+
+### Option C: Manual (Traditional)
+
+1. **Get OSM Data**: Use one of the methods above to download bus route data
+2. **Run Converter**: Execute `osm_to_pbsu.py` with your OSM data
+3. **Run Post-Conversion**: Execute `automate_post_conversion.py` to create templates
 4. **Create 3D Models**: Use Blender 2.79 with the generated helper scripts
 5. **Customize Assets**: Replace placeholder textures and destination displays
 6. **Test**: Copy to PBSU mods folder and test in the simulator
@@ -140,7 +187,32 @@ output/
 
 ## Post-Conversion Automation
 
-After running the converter, use the **automation script** to prepare your map:
+After running the converter, you have three options:
+
+### ✨ Option 1: AI Automation (Fully Automated)
+
+Run complete AI-powered automation:
+
+```bash
+python ai_automation.py output/My_City Route_1
+```
+
+This will automatically:
+- ✅ Generate 3D models using Blender (roads, bus stops, buildings)
+- ✅ Create procedural textures (asphalt, concrete, walls, grass)
+- ✅ Generate destination displays with text
+- ✅ Create preview image
+- ✅ Export everything to PBSU-compatible format
+
+**Your map will be ready to use without any manual work!**
+
+**Requirements:**
+- Blender 2.79 must be installed and in PATH (or specify with `--blender-path`)
+- PIL/Pillow recommended for better quality: `pip install Pillow`
+
+### Option 2: Semi-Automated (Blender Helper Scripts)
+
+Use the traditional automation script to prepare templates and helper scripts:
 
 ```bash
 python automate_post_conversion.py output/My_City
@@ -164,6 +236,27 @@ The automation creates Python scripts for Blender 2.79:
 These scripts dramatically speed up the 3D modeling process!
 
 ## Next Steps After Conversion
+
+### If You Used AI Automation ✨
+
+**Congratulations!** Your map is already complete and ready to test:
+
+1. **Copy to PBSU**: 
+   - Copy the generated map folder to your PBSU installation
+   - Windows: `Documents/Proton Bus Mods/maps/`
+   - Android: `/Android/data/com.viamep.p.../files/maps/`
+
+2. **Test in PBSU**:
+   - Launch Proton Bus Simulator
+   - Select your map from Custom Maps
+   - Test the route and enjoy!
+
+3. **Optional Refinements**:
+   - You can manually refine the 3D models in Blender if desired
+   - Replace textures with higher quality versions
+   - Customize destination displays further
+
+### If You Used Manual/Semi-Automated Approach
 
 The converter and automation create the file structure and templates, but you still need to:
 
