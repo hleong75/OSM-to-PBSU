@@ -266,6 +266,34 @@ Typical times on a modern PC:
 - Process smaller sections separately
 - Increase timeout in ai_automation.py (modify line ~300)
 
+### Export Format Issues (3DS/OBJ Not Available)
+
+**Error**: `AttributeError: Calling operator "bpy.ops.export_scene.autodesk_3ds" error, could not be found`
+
+**Cause**: Blender export addons are not enabled or available
+
+**Solutions**:
+1. **Automatic Fallback**: The script now automatically tries multiple export formats:
+   - 3DS (preferred for PBSU)
+   - OBJ (common fallback)
+   - FBX (widely supported)
+   - glTF (modern standard)
+
+2. **Manual Conversion** (if non-3DS format is used):
+   - Open the exported file (e.g., .obj, .fbx, .gltf) in Blender GUI
+   - Go to File → Export → Autodesk 3DS (.3ds)
+   - Save with the same filename but .3ds extension
+   - Place in the appropriate tiles directory
+
+3. **Enable Export Addons Manually** (if needed):
+   - Open Blender
+   - Go to Edit → Preferences → Add-ons
+   - Search for "Import-Export: Autodesk 3DS format"
+   - Enable the checkbox
+   - Search for other export formats and enable as needed
+
+**Note**: The enhanced script now handles this automatically by enabling all export addons before export attempts.
+
 ### Poor Texture Quality
 
 **Issue**: Textures look too simple or low quality
