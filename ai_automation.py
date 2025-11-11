@@ -609,7 +609,6 @@ def main():
         }),
     ]
     
-    export_errors = []
     for format_name, extension, op_path, kwargs in export_attempts:
         try:
             print(f"Attempting {format_name} export...")
