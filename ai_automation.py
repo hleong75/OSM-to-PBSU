@@ -263,7 +263,7 @@ def create_passenger_spawns(name, location, count=5, spacing=0.6):
         bpy.ops.object.empty_add(type='PLAIN_AXES', location=spawn_loc)
         spawn = bpy.context.object
         spawn.name = f"{name}.{i:03d}"
-        spawn.empty_draw_size = 0.3
+        spawn.empty_display_size = 0.3
         spawns.append(spawn)
     
     return spawns
