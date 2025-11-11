@@ -6,7 +6,7 @@ Technical reference for the Proton Bus Simulator map format.
 
 PBSU maps consist of:
 - Configuration text files (.txt, .map.txt)
-- 3D models (.3ds format, created in Blender 2.79)
+- 3D models (.3ds format, created in Blender 2.8 or higher)
 - Textures (PNG format, max 2048x2048 for mobile)
 - Destination displays (image files)
 
@@ -247,7 +247,7 @@ See `ajuda - help/Tutorial Mods de mapas - Fase 3.pdf` for details.
 
 ## Tools Used
 
-- **Blender 2.79**: 3D modeling (required version!)
+- **Blender 2.8 or higher**: 3D modeling
 - **Modified 3DS exporter**: Supports longer names (>12 chars)
 - **Python 3**: For this converter
 - **OpenStreetMap**: Source of real-world data

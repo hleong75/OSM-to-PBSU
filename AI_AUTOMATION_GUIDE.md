@@ -93,8 +93,8 @@ python ai_automation.py output/My_City Route_1
 
 ### Essential
 - **Python 3.6+**: Already required for OSM conversion
-- **Blender 2.79**: Required for 3D model generation
-  - Download: https://download.blender.org/release/Blender2.79/
+- **Blender 2.8 or higher**: Required for 3D model generation
+  - Download: https://www.blender.org/download/
   - Must be accessible in PATH or specify with `--blender-path`
 
 ### Optional (Recommended)
@@ -110,7 +110,7 @@ Check if Blender is properly installed:
 
 ```bash
 blender --version
-# Should output: Blender 2.79 (sub X)
+# Should output: Blender 2.8 or higher
 ```
 
 If Blender is not in PATH, you can specify the full path:
@@ -249,7 +249,7 @@ Typical times on a modern PC:
 **Error**: `Error: Blender not found at 'blender'`
 
 **Solutions**:
-1. Install Blender 2.79
+1. Install Blender 2.8 or higher
 2. Add Blender to system PATH
 3. Use `--blender-path` parameter with full path
 
@@ -401,7 +401,7 @@ The AI generates a complete, working map, but you can:
 - Join PBSU Facebook groups
 
 ### Blender
-- Blender 2.79 documentation
+- Blender documentation (https://www.blender.org/support/)
 - YouTube tutorials for bus simulator mapping
 - Community forums
 

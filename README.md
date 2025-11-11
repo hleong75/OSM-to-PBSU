@@ -33,7 +33,7 @@ This program converts OpenStreetMap (OSM) data containing bus routes and bus sto
 - Python 3.6 or higher
 - No external dependencies for basic conversion
 - **For AI Automation (optional):**
-  - Blender 2.79 (for automatic 3D model generation)
+  - Blender 2.8 or higher (for automatic 3D model generation)
   - PIL/Pillow (optional, for better texture quality): `pip install Pillow`
   - Google Street View API key (optional, for realistic textures)
 
@@ -171,7 +171,7 @@ out skel qt;
 1. **Get OSM Data**: Use one of the methods above to download bus route data
 2. **Run Converter**: Execute `osm_to_pbsu.py` with your OSM data
 3. **Run Post-Conversion**: Execute `automate_post_conversion.py` to create templates
-4. **Create 3D Models**: Use Blender 2.79 with the generated helper scripts
+4. **Create 3D Models**: Use Blender 2.8 or higher with the generated helper scripts
 5. **Customize Assets**: Replace placeholder textures and destination displays
 6. **Test**: Copy to PBSU mods folder and test in the simulator
 
@@ -219,7 +219,7 @@ This will automatically:
 **Your map will be ready to use without any manual work!**
 
 **Requirements:**
-- Blender 2.79 must be installed and in PATH (or specify with `--blender-path`)
+- Blender 2.8 or higher must be installed and in PATH (or specify with `--blender-path`)
 - PIL/Pillow recommended for better quality: `pip install Pillow`
 
 ### Option 2: Semi-Automated (Blender Helper Scripts)
@@ -239,7 +239,7 @@ This automation script will:
 
 ### Blender Helper Scripts
 
-The automation creates Python scripts for Blender 2.79:
+The automation creates Python scripts for Blender 2.8+:
 
 1. **import_entrypoints.py** - Import bus stop positions as markers
 2. **create_busstop_markers.py** - Create trigger objects and passenger spawn points
@@ -272,7 +272,7 @@ These scripts dramatically speed up the 3D modeling process!
 
 The converter and automation create the file structure and templates, but you still need to:
 
-1. **Create 3D Models in Blender 2.79**:
+1. **Create 3D Models in Blender 2.8 or higher**:
    - Use the provided Blender helper scripts in `blender_scripts/`
    - Model roads, buildings, and scenery
    - Place bus stop objects at the coordinates from `entrypoints.txt`
