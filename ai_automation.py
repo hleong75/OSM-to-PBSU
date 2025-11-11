@@ -535,57 +535,103 @@ def main():
     if output_dir and not os.path.exists(output_dir):
         os.makedirs(output_dir)
     
-    # Try to enable 3DS addon if not already enabled
-    addon_name = 'io_scene_3ds'
-    try:
-        import addon_utils
-        addon_utils.enable(addon_name, default_set=True, persistent=True)
-        print(f"Enabled {addon_name} addon")
-    except Exception as e:
-        print(f"Warning: Could not enable {addon_name} addon: {e}")
+    # Enable export addons
+    print("Enabling export addons...")
+    import addon_utils
+    
+    # List of addons to try enabling
+    addons_to_enable = [
+        'io_scene_3ds',      # For .3ds export
+        'io_scene_obj',      # For .obj export (fallback)
+        'io_scene_fbx',      # For .fbx export (fallback)
+        'io_scene_gltf2',    # For .gltf export (fallback)
+    ]
+    
+    enabled_addons = []
+    for addon_name in addons_to_enable:
+        try:
+            # Check if addon is already enabled
+            is_enabled = addon_utils.check(addon_name)[1]
+            if not is_enabled:
+                addon_utils.enable(addon_name, default_set=True, persistent=True)
+                print(f"  ✓ Enabled {addon_name} addon")
+            else:
+                print(f"  ✓ {addon_name} addon already enabled")
+            enabled_addons.append(addon_name)
+        except Exception as e:
+            print(f"  ✗ Could not enable {addon_name} addon: {e}")
     
     # Try to export to 3DS format
     export_success = False
-    try:
-        bpy.ops.export_scene.autodesk_3ds(
-            filepath=output_file,
-            use_selection=True,
-            axis_forward='Y',
-            axis_up='Z'
-        )
-        export_success = True
-        print("Successfully exported to .3ds format")
-    except (AttributeError, RuntimeError) as e:
-        print(f"Warning: 3DS export failed: {e}")
-        print("Attempting fallback to OBJ format...")
-        
-        # Fallback to OBJ export
-        obj_file = output_file.replace('.3ds', '.obj')
+    export_format = None
+    actual_output_file = output_file
+    
+    # Try different export formats in order of preference
+    export_attempts = [
+        ('3DS', '.3ds', 'bpy.ops.export_scene.autodesk_3ds', {
+            'filepath': output_file,
+            'use_selection': True,
+            'axis_forward': 'Y',
+            'axis_up': 'Z'
+        }),
+        ('OBJ', '.obj', 'bpy.ops.export_scene.obj', {
+            'filepath': output_file.replace('.3ds', '.obj'),
+            'use_selection': True,
+            'axis_forward': 'Y',
+            'axis_up': 'Z'
+        }),
+        ('FBX', '.fbx', 'bpy.ops.export_scene.fbx', {
+            'filepath': output_file.replace('.3ds', '.fbx'),
+            'use_selection': True,
+            'axis_forward': 'Y',
+            'axis_up': 'Z'
+        }),
+        ('glTF', '.gltf', 'bpy.ops.export_scene.gltf', {
+            'filepath': output_file.replace('.3ds', '.gltf'),
+            'export_format': 'GLTF_SEPARATE'
+        }),
+    ]
+    
+    for format_name, extension, op_path, kwargs in export_attempts:
         try:
-            bpy.ops.export_scene.obj(
-                filepath=obj_file,
-                use_selection=True,
-                axis_forward='Y',
-                axis_up='Z'
-            )
+            print(f"Attempting {format_name} export...")
+            
+            # Get the operator
+            op_parts = op_path.split('.')
+            op = bpy.ops
+            for part in op_parts[1:]:  # Skip 'bpy'
+                op = getattr(op, part)
+            
+            # Call the export operator
+            op(**kwargs)
+            
             export_success = True
-            print(f"Successfully exported to OBJ format: {obj_file}")
-            print("NOTE: You will need to convert the .obj file to .3ds format manually")
-            print("You can use Blender's GUI or an online converter")
-        except Exception as obj_error:
-            print(f"Error: OBJ export also failed: {obj_error}")
-            raise
+            export_format = format_name
+            actual_output_file = kwargs['filepath']
+            print(f"✓ Successfully exported to {format_name} format: {actual_output_file}")
+            break
+            
+        except (AttributeError, RuntimeError, KeyError) as e:
+            print(f"✗ {format_name} export failed: {e}")
+            continue
     
     if export_success:
         print("="*60)
         print("✓ 3D Model generation complete!")
-        print(f"Exported to: {output_file}")
+        print(f"Format: {export_format}")
+        print(f"Exported to: {actual_output_file}")
+        if export_format != '3DS':
+            print("")
+            print("NOTE: PBSU requires .3ds format.")
+            print(f"You will need to convert the {export_format} file to .3ds format.")
+            print("You can use Blender's GUI: File > Export > Autodesk 3DS (.3ds)")
         print("="*60)
     else:
         print("="*60)
         print("✗ 3D Model generation failed!")
+        print("All export formats failed. Please ensure Blender export addons are available.")
         print("="*60)
-        raise RuntimeError("Export failed")
+        raise RuntimeError("All export attempts failed")
 
 if __name__ == "__main__":
     main()
