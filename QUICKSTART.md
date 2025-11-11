@@ -27,7 +27,7 @@ python osm_to_pbsu.py route.json -m "My_City" -r "Route_1" --run-ai-automation
 
 - Python 3.6 or higher
 - Internet connection (for fetching OSM data)
-- **Blender 2.79** (for AI automation) - Download: https://download.blender.org/release/Blender2.79/
+- **Blender 2.8 or higher** (for AI automation) - Download: https://www.blender.org/download/
 - Basic knowledge of your local bus routes
 
 **Optional but recommended:**
@@ -260,7 +260,7 @@ python -c "import json; print(json.load(open('your_file.json'))['elements'][:5])
 - Ask in PBSU Facebook groups (links in main README)
 
 **Blender not found error:**
-- Make sure Blender 2.79 is installed
+- Make sure Blender 2.8 or higher is installed
 - Add to PATH or use `--blender-path` parameter
 
 ## Success! What now?

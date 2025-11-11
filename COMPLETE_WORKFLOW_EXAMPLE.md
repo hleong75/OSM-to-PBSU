@@ -115,11 +115,11 @@ Generating post-conversion checklist...
 
 ### Step 4: Use Blender Helper Scripts ⭐ NEW
 
-Now open Blender 2.79 and use the generated scripts:
+Now open Blender 2.8 or higher and use the generated scripts:
 
 #### 4.1 Import Bus Stop Markers
 
-1. Open Blender 2.79
+1. Open Blender 2.8 or higher
 2. Open Text Editor panel
 3. Open `output/Manhattan_42nd/blender_scripts/import_entrypoints.py`
 4. Update the path at the bottom:
@@ -315,7 +315,7 @@ The automation creates `POST_CONVERSION_CHECKLIST.md` which tracks:
 ... etc
 
 ## 🔨 Manual Steps (You Need to Do)
-- [ ] Install Blender 2.79
+- [ ] Install Blender 2.8 or higher
 - [ ] Run import_entrypoints.py
 - [ ] Create 3D models
 ... etc

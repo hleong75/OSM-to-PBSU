@@ -28,7 +28,7 @@ A complete Python-based converter that transforms OpenStreetMap data into Proton
   - Creates placeholder textures (5 basic PNG files)
   - Generates destination display templates
   - Creates preview image template
-  - Generates Blender 2.79 helper scripts for 3D modeling
+  - Generates Blender 2.8+ helper scripts for 3D modeling
   - Creates comprehensive step-by-step checklist
 - **Blender Helper Scripts**:
   - `import_entrypoints.py` - Import bus stop positions as markers

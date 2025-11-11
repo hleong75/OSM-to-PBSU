@@ -708,7 +708,7 @@ This route was automatically generated from OpenStreetMap data using osm_to_pbsu
 
 ### Next Steps:
 
-1. **Create 3D Models in Blender 2.79:**
+1. **Create 3D Models in Blender 2.8 or higher:**
    - Model the road network and buildings
    - Place bus stop objects at the coordinates specified in entrypoints.txt
    - Each bus stop needs:
@@ -768,7 +768,7 @@ This route was automatically generated from OpenStreetMap data using osm_to_pbsu
         print("   - Create procedural textures")
         print("   - Generate destination displays")
         print("   - Create preview image")
-        print(f"\n3. OR manually create 3D models in Blender 2.79")
+        print(f"\n3. OR manually create 3D models in Blender 2.8 or higher")
         print(f"   See {readme_file} for detailed instructions")
 
 

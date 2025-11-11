@@ -11,7 +11,7 @@ This implementation adds comprehensive AI-powered automation to the OSM-to-PBSU 
 A complete automation system that generates all assets required for a PBSU map:
 
 #### 3D Model Generation
-- **Automated Blender scripting** - Runs Blender 2.79 in headless mode
+- **Automated Blender scripting** - Runs Blender 2.8+ in headless mode
 - **Road mesh creation** - Connects bus stops with proper geometry
 - **Sidewalk generation** - Creates sidewalks on both sides of roads
 - **Bus stop objects** - Trigger cubes and passenger spawn points
@@ -127,7 +127,7 @@ python ai_automation.py output/City Route_1 --skip-3d
 
 ### Essential
 - Python 3.6+
-- Blender 2.79 (for 3D generation)
+- Blender 2.8 or higher (for 3D generation)
 
 ### Optional
 - PIL/Pillow (better texture quality)

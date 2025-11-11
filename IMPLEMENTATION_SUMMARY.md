@@ -24,7 +24,7 @@ Created `automate_post_conversion.py` - a comprehensive automation script that:
 - **Preview Image**: Creates template preview.png (640x360, 16:9 ratio)
 
 ### 2. Generates Blender Helper Scripts
-Three Python scripts for Blender 2.79:
+Three Python scripts for Blender 2.8+:
 - **import_entrypoints.py**: Import bus stop positions as 3D markers
 - **create_busstop_markers.py**: Create trigger objects and passenger spawn points
 - **create_road_mesh.py**: Generate basic road mesh connecting bus stops
@@ -43,7 +43,7 @@ Implemented pure Python PNG generation (no PIL dependency required):
 - Fallback to PIL if available for better compression
 
 ### Blender Scripts
-Created Blender 2.79 compatible Python scripts that:
+Created Blender 2.8+ compatible Python scripts that:
 - Parse entrypoints.txt files
 - Convert Unity coordinates to Blender coordinates (Y-up vs Z-up)
 - Create properly named objects for PBSU compatibility
@@ -170,7 +170,7 @@ python osm_to_pbsu.py route.json -m "City_Name" -r "Route_1"
 python automate_post_conversion.py output/City_Name
 
 # Step 3: Use Blender helper scripts
-# Open Blender 2.79, run scripts from blender_scripts/
+# Open Blender 2.8 or higher, run scripts from blender_scripts/
 
 # Step 4: Customize and test
 # Replace placeholders, test in PBSU

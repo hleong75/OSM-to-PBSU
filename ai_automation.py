@@ -707,7 +707,7 @@ if __name__ == "__main__":
         except FileNotFoundError:
             logger.error(f"Blender not found at: {self.blender_path}")
             print(f"Error: Blender not found at '{self.blender_path}'")
-            print("Please install Blender 2.79 or specify the path with --blender-path")
+            print("Please install Blender 2.8 or higher or specify the path with --blender-path")
             return False
         except Exception as e:
             logger.error(f"Unexpected error during Blender execution: {e}")
@@ -1211,7 +1211,7 @@ This script automates:
 - Preview image generation
 
 Requirements:
-- Blender 2.79 (for 3D model generation)
+- Blender 2.8 or higher (for 3D model generation)
 - Python PIL/Pillow (optional, for better texture quality)
 
 NOTE: All API calls have been removed. This script works completely offline.

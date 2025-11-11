@@ -110,7 +110,7 @@ output/
 
 ## Next Steps
 
-1. **Create 3D Models**: Use Blender 2.79 to model your route
+1. **Create 3D Models**: Use Blender 2.8 or higher to model your route
 2. **Add Textures**: Place texture files in the textures/ folder
 3. **Configure Destinations**: Create destination display images
 4. **Test**: Copy to PBSU mods folder and test
@@ -143,4 +143,4 @@ python -c "import json; data=json.load(open('your_file.json')); nodes=[e for e i
 - [OpenStreetMap](https://www.openstreetmap.org) - Get map data
 - [Overpass Turbo](https://overpass-turbo.eu/) - Query OSM data
 - [PBSU Mods](http://busmods.com) - Example PBSU mods
-- [Blender 2.79](https://download.blender.org/release/Blender2.79/) - Required for 3D modeling
+- [Blender](https://www.blender.org/download/) - Required for 3D modeling (2.8 or higher)
