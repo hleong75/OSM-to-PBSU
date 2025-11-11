@@ -5,9 +5,11 @@ Automates 3D modeling, texture creation, and asset generation without human inte
 
 This module provides intelligent automation for:
 1. Automatic 3D model generation from OSM data using Blender
-2. Procedural/AI texture generation
+2. Procedural texture generation (no APIs)
 3. Automatic destination display creation
 4. Automatic preview image rendering
+
+NOTE: All API calls have been removed. This module works completely offline.
 """
 
 import os
@@ -17,6 +19,18 @@ import subprocess
 import argparse
 from typing import Dict, List, Tuple, Optional
 import math
+import logging
+
+# Configure logging
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler('ai_automation.log'),
+        logging.StreamHandler(sys.stdout)
+    ]
+)
+logger = logging.getLogger(__name__)
 
 
 class AIAutomation:
@@ -33,6 +47,9 @@ class AIAutomation:
         self.map_dir = map_dir
         self.map_name = os.path.basename(map_dir)
         self.blender_path = blender_path
+        logger.info(f"Initialized AIAutomation for map: {self.map_name}")
+        logger.info(f"Map directory: {map_dir}")
+        logger.info(f"Blender path: {blender_path}")
         
     def generate_blender_automation_script(self) -> str:
         """Generate comprehensive Blender automation script"""
@@ -535,6 +552,10 @@ if __name__ == "__main__":
     
     def run_blender_automation(self, route_name: str) -> bool:
         """Run Blender in headless mode to generate 3D models"""
+        logger.info("="*60)
+        logger.info("Starting Blender Automation")
+        logger.info("="*60)
+        
         print(f"\n{'='*60}")
         print("Automated 3D Model Generation with Geographic Data")
         print(f"{'='*60}\n")
@@ -543,35 +564,61 @@ if __name__ == "__main__":
         tiles_dir = os.path.join(self.map_dir, 'tiles', route_name)
         entrypoints_file = os.path.join(tiles_dir, 'entrypoints.txt')
         
+        logger.info(f"Looking for entrypoints file: {entrypoints_file}")
         if not os.path.exists(entrypoints_file):
+            logger.error(f"Entrypoints file not found: {entrypoints_file}")
             print(f"Error: Entrypoints file not found: {entrypoints_file}")
             return False
+        logger.info("Entrypoints file found")
         
         # Find geographic data file
         geo_data_file = os.path.join(self.map_dir, 'geographic_data.json')
+        logger.info(f"Looking for geographic data file: {geo_data_file}")
         if not os.path.exists(geo_data_file):
+            logger.warning("Geographic data file not found, using basic generation")
             print("Warning: Geographic data file not found, using basic generation")
             geo_data_file = ""
         else:
+            logger.info(f"Using geographic data: {geo_data_file}")
             print(f"Using geographic data: {geo_data_file}")
+            # Log some stats from the geo data
+            try:
+                with open(geo_data_file, 'r') as f:
+                    geo_data = json.load(f)
+                logger.info(f"  - Buildings: {len(geo_data.get('buildings', []))}")
+                logger.info(f"  - Elevations: {len(geo_data.get('elevations', {}))}")
+                logger.info(f"  - Bus stops: {len(geo_data.get('bus_stops', []))}")
+            except Exception as e:
+                logger.warning(f"Could not read geographic data stats: {e}")
         
         # Output 3ds file
         output_3ds = os.path.join(tiles_dir, f"{route_name}_auto.3ds")
+        logger.info(f"Output 3DS file will be: {output_3ds}")
         
         # Verify output directory exists
         if not os.path.exists(tiles_dir):
+            logger.error(f"Output directory does not exist: {tiles_dir}")
             print(f"Error: Output directory does not exist: {tiles_dir}")
             return False
+        logger.info(f"Output directory verified: {tiles_dir}")
         
         # Create temporary Blender script
         script_path = os.path.join(self.map_dir, 'temp_blender_script.py')
+        logger.info(f"Creating temporary Blender script: {script_path}")
         script_content = self.generate_blender_automation_script()
         
-        with open(script_path, 'w', encoding='utf-8') as f:
-            f.write(script_content)
+        try:
+            with open(script_path, 'w', encoding='utf-8') as f:
+                f.write(script_content)
+            logger.info(f"Blender script created successfully ({len(script_content)} bytes)")
+        except Exception as e:
+            logger.error(f"Failed to create Blender script: {e}")
+            print(f"Error: Failed to create Blender script: {e}")
+            return False
         
         print(f"Running Blender automation...")
         print(f"This may take several minutes...\n")
+        logger.info("Starting Blender execution...")
         
         try:
             # Run Blender in background mode
@@ -585,6 +632,9 @@ if __name__ == "__main__":
                 geo_data_file
             ]
             
+            logger.info(f"Blender command: {' '.join(cmd)}")
+            logger.info("Executing Blender (timeout: 300 seconds)...")
+            
             result = subprocess.run(
                 cmd,
                 capture_output=True,
@@ -592,152 +642,116 @@ if __name__ == "__main__":
                 timeout=300  # 5 minute timeout
             )
             
+            logger.info(f"Blender process finished with return code: {result.returncode}")
+            
+            # Log Blender stdout
+            if result.stdout:
+                logger.debug("Blender stdout:")
+                for line in result.stdout.split('\n'):
+                    logger.debug(f"  {line}")
+            
+            # Log Blender stderr
+            if result.stderr:
+                logger.debug("Blender stderr:")
+                for line in result.stderr.split('\n'):
+                    logger.debug(f"  {line}")
+            
             if result.returncode == 0:
+                logger.info("Blender process completed successfully")
                 # Validate that 3DS file was created
                 if os.path.exists(output_3ds):
                     file_size = os.path.getsize(output_3ds)
+                    logger.info(f"3DS file created: {output_3ds}")
+                    logger.info(f"3DS file size: {file_size} bytes ({file_size / 1024:.2f} KB)")
+                    
                     if file_size > 0:
                         print("✓ 3D model generated successfully!")
                         print(f"Output: {output_3ds}")
                         print(f"File size: {file_size / 1024:.2f} KB")
+                        logger.info("3D model validation passed")
                     else:
+                        logger.error("3DS file is empty (0 bytes)")
                         print("Error: 3DS file was created but is empty")
+                        print("\nBlender output (last 50 lines):")
+                        print('\n'.join(result.stdout.split('\n')[-50:]))
                         return False
                 else:
+                    logger.error("3DS file was not created")
                     print("Error: 3DS file was not created")
-                    print("Blender output:")
-                    print(result.stdout)
+                    print("\nBlender output (last 50 lines):")
+                    print('\n'.join(result.stdout.split('\n')[-50:]))
+                    if result.stderr:
+                        print("\nBlender errors:")
+                        print(result.stderr)
                     return False
                 
                 # Clean up temp script
                 if os.path.exists(script_path):
                     os.remove(script_path)
+                    logger.info("Cleaned up temporary Blender script")
                 
                 return True
             else:
+                logger.error(f"Blender process failed with return code: {result.returncode}")
                 print(f"Error running Blender:")
                 print(result.stderr)
                 if result.stdout:
-                    print("Blender output:")
-                    print(result.stdout)
+                    print("\nBlender output (last 50 lines):")
+                    print('\n'.join(result.stdout.split('\n')[-50:]))
                 return False
                 
         except subprocess.TimeoutExpired:
+            logger.error("Blender execution timed out after 300 seconds")
             print("Error: Blender execution timed out")
             return False
         except FileNotFoundError:
+            logger.error(f"Blender not found at: {self.blender_path}")
             print(f"Error: Blender not found at '{self.blender_path}'")
             print("Please install Blender 2.79 or specify the path with --blender-path")
             return False
         except Exception as e:
+            logger.error(f"Unexpected error during Blender execution: {e}")
+            import traceback
+            logger.error(traceback.format_exc())
             print(f"Error: {e}")
             return False
     
     def fetch_street_view_textures(self, api_key: Optional[str] = None) -> bool:
         """
-        Fetch Street View images for building textures
+        [DEPRECATED] Fetch Street View images for building textures
         
-        Note: Requires Google Street View Static API key.
-        Falls back to procedural generation if key is not provided.
+        This method has been disabled as API calls are no longer allowed.
+        Use procedural texture generation instead.
         
         Args:
-            api_key: Google Street View Static API key
+            api_key: Not used (kept for compatibility)
+        
+        Returns:
+            False (always, as this feature is disabled)
         """
-        if not api_key:
-            print("\nNote: Google Street View API key not provided.")
-            print("Skipping Street View texture fetching.")
-            print("Using procedural texture generation instead.")
-            return False
-        
-        print(f"\n{'='*60}")
-        print("Fetching Street View Textures")
-        print(f"{'='*60}\n")
-        
-        textures_dir = os.path.join(self.map_dir, 'textures', 'streetview')
-        os.makedirs(textures_dir, exist_ok=True)
-        
-        # Load geographic data
-        geo_data_file = os.path.join(self.map_dir, 'geographic_data.json')
-        if not os.path.exists(geo_data_file):
-            print("No geographic data found")
-            return False
-        
-        try:
-            with open(geo_data_file, 'r', encoding='utf-8') as f:
-                geo_data = json.load(f)
-        except Exception as e:
-            print(f"Error loading geographic data: {e}")
-            return False
-        
-        bus_stops = geo_data.get('bus_stops', [])
-        origin = geo_data.get('origin', {})
-        
-        if not bus_stops:
-            print("No bus stops found in geographic data")
-            return False
-        
-        print(f"Fetching Street View images for {len(bus_stops)} bus stops...")
-        
-        try:
-            import urllib.request
-            import urllib.parse
-            
-            success_count = 0
-            for i, stop in enumerate(bus_stops[:5]):  # Limit to first 5 to avoid API quota
-                lat = stop.get('lat')
-                lon = stop.get('lon')
-                name = stop.get('internal_name', f'stop_{i}')
-                
-                if not lat or not lon:
-                    continue
-                
-                # Street View Static API URL
-                params = {
-                    'size': '640x640',
-                    'location': f'{lat},{lon}',
-                    'heading': '0',
-                    'pitch': '0',
-                    'fov': '90',
-                    'key': api_key
-                }
-                
-                url = f"https://maps.googleapis.com/maps/api/streetview?{urllib.parse.urlencode(params)}"
-                output_path = os.path.join(textures_dir, f'{name}_streetview.jpg')
-                
-                try:
-                    urllib.request.urlretrieve(url, output_path)
-                    if os.path.exists(output_path) and os.path.getsize(output_path) > 1000:
-                        print(f"✓ Fetched: {name}")
-                        success_count += 1
-                    else:
-                        print(f"✗ Failed: {name} (no image available)")
-                        if os.path.exists(output_path):
-                            os.remove(output_path)
-                except Exception as e:
-                    print(f"✗ Failed: {name} - {e}")
-            
-            print(f"\n✓ Street View texture fetch complete!")
-            print(f"Successfully fetched {success_count}/{len(bus_stops[:5])} images")
-            return success_count > 0
-            
-        except ImportError:
-            print("Error: Required modules not available")
-            return False
+        logger.info("Street View texture fetching called but is disabled (no API calls allowed)")
+        print("\nNote: Street View API texture fetching is disabled.")
+        print("Using procedural texture generation instead.")
+        return False
     
     def generate_procedural_textures(self) -> bool:
         """Generate procedural textures using Python imaging"""
+        logger.info("Starting procedural texture generation")
         print(f"\n{'='*60}")
         print("Procedural Texture Generation")
         print(f"{'='*60}\n")
         
         textures_dir = os.path.join(self.map_dir, 'textures')
         os.makedirs(textures_dir, exist_ok=True)
+        logger.info(f"Textures directory: {textures_dir}")
         
         try:
             from PIL import Image, ImageDraw, ImageFilter
             has_pil = True
+            logger.info("PIL/Pillow available for texture generation")
         except ImportError:
             has_pil = False
+            logger.warning("PIL/Pillow not available, using basic texture generation")
             print("PIL/Pillow not available, using basic texture generation")
         
         textures_to_generate = {
@@ -748,15 +762,20 @@ if __name__ == "__main__":
             'sidewalk.png': self._generate_sidewalk_texture,
         }
         
+        logger.info(f"Generating {len(textures_to_generate)} textures...")
         for filename, generator in textures_to_generate.items():
             filepath = os.path.join(textures_dir, filename)
             try:
+                logger.debug(f"Generating {filename}...")
                 generator(filepath, has_pil)
                 print(f"✓ Generated: {filename}")
+                logger.info(f"Successfully generated: {filename}")
             except Exception as e:
+                logger.error(f"Failed to generate {filename}: {e}")
                 print(f"✗ Failed to generate {filename}: {e}")
         
         print(f"\n✓ Texture generation complete!")
+        logger.info("Procedural texture generation completed")
         return True
     
     def _generate_asphalt_texture(self, filepath: str, has_pil: bool) -> None:
@@ -1079,49 +1098,88 @@ The map is ready to use in Proton Bus Simulator!
             with open(readme_path, 'w', encoding='utf-8') as f:
                 f.write(content)
     
-    def run_full_automation(self, route_name: str, streetview_api_key: Optional[str] = None) -> bool:
-        """Run complete AI automation pipeline"""
+    def run_full_automation(self, route_name: str, api_key: Optional[str] = None) -> bool:
+        """
+        Run complete AI automation pipeline
+        
+        Args:
+            route_name: Name of the route
+            api_key: Not used (kept for compatibility, API calls are disabled)
+        
+        Returns:
+            True if all steps completed successfully, False otherwise
+        """
+        logger.info("="*60)
+        logger.info("Starting Full AI Automation Pipeline")
+        logger.info("="*60)
+        logger.info(f"Map: {self.map_name}")
+        logger.info(f"Route: {route_name}")
+        
         print(f"\n{'='*60}")
         print(f"AI-Powered Full Automation for: {self.map_name}")
         print(f"Route: {route_name}")
         print(f"{'='*60}\n")
         
+        if api_key:
+            logger.warning("API key provided but API calls are disabled")
+            print("Note: API calls are disabled, ignoring provided API key")
+        
         success = True
         
         # 1. Generate 3D models
+        logger.info("Step 1: Generating 3D models with Blender...")
         if not self.run_blender_automation(route_name):
+            logger.error("3D model generation failed")
             print("Warning: 3D model generation failed")
             success = False
+        else:
+            logger.info("3D model generation completed successfully")
         
-        # 2. Try to fetch Street View textures if API key provided
-        if streetview_api_key:
-            self.fetch_street_view_textures(streetview_api_key)
+        # 2. Street View textures disabled (no API calls)
+        logger.info("Step 2: Street View textures skipped (API calls disabled)")
         
-        # 3. Generate procedural textures (as backup or supplement)
+        # 3. Generate procedural textures
+        logger.info("Step 3: Generating procedural textures...")
         if not self.generate_procedural_textures():
+            logger.error("Texture generation failed")
             print("Warning: Texture generation failed")
             success = False
+        else:
+            logger.info("Texture generation completed successfully")
         
         # 4. Generate destination displays
+        logger.info("Step 4: Generating destination displays...")
         if not self.generate_destination_displays(route_name):
+            logger.error("Destination display generation failed")
             print("Warning: Destination display generation failed")
             success = False
+        else:
+            logger.info("Destination display generation completed successfully")
         
         # 5. Generate preview image
+        logger.info("Step 5: Generating preview image...")
         if not self.generate_preview_image(route_name):
+            logger.error("Preview image generation failed")
             print("Warning: Preview image generation failed")
             success = False
+        else:
+            logger.info("Preview image generation completed successfully")
         
         # 6. Update README
+        logger.info("Step 6: Updating README...")
         self.update_readme(route_name)
+        logger.info("README updated")
         
+        logger.info("="*60)
         print(f"\n{'='*60}")
         if success:
+            logger.info("AI Automation Pipeline Completed Successfully!")
             print("✓ AI Automation Complete!")
             print(f"{'='*60}\n")
             print("Your map is ready to use in Proton Bus Simulator!")
             print(f"Location: {self.map_dir}")
         else:
+            logger.warning("AI Automation completed with warnings")
             print("⚠ AI Automation completed with warnings")
             print(f"{'='*60}\n")
             print("Some features may need manual adjustment")
@@ -1131,7 +1189,7 @@ The map is ready to use in Proton Bus Simulator!
 
 def main():
     parser = argparse.ArgumentParser(
-        description='AI-powered automation for complete PBSU map generation',
+        description='AI-powered automation for complete PBSU map generation (NO API CALLS)',
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog='''
 Examples:
@@ -1141,22 +1199,22 @@ Examples:
   # Specify Blender path
   python ai_automation.py output/My_City Route_1 --blender-path /path/to/blender
   
-  # Use Google Street View for realistic textures
-  python ai_automation.py output/My_City Route_1 --streetview-api-key YOUR_API_KEY
+  # Skip 3D generation (textures and displays only)
+  python ai_automation.py output/My_City Route_1 --skip-3d
   
 This script automates:
 - 3D model generation from OSM data (using Blender)
 - Building heights from real OSM data
 - Terrain elevation from geographic data
-- Procedural texture generation
-- Optional Street View texture fetching
+- Procedural texture generation (no APIs)
 - Destination display creation
 - Preview image generation
 
 Requirements:
 - Blender 2.79 (for 3D model generation)
 - Python PIL/Pillow (optional, for better texture quality)
-- Google Street View API key (optional, for realistic textures)
+
+NOTE: All API calls have been removed. This script works completely offline.
         '''
     )
     
@@ -1164,36 +1222,52 @@ Requirements:
     parser.add_argument('route_name', help='Route name (e.g., Route_1)')
     parser.add_argument('--blender-path', default='blender',
                        help='Path to Blender executable (default: "blender" in PATH)')
-    parser.add_argument('--streetview-api-key', default=None,
-                       help='Google Street View Static API key for realistic textures')
     parser.add_argument('--skip-3d', action='store_true',
                        help='Skip 3D model generation')
     
     args = parser.parse_args()
     
+    logger.info("="*60)
+    logger.info("AI Automation Script Started")
+    logger.info("="*60)
+    logger.info(f"Map directory: {args.map_dir}")
+    logger.info(f"Route name: {args.route_name}")
+    logger.info(f"Blender path: {args.blender_path}")
+    logger.info(f"Skip 3D: {args.skip_3d}")
+    
     if not os.path.exists(args.map_dir):
+        logger.error(f"Map directory not found: {args.map_dir}")
         print(f"Error: Map directory not found: {args.map_dir}")
         sys.exit(1)
     
+    logger.info("Map directory verified")
     automator = AIAutomation(args.map_dir, args.blender_path)
     
     try:
         if args.skip_3d:
+            logger.info("Running partial automation (skipping 3D generation)")
             # Run without 3D generation
-            if args.streetview_api_key:
-                automator.fetch_street_view_textures(args.streetview_api_key)
             automator.generate_procedural_textures()
             automator.generate_destination_displays(args.route_name)
             automator.generate_preview_image(args.route_name)
             automator.update_readme(args.route_name)
+            logger.info("Partial automation completed")
         else:
+            logger.info("Running full automation")
             # Full automation
-            success = automator.run_full_automation(args.route_name, args.streetview_api_key)
+            success = automator.run_full_automation(args.route_name, api_key=None)
+            if success:
+                logger.info("Full automation completed successfully")
+            else:
+                logger.warning("Full automation completed with warnings")
             sys.exit(0 if success else 1)
     
     except Exception as e:
-        print(f"Error during automation: {e}")
+        logger.error(f"Error during automation: {e}")
+        logger.error("Stack trace:")
         import traceback
+        logger.error(traceback.format_exc())
+        print(f"Error during automation: {e}")
         traceback.print_exc()
         sys.exit(1)
 
