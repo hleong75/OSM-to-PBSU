@@ -50,3 +50,108 @@
 2025-11-11 16:21:28,857 - __main__ - INFO - OSM to PBSU Conversion Complete!
 2025-11-11 16:21:28,857 - __main__ - INFO - Output directory: output/Test_City
 2025-11-11 16:21:28,858 - __main__ - INFO - ============================================================
+2025-11-11 16:23:15,892 - osm_to_pbsu - INFO - Initialized OSMToPBSUConverter with output directory: /tmp/tmpd3kkf50g
+2025-11-11 16:23:15,892 - osm_to_pbsu - INFO - Starting to parse OSM JSON data
+2025-11-11 16:23:15,892 - osm_to_pbsu - INFO - Found 3 elements in OSM data
+2025-11-11 16:23:15,892 - osm_to_pbsu - INFO - First pass complete: 2 nodes, 0 bus stops found
+2025-11-11 16:23:15,892 - osm_to_pbsu - INFO - Starting second pass: collecting ways and relations
+2025-11-11 16:23:15,892 - osm_to_pbsu - INFO - Second pass complete: 0 road segments, 1 buildings found
+2025-11-11 16:23:15,892 - osm_to_pbsu - INFO - Initialized OSMToPBSUConverter with output directory: /tmp/tmp4xuiku32
+2025-11-11 16:23:15,892 - osm_to_pbsu - INFO - Starting to parse OSM JSON data
+2025-11-11 16:23:15,893 - osm_to_pbsu - INFO - Found 2 elements in OSM data
+2025-11-11 16:23:15,893 - osm_to_pbsu - INFO - First pass complete: 2 nodes, 2 bus stops found
+2025-11-11 16:23:15,893 - osm_to_pbsu - INFO - Starting second pass: collecting ways and relations
+2025-11-11 16:23:15,893 - osm_to_pbsu - INFO - Second pass complete: 0 road segments, 0 buildings found
+2025-11-11 16:23:15,893 - osm_to_pbsu - INFO - Initialized OSMToPBSUConverter with output directory: /tmp/tmp7vrqe1d1
+2025-11-11 16:23:15,893 - osm_to_pbsu - INFO - Starting to parse OSM JSON data
+2025-11-11 16:23:15,893 - osm_to_pbsu - INFO - Found 3 elements in OSM data
+2025-11-11 16:23:15,893 - osm_to_pbsu - INFO - First pass complete: 2 nodes, 0 bus stops found
+2025-11-11 16:23:15,893 - osm_to_pbsu - INFO - Starting second pass: collecting ways and relations
+2025-11-11 16:23:15,893 - osm_to_pbsu - INFO - Second pass complete: 1 road segments, 0 buildings found
+2025-11-11 16:23:15,894 - osm_to_pbsu - INFO - Initialized OSMToPBSUConverter with output directory: output
+2025-11-11 16:23:15,894 - osm_to_pbsu - INFO - Initialized OSMToPBSUConverter with output directory: output
+2025-11-11 16:23:15,894 - osm_to_pbsu - INFO - Initialized OSMToPBSUConverter with output directory: output
+2025-11-11 16:23:15,894 - osm_to_pbsu - INFO - Initialized OSMToPBSUConverter with output directory: output
+2025-11-11 16:23:15,894 - osm_to_pbsu - INFO - Initialized OSMToPBSUConverter with output directory: output
+2025-11-11 16:23:15,895 - osm_to_pbsu - INFO - Initialized OSMToPBSUConverter with output directory: output
+2025-11-11 16:23:15,895 - osm_to_pbsu - INFO - Initialized OSMToPBSUConverter with output directory: /tmp/tmpcbladhq6
+2025-11-11 16:23:15,895 - osm_to_pbsu - INFO - Initialized OSMToPBSUConverter with output directory: /tmp/tmpdutt47d_
+2025-11-11 16:23:15,895 - osm_to_pbsu - INFO - Initialized OSMToPBSUConverter with output directory: /tmp/tmpwunv1i6o
+2025-11-11 16:23:15,896 - osm_to_pbsu - INFO - Initialized OSMToPBSUConverter with output directory: /tmp/tmpp6j0ldtn
+2025-11-11 16:23:15,896 - osm_to_pbsu - INFO - Initialized OSMToPBSUConverter with output directory: output
+2025-11-11 16:23:15,897 - osm_to_pbsu - INFO - Elevation data requested for 2 locations
+2025-11-11 16:23:15,897 - osm_to_pbsu - INFO - API calls disabled - using default elevation of 0m
+2025-11-11 16:23:15,897 - osm_to_pbsu - INFO - For accurate elevation, provide LiDAR HD data file
+2025-11-11 16:23:15,897 - osm_to_pbsu - INFO - Initialized OSMToPBSUConverter with output directory: output
+2025-11-11 16:23:15,897 - osm_to_pbsu - INFO - Loading LiDAR HD elevation data from: /nonexistent/file.tif
+2025-11-11 16:23:15,897 - osm_to_pbsu - ERROR - LiDAR file not found: /nonexistent/file.tif
+2025-11-11 16:23:15,897 - osm_to_pbsu - INFO - Initialized OSMToPBSUConverter with output directory: /tmp/tmp5q_8iv68
+2025-11-11 16:23:15,897 - osm_to_pbsu - INFO - ============================================================
+2025-11-11 16:23:15,897 - osm_to_pbsu - INFO - Starting OSM to PBSU Conversion
+2025-11-11 16:23:15,897 - osm_to_pbsu - INFO - ============================================================
+2025-11-11 16:23:15,897 - osm_to_pbsu - INFO - OSM file: /tmp/tmp5q_8iv68/test_route.json
+2025-11-11 16:23:15,898 - osm_to_pbsu - INFO - Map name: TestMap
+2025-11-11 16:23:15,898 - osm_to_pbsu - INFO - Route name: TestRoute
+2025-11-11 16:23:15,898 - osm_to_pbsu - INFO - Loading OSM data from /tmp/tmp5q_8iv68/test_route.json...
+2025-11-11 16:23:15,898 - osm_to_pbsu - INFO - Successfully loaded OSM JSON data
+2025-11-11 16:23:15,898 - osm_to_pbsu - INFO - Parsing OSM data...
+2025-11-11 16:23:15,898 - osm_to_pbsu - INFO - Starting to parse OSM JSON data
+2025-11-11 16:23:15,898 - osm_to_pbsu - INFO - Found 5 elements in OSM data
+2025-11-11 16:23:15,898 - osm_to_pbsu - INFO - First pass complete: 4 nodes, 2 bus stops found
+2025-11-11 16:23:15,898 - osm_to_pbsu - INFO - Starting second pass: collecting ways and relations
+2025-11-11 16:23:15,898 - osm_to_pbsu - INFO - Second pass complete: 1 road segments, 0 buildings found
+2025-11-11 16:23:15,898 - osm_to_pbsu - INFO - Parsing complete:
+2025-11-11 16:23:15,898 - osm_to_pbsu - INFO -   - Bus stops: 2
+2025-11-11 16:23:15,898 - osm_to_pbsu - INFO -   - Road segments: 1
+2025-11-11 16:23:15,898 - osm_to_pbsu - INFO -   - Buildings: 0
+2025-11-11 16:23:15,898 - osm_to_pbsu - INFO -   - Buildings with height data: 0
+2025-11-11 16:23:15,898 - osm_to_pbsu - INFO - Using provided origin coordinates: (48.8566, 2.3522)
+2025-11-11 16:23:15,898 - osm_to_pbsu - INFO - Creating directory structure...
+2025-11-11 16:23:15,898 - osm_to_pbsu - INFO - Created directories:
+2025-11-11 16:23:15,899 - osm_to_pbsu - INFO -   - Base: /tmp/tmp5q_8iv68/TestMap
+2025-11-11 16:23:15,899 - osm_to_pbsu - INFO -   - Tiles: /tmp/tmp5q_8iv68/TestMap/tiles/TestRoute
+2025-11-11 16:23:15,899 - osm_to_pbsu - INFO -   - Bus stops: /tmp/tmp5q_8iv68/TestMap/tiles/TestRoute/aipeople/busstops
+2025-11-11 16:23:15,899 - osm_to_pbsu - INFO - Generating PBSU files...
+2025-11-11 16:23:15,899 - osm_to_pbsu - INFO - Created main map file: /tmp/tmp5q_8iv68/TestMap.map.txt
+2025-11-11 16:23:15,899 - osm_to_pbsu - INFO - Created entrypoints list: /tmp/tmp5q_8iv68/TestMap/tiles/TestRoute/entrypoints_list.txt
+2025-11-11 16:23:15,899 - osm_to_pbsu - INFO - Created entrypoints file: /tmp/tmp5q_8iv68/TestMap/tiles/TestRoute/entrypoints.txt
+2025-11-11 16:23:15,899 - osm_to_pbsu - INFO - Created 2 bus stop configuration files
+2025-11-11 16:23:15,899 - osm_to_pbsu - INFO - Fetching elevation data...
+2025-11-11 16:23:15,899 - osm_to_pbsu - INFO - Prepared 3 locations for elevation lookup
+2025-11-11 16:23:15,899 - osm_to_pbsu - INFO - No LiDAR file provided, using default elevation of 0m
+2025-11-11 16:23:15,899 - osm_to_pbsu - INFO - Elevation data requested for 3 locations
+2025-11-11 16:23:15,899 - osm_to_pbsu - INFO - API calls disabled - using default elevation of 0m
+2025-11-11 16:23:15,899 - osm_to_pbsu - INFO - For accurate elevation, provide LiDAR HD data file
+2025-11-11 16:23:15,900 - osm_to_pbsu - INFO - Elevation data ready for 2 points
+2025-11-11 16:23:15,900 - osm_to_pbsu - INFO - Exporting geographic data...
+2025-11-11 16:23:15,900 - osm_to_pbsu - INFO - Converting building data to Unity coordinates...
+2025-11-11 16:23:15,900 - osm_to_pbsu - INFO - Converted 0 buildings
+2025-11-11 16:23:15,900 - osm_to_pbsu - INFO - Adding elevation data to geographic export...
+2025-11-11 16:23:15,900 - osm_to_pbsu - INFO - Added 2 elevation points
+2025-11-11 16:23:15,900 - osm_to_pbsu - INFO - Adding bus stop data to geographic export...
+2025-11-11 16:23:15,900 - osm_to_pbsu - INFO - Added 2 bus stops
+2025-11-11 16:23:15,900 - osm_to_pbsu - INFO - Successfully saved geographic data to /tmp/tmp5q_8iv68/TestMap/geographic_data.json
+2025-11-11 16:23:15,900 - osm_to_pbsu - INFO - Creating README file...
+2025-11-11 16:23:15,900 - osm_to_pbsu - INFO - Created README file: /tmp/tmp5q_8iv68/TestMap/README.md
+2025-11-11 16:23:15,900 - osm_to_pbsu - INFO - ============================================================
+2025-11-11 16:23:15,900 - osm_to_pbsu - INFO - OSM to PBSU Conversion Complete!
+2025-11-11 16:23:15,900 - osm_to_pbsu - INFO - Output directory: /tmp/tmp5q_8iv68/TestMap
+2025-11-11 16:23:15,900 - osm_to_pbsu - INFO - ============================================================
+2025-11-11 16:23:15,901 - osm_to_pbsu - INFO - Initialized OSMToPBSUConverter with output directory: /tmp/tmpb5b5fj21
+2025-11-11 16:23:15,901 - osm_to_pbsu - INFO - ============================================================
+2025-11-11 16:23:15,901 - osm_to_pbsu - INFO - Starting OSM to PBSU Conversion
+2025-11-11 16:23:15,902 - osm_to_pbsu - INFO - ============================================================
+2025-11-11 16:23:15,902 - osm_to_pbsu - INFO - OSM file: /tmp/tmpb5b5fj21/invalid.json
+2025-11-11 16:23:15,902 - osm_to_pbsu - INFO - Map name: TestMap
+2025-11-11 16:23:15,902 - osm_to_pbsu - INFO - Route name: TestRoute
+2025-11-11 16:23:15,902 - osm_to_pbsu - INFO - Loading OSM data from /tmp/tmpb5b5fj21/invalid.json...
+2025-11-11 16:23:15,902 - osm_to_pbsu - ERROR - Failed to load OSM file: Expecting value: line 1 column 1 (char 0)
+2025-11-11 16:23:15,902 - osm_to_pbsu - INFO - Initialized OSMToPBSUConverter with output directory: /tmp/tmp3_18dsor
+2025-11-11 16:23:15,902 - osm_to_pbsu - INFO - ============================================================
+2025-11-11 16:23:15,902 - osm_to_pbsu - INFO - Starting OSM to PBSU Conversion
+2025-11-11 16:23:15,902 - osm_to_pbsu - INFO - ============================================================
+2025-11-11 16:23:15,902 - osm_to_pbsu - INFO - OSM file: /nonexistent/file.json
+2025-11-11 16:23:15,902 - osm_to_pbsu - INFO - Map name: TestMap
+2025-11-11 16:23:15,902 - osm_to_pbsu - INFO - Route name: TestRoute
+2025-11-11 16:23:15,902 - osm_to_pbsu - INFO - Loading OSM data from /nonexistent/file.json...
+2025-11-11 16:23:15,902 - osm_to_pbsu - ERROR - Failed to load OSM file: [Errno 2] No such file or directory: '/nonexistent/file.json'

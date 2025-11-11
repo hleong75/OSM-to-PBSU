@@ -31,3 +31,8 @@ output/
 # Test files
 test_*.json
 *.osm
+
+# Log files
+*.log
+ai_automation.log
+osm_to_pbsu.log
