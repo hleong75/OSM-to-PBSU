@@ -5,3 +5,8 @@ Pillow>=8.0.0
 
 # For fetching OSM data via Overpass API
 requests>=2.25.0
+
+# For LiDAR HD elevation data support (optional)
+# Uncomment the ones you need based on your LiDAR file format:
+# rasterio>=1.2.0  # For GeoTIFF (.tif, .tiff) files
+# laspy>=2.0.0     # For LAS/LAZ point cloud files
