@@ -1,36 +1,56 @@
 # AI-Powered Automation Guide for OSM to PBSU
 
+## 🆕 What's New - Enhanced Geographic Data Integration
+
+**NEW in this version:**
+- ✨ **Real Building Heights**: Buildings now use actual height data from OSM (building:levels, height tags)
+- 🗺️ **Terrain Elevation**: Automatic terrain elevation data from geographic services
+- 🏢 **Accurate Building Footprints**: Buildings created from actual OSM polygon shapes, not just boxes
+- 🌆 **Street View Textures**: Optional realistic textures from Google Street View API
+- ✅ **3DS Validation**: Comprehensive validation ensures 3DS files are properly generated
+- 📊 **Geographic Data Export**: All building and elevation data saved to `geographic_data.json`
+
+For detailed information about geographic data features, see **[Geographic Data Guide](GEOGRAPHIC_DATA_GUIDE.md)**.
+
 ## Overview
 
 The AI automation feature completely automates the PBSU map creation process, eliminating the need for manual 3D modeling, texture creation, and asset generation. This revolutionary feature uses intelligent algorithms and Blender automation to create complete, ready-to-use PBSU maps from OpenStreetMap data.
 
 ## 🎯 What Gets Automated
 
-### 1. 3D Model Generation
+### 1. 3D Model Generation (Enhanced with Geographic Data)
 - **Roads**: Automatically generated meshes connecting all bus stops
 - **Sidewalks**: Generated on both sides of roads with proper elevation
 - **Bus Stop Objects**: 
   - Trigger objects (cubes) positioned at each stop
   - Passenger spawn points (5 per stop) with proper spacing
-- **Buildings**: Procedurally generated buildings along the route
-  - Varied heights and dimensions
-  - Properly UV-mapped
+- **Buildings**: 🆕 **Now with accurate dimensions from OSM data**
+  - Created from actual building footprints (polygons from OSM)
+  - Real heights from OSM tags (building:levels, height)
+  - Intelligent defaults based on building type (residential, commercial, etc.)
+  - Properly UV-mapped for texturing
 - **Ground Plane**: Large terrain mesh beneath the entire route
 - **Automatic UV Mapping**: All models are UV-unwrapped for texturing
 - **Export to .3ds**: Automatically exports in PBSU-compatible format
+- **3DS Validation**: 🆕 Verifies file creation and validates size
 
-### 2. Texture Generation
+### 2. Texture Generation (Enhanced with Street View)
 - **Road Asphalt**: Realistic dark gray texture with noise
 - **Road Concrete**: Light gray concrete texture
 - **Building Walls**: Brick pattern texture
 - **Grass**: Green texture with color variation
 - **Sidewalk**: Tile pattern texture
+- 🆕 **Street View Images**: Optional realistic textures from Google Street View
+  - Requires Google Street View API key
+  - Fetches actual street-level imagery
+  - Saved to `textures/streetview/` directory
 
 All textures are:
-- Generated procedurally (no manual work)
+- Generated procedurally (no manual work required)
 - PNG format (PBSU compatible)
 - 512x512 pixels (optimized for performance)
 - Ready to use immediately
+- 🆕 Optionally enhanced with real-world imagery
 
 ### 3. Destination Displays
 - Automatically extracts bus stop names from route data

@@ -1,8 +1,8 @@
 # OSM to PBSU Converter
 
-A tool to convert OpenStreetMap data to Proton Bus Simulator (PBSU) route format.
+A tool to convert OpenStreetMap data to Proton Bus Simulator (PBSU) route format with accurate geographic data and AI-powered 3D generation.
 
-📖 **[Quick Start Guide](QUICKSTART.md)** | 🔧 **[PBSU Format Reference](PBSU_FORMAT.md)** | 📋 **[Examples](examples/README.md)**
+📖 **[Quick Start Guide](QUICKSTART.md)** | 🔧 **[PBSU Format Reference](PBSU_FORMAT.md)** | 📋 **[Examples](examples/README.md)** | 🌍 **[Geographic Data Guide](GEOGRAPHIC_DATA_GUIDE.md)**
 
 ## Description
 
