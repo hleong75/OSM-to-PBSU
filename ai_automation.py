@@ -528,7 +528,23 @@ def main():
     
     # Export to .3ds
     print(f"Exporting to {output_file}...")
+    
+    # Count mesh objects before export
+    mesh_objects = [obj for obj in bpy.data.objects if obj.type == 'MESH']
+    print(f"Scene contains {len(mesh_objects)} mesh objects")
+    
+    if len(mesh_objects) == 0:
+        print("WARNING: No mesh objects found in scene!")
+        print("Creating a minimal placeholder cube to allow export...")
+        # Create a minimal cube at origin as fallback
+        bpy.ops.mesh.primitive_cube_add(location=(0, 0, 0))
+        bpy.context.active_object.name = "Placeholder_Cube"
+        mesh_objects = [bpy.context.active_object]
+    
+    # Select all objects for export
     bpy.ops.object.select_all(action='SELECT')
+    selected_count = len([obj for obj in bpy.context.selected_objects])
+    print(f"Selected {selected_count} objects for export")
     
     # Ensure output directory exists
     output_dir = os.path.dirname(output_file)
@@ -565,6 +581,7 @@ def main():
     export_success = False
     export_format = None
     actual_output_file = output_file
+    export_errors = []
     
     # Try different export formats in order of preference
     export_attempts = [
@@ -592,6 +609,7 @@ def main():
         }),
     ]
     
+    export_errors = []
     for format_name, extension, op_path, kwargs in export_attempts:
         try:
             print(f"Attempting {format_name} export...")
@@ -603,16 +621,40 @@ def main():
                 op = getattr(op, part)
             
             # Call the export operator
-            op(**kwargs)
+            result = op(**kwargs)
             
-            export_success = True
-            export_format = format_name
-            actual_output_file = kwargs['filepath']
-            print(f"✓ Successfully exported to {format_name} format: {actual_output_file}")
-            break
+            # Check if export actually succeeded
+            if os.path.exists(kwargs['filepath']):
+                export_success = True
+                export_format = format_name
+                actual_output_file = kwargs['filepath']
+                print(f"✓ Successfully exported to {format_name} format: {actual_output_file}")
+                break
+            else:
+                error_msg = f"Export completed but file not created: {kwargs['filepath']}"
+                print(f"✗ {format_name} export failed: {error_msg}")
+                export_errors.append(f"{format_name}: {error_msg}")
+                continue
             
-        except (AttributeError, RuntimeError, KeyError) as e:
-            print(f"✗ {format_name} export failed: {e}")
+        except AttributeError as e:
+            error_msg = f"Export operator not available: {e}"
+            print(f"✗ {format_name} export failed: {error_msg}")
+            export_errors.append(f"{format_name}: {error_msg}")
+            continue
+        except RuntimeError as e:
+            error_msg = f"Runtime error: {e}"
+            print(f"✗ {format_name} export failed: {error_msg}")
+            export_errors.append(f"{format_name}: {error_msg}")
+            continue
+        except KeyError as e:
+            error_msg = f"Missing parameter: {e}"
+            print(f"✗ {format_name} export failed: {error_msg}")
+            export_errors.append(f"{format_name}: {error_msg}")
+            continue
+        except Exception as e:
+            error_msg = f"Unexpected error: {type(e).__name__}: {e}"
+            print(f"✗ {format_name} export failed: {error_msg}")
+            export_errors.append(f"{format_name}: {error_msg}")
             continue
     
     if export_success:
@@ -629,7 +671,19 @@ def main():
     else:
         print("="*60)
         print("✗ 3D Model generation failed!")
-        print("All export formats failed. Please ensure Blender export addons are available.")
+        print("All export formats failed. Details:")
+        for error in export_errors:
+            print(f"  - {error}")
+        print("")
+        print("Possible causes:")
+        print("  1. Blender export addons may not be installed or enabled")
+        print("  2. The scene may have no valid geometry to export")
+        print("  3. File permissions may prevent writing to the output directory")
+        print("")
+        print("Troubleshooting:")
+        print("  - Ensure Blender 2.8 or higher is installed with export addons")
+        print("  - Check that the output directory is writable")
+        print("  - Try running Blender manually to verify it works")
         print("="*60)
         raise RuntimeError("All export attempts failed")
 
