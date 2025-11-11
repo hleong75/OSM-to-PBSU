@@ -1,6 +1,30 @@
 # Changelog - Tests, Logging, and API Removal
 
-## Date: 2025-11-11
+## Date: 2025-11-11 (Latest Update)
+
+### Fix: Blender 3DS Export Error
+
+**Issue**: Blender's `bpy.ops.export_scene.autodesk_3ds()` operator was not available, causing the 3D model generation to fail with:
+```
+AttributeError: Calling operator "bpy.ops.export_scene.autodesk_3ds" error, could not be found
+```
+
+**Solution**:
+- Added automatic enablement of the `io_scene_3ds` addon before export
+- Added fallback to OBJ format export if 3DS export fails
+- Improved error handling and user messaging
+
+**Changes**:
+- Modified `ai_automation.py` to enable the 3DS addon using `addon_utils.enable()`
+- Wrapped 3DS export in try-except block for graceful failure handling
+- Added OBJ export as fallback with clear instructions for manual conversion
+- Added success tracking to ensure export completion
+
+**Impact**: Users with newer Blender versions or missing 3DS addon can now successfully generate 3D models, either in 3DS format (preferred) or OBJ format (fallback).
+
+---
+
+## Date: 2025-11-11 (Previous Updates)
 
 ## Summary
 

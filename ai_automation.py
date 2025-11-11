@@ -535,18 +535,57 @@ def main():
     if output_dir and not os.path.exists(output_dir):
         os.makedirs(output_dir)
     
-    # Export
-    bpy.ops.export_scene.autodesk_3ds(
-        filepath=output_file,
-        use_selection=True,
-        axis_forward='Y',
-        axis_up='Z'
-    )
+    # Try to enable 3DS addon if not already enabled
+    addon_name = 'io_scene_3ds'
+    try:
+        import addon_utils
+        addon_utils.enable(addon_name, default_set=True, persistent=True)
+        print(f"Enabled {addon_name} addon")
+    except Exception as e:
+        print(f"Warning: Could not enable {addon_name} addon: {e}")
     
-    print("="*60)
-    print("✓ 3D Model generation complete!")
-    print(f"Exported to: {output_file}")
-    print("="*60)
+    # Try to export to 3DS format
+    export_success = False
+    try:
+        bpy.ops.export_scene.autodesk_3ds(
+            filepath=output_file,
+            use_selection=True,
+            axis_forward='Y',
+            axis_up='Z'
+        )
+        export_success = True
+        print("Successfully exported to .3ds format")
+    except (AttributeError, RuntimeError) as e:
+        print(f"Warning: 3DS export failed: {e}")
+        print("Attempting fallback to OBJ format...")
+        
+        # Fallback to OBJ export
+        obj_file = output_file.replace('.3ds', '.obj')
+        try:
+            bpy.ops.export_scene.obj(
+                filepath=obj_file,
+                use_selection=True,
+                axis_forward='Y',
+                axis_up='Z'
+            )
+            export_success = True
+            print(f"Successfully exported to OBJ format: {obj_file}")
+            print("NOTE: You will need to convert the .obj file to .3ds format manually")
+            print("You can use Blender's GUI or an online converter")
+        except Exception as obj_error:
+            print(f"Error: OBJ export also failed: {obj_error}")
+            raise
+    
+    if export_success:
+        print("="*60)
+        print("✓ 3D Model generation complete!")
+        print(f"Exported to: {output_file}")
+        print("="*60)
+    else:
+        print("="*60)
+        print("✗ 3D Model generation failed!")
+        print("="*60)
+        raise RuntimeError("Export failed")
 
 if __name__ == "__main__":
     main()
