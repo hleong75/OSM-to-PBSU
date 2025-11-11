@@ -67,21 +67,47 @@ Run complete automation in one command with real-world accuracy:
 # Convert OSM data AND automatically generate everything with accurate dimensions
 python osm_to_pbsu.py route_101.json -m "My_City" -r "Route_101" --run-ai-automation
 
-# With Google Street View for realistic textures
-python osm_to_pbsu.py route_101.json -m "My_City" -r "Route_101" --run-ai-automation --streetview-api-key YOUR_API_KEY
+# With LiDAR HD elevation data for accurate terrain (NO API required)
+python osm_to_pbsu.py route_101.json -m "My_City" -r "Route_101" --run-ai-automation --lidar-file elevation_data.tif
+
+# Adjust Blender timeout for complex maps with many buildings
+python osm_to_pbsu.py route_101.json -m "My_City" -r "Route_101" --run-ai-automation --blender-timeout 900
 ```
 
 This will automatically:
 - Convert OSM data to PBSU format
 - **Fetch building heights from OSM data (building:levels, height tags)**
-- **Fetch terrain elevation data from geographic services**
+- **Load terrain elevation from LiDAR HD files (if provided)**
 - Generate accurate 3D models using Blender with real dimensions
 - Create buildings with actual footprints and heights
-- Create procedural textures (or fetch from Street View)
+- Create procedural textures (works offline, no API needed)
 - Generate destination displays
 - Create preview image
 
 **Your map will be ready to use in PBSU without manual work!**
+
+#### LiDAR HD Elevation Data (No API Required!)
+
+The tool supports loading elevation data directly from LiDAR HD files:
+
+**Supported formats:**
+- GeoTIFF (.tif, .tiff) - Recommended
+- XYZ ASCII (.xyz, .txt)
+- LAS/LAZ point clouds (.las, .laz)
+
+**Where to get LiDAR HD data:**
+- France: [IGN Géoportail](https://geoservices.ign.fr/) - Free high-resolution LiDAR data
+- USA: [USGS Earth Explorer](https://earthexplorer.usgs.gov/)
+- Worldwide: [OpenTopography](https://opentopography.org/)
+
+**Example:**
+```bash
+# Download LiDAR data for your area from IGN or USGS
+# Then use it in the conversion:
+python osm_to_pbsu.py route.json -m "Paris" -r "Route_1" --lidar-file LIDARHD_75056.tif --run-ai-automation
+```
+
+**Note:** LiDAR files work completely offline - no API calls required!
 
 ### Manual Step-by-Step
 
@@ -106,8 +132,10 @@ python osm_to_pbsu.py route_101.json -m "My_City" -r "Route_101" -o ./my_pbsu_ma
 - `-o, --output` - Output directory (default: `output`)
 - `--origin-lat` - Origin latitude for coordinate conversion (default: first bus stop)
 - `--origin-lon` - Origin longitude for coordinate conversion (default: first bus stop)
-- `--run-ai-automation` - Automatically run AI automation after conversion (NEW!)
+- `--lidar-file` - LiDAR HD elevation data file (.tif, .xyz, .las, .laz) for accurate terrain
+- `--run-ai-automation` - Automatically run AI automation after conversion
 - `--blender-path` - Path to Blender executable for AI automation (default: `blender`)
+- `--blender-timeout` - Timeout for Blender execution in seconds (default: 600)
 
 ## Getting OSM Data
 

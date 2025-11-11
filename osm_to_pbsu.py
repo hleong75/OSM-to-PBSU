@@ -812,6 +812,8 @@ Note: Input file should be OSM JSON format (from Overpass API or exported from J
                        help='Automatically run AI automation after conversion')
     parser.add_argument('--blender-path', default='blender',
                        help='Path to Blender executable for AI automation')
+    parser.add_argument('--blender-timeout', type=int, default=600,
+                       help='Timeout for Blender execution in seconds (default: 600)')
     
     args = parser.parse_args()
     
@@ -856,7 +858,7 @@ Note: Input file should be OSM JSON format (from Overpass API or exported from J
                 logger.info("Starting AI automation...")
                 # Then run AI automation (without streetview API key)
                 from ai_automation import AIAutomation
-                ai_automator = AIAutomation(map_dir, args.blender_path)
+                ai_automator = AIAutomation(map_dir, args.blender_path, args.blender_timeout)
                 ai_automator.run_full_automation(args.route_name, api_key=None)
                 
                 logger.info("AI automation completed successfully")
