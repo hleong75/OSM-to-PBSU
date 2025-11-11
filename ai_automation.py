@@ -36,20 +36,23 @@ logger = logging.getLogger(__name__)
 class AIAutomation:
     """AI-powered automation for complete PBSU map generation"""
     
-    def __init__(self, map_dir: str, blender_path: str = "blender"):
+    def __init__(self, map_dir: str, blender_path: str = "blender", blender_timeout: int = 600):
         """
         Initialize AI automation
         
         Args:
             map_dir: Path to the map directory
             blender_path: Path to Blender executable (default: "blender" in PATH)
+            blender_timeout: Timeout for Blender execution in seconds (default: 600)
         """
         self.map_dir = map_dir
         self.map_name = os.path.basename(map_dir)
         self.blender_path = blender_path
+        self.blender_timeout = blender_timeout
         logger.info(f"Initialized AIAutomation for map: {self.map_name}")
         logger.info(f"Map directory: {map_dir}")
         logger.info(f"Blender path: {blender_path}")
+        logger.info(f"Blender timeout: {blender_timeout} seconds")
         
     def generate_blender_automation_script(self) -> str:
         """Generate comprehensive Blender automation script"""
@@ -633,13 +636,13 @@ if __name__ == "__main__":
             ]
             
             logger.info(f"Blender command: {' '.join(cmd)}")
-            logger.info("Executing Blender (timeout: 300 seconds)...")
+            logger.info(f"Executing Blender (timeout: {self.blender_timeout} seconds)...")
             
             result = subprocess.run(
                 cmd,
                 capture_output=True,
                 text=True,
-                timeout=300  # 5 minute timeout
+                timeout=self.blender_timeout
             )
             
             logger.info(f"Blender process finished with return code: {result.returncode}")
@@ -701,8 +704,9 @@ if __name__ == "__main__":
                 return False
                 
         except subprocess.TimeoutExpired:
-            logger.error("Blender execution timed out after 300 seconds")
-            print("Error: Blender execution timed out")
+            logger.error(f"Blender execution timed out after {self.blender_timeout} seconds")
+            print(f"Error: Blender execution timed out after {self.blender_timeout} seconds")
+            print(f"Try increasing the timeout with --blender-timeout parameter")
             return False
         except FileNotFoundError:
             logger.error(f"Blender not found at: {self.blender_path}")
@@ -1222,6 +1226,8 @@ NOTE: All API calls have been removed. This script works completely offline.
     parser.add_argument('route_name', help='Route name (e.g., Route_1)')
     parser.add_argument('--blender-path', default='blender',
                        help='Path to Blender executable (default: "blender" in PATH)')
+    parser.add_argument('--blender-timeout', type=int, default=600,
+                       help='Timeout for Blender execution in seconds (default: 600)')
     parser.add_argument('--skip-3d', action='store_true',
                        help='Skip 3D model generation')
     
@@ -1233,6 +1239,7 @@ NOTE: All API calls have been removed. This script works completely offline.
     logger.info(f"Map directory: {args.map_dir}")
     logger.info(f"Route name: {args.route_name}")
     logger.info(f"Blender path: {args.blender_path}")
+    logger.info(f"Blender timeout: {args.blender_timeout} seconds")
     logger.info(f"Skip 3D: {args.skip_3d}")
     
     if not os.path.exists(args.map_dir):
@@ -1241,7 +1248,7 @@ NOTE: All API calls have been removed. This script works completely offline.
         sys.exit(1)
     
     logger.info("Map directory verified")
-    automator = AIAutomation(args.map_dir, args.blender_path)
+    automator = AIAutomation(args.map_dir, args.blender_path, args.blender_timeout)
     
     try:
         if args.skip_3d:

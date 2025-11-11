@@ -27,9 +27,21 @@ The converter now extracts and uses real geographic data from OpenStreetMap:
   - And more...
 
 #### Terrain Elevation
-- Fetches elevation data from Open-Elevation API (free, no API key required)
-- Provides Y-coordinate (height) for accurate terrain modeling
-- Falls back to ground level (0) if service is unavailable
+
+**IMPORTANT: API calls have been removed. Use LiDAR HD files for accurate elevation data.**
+
+- **LiDAR HD Support** (Recommended - Works offline, no API required):
+  - Supports GeoTIFF (.tif, .tiff), XYZ ASCII (.xyz, .txt), and LAS/LAZ (.las, .laz) formats
+  - Load elevation data directly from files using `--lidar-file` parameter
+  - Provides Y-coordinate (height) for accurate terrain modeling
+  - Example: `python osm_to_pbsu.py route.json -m "Paris" -r "Route1" --lidar-file elevation.tif`
+  
+- **Where to Get LiDAR HD Data:**
+  - France: [IGN Géoportail](https://geoservices.ign.fr/) - Free high-resolution LiDAR data
+  - USA: [USGS Earth Explorer](https://earthexplorer.usgs.gov/)
+  - Worldwide: [OpenTopography](https://opentopography.org/)
+
+- Falls back to ground level (0) if no LiDAR file is provided
 
 #### Building Footprints
 - Extracts actual building polygon shapes from OSM
@@ -68,29 +80,30 @@ All geographic data is exported to `geographic_data.json` which contains:
 }
 ```
 
-### 3. Street View Texture Integration
+### 3. Procedural Texture Generation
 
-Optional integration with Google Street View Static API for realistic textures:
+**Note: API-based texture fetching has been disabled. The tool now uses procedural generation.**
 
-#### How to Use
-1. Obtain a Google Street View API key from Google Cloud Console
-2. Run conversion with the API key:
-   ```bash
-   python osm_to_pbsu.py route.json -m "City" -r "Route" \
-     --run-ai-automation \
-     --streetview-api-key YOUR_API_KEY
-   ```
+The AI automation automatically generates textures using procedural algorithms:
 
 #### Features
-- Fetches actual street-level images
-- Uses bus stop locations as viewpoints
-- Saves textures to `textures/streetview/` directory
-- Falls back to procedural generation if API fails
+- **Works completely offline** - No API keys required
+- Generates realistic textures for:
+  - Asphalt roads
+  - Concrete surfaces
+  - Building walls (with brick patterns)
+  - Grass terrain
+  - Sidewalks (with tile patterns)
+- Uses PIL/Pillow for high-quality generation
+- Falls back to simple PNG generation if PIL is unavailable
 
-#### Limitations
-- Requires valid Google API key
-- Subject to Google's usage quotas and pricing
-- Limited to first 5 bus stops by default (configurable)
+#### How to Use
+Simply run with `--run-ai-automation`:
+```bash
+python osm_to_pbsu.py route.json -m "City" -r "Route" --run-ai-automation
+```
+
+All textures are automatically generated and saved to `textures/` directory.
 
 ### 4. 3DS File Validation
 
@@ -119,23 +132,31 @@ python osm_to_pbsu.py paris.json -m "Paris" -r "Line_1" \
   --blender-path /usr/bin/blender
 ```
 
-### With Street View Textures
+### With LiDAR HD Elevation Data
 ```bash
-# Use real textures from Google Street View
+# Use real elevation data from LiDAR files (no API required)
 python osm_to_pbsu.py paris.json -m "Paris" -r "Line_1" \
   --run-ai-automation \
-  --streetview-api-key YOUR_GOOGLE_API_KEY
+  --lidar-file LIDARHD_75056.tif
+```
+
+### With Custom Blender Timeout
+```bash
+# Increase timeout for complex maps with many buildings
+python osm_to_pbsu.py paris.json -m "Paris" -r "Line_1" \
+  --run-ai-automation \
+  --blender-timeout 900
 ```
 
 ### Manual Step-by-Step
 ```bash
-# 1. Convert OSM data
-python osm_to_pbsu.py paris.json -m "Paris" -r "Line_1"
+# 1. Convert OSM data with LiDAR elevation
+python osm_to_pbsu.py paris.json -m "Paris" -r "Line_1" --lidar-file elevation.tif
 
-# 2. Run AI automation separately
+# 2. Run AI automation separately with custom timeout
 python ai_automation.py output/Paris Line_1 \
   --blender-path /usr/bin/blender \
-  --streetview-api-key YOUR_API_KEY
+  --blender-timeout 900
 ```
 
 ## Output Structure
@@ -148,10 +169,8 @@ output/
     ├── geographic_data.json         # NEW: All geographic data
     ├── README.md
     ├── textures/
-    │   ├── streetview/              # NEW: Street View images
-    │   │   ├── stop1_streetview.jpg
-    │   │   └── stop2_streetview.jpg
-    │   ├── road_asphalt.png
+    │   ├── road_asphalt.png         # Procedurally generated
+    │   ├── road_concrete.png        # Procedurally generated
     │   ├── building_wall.png
     │   └── ...
     ├── dest/
@@ -210,16 +229,17 @@ Check:
 - Use building type defaults
 - Manually edit `geographic_data.json` if needed
 
-### Elevation Data Not Fetched
-- Check internet connectivity
-- Elevation API may be rate-limited
-- Falls back to 0 (ground level) automatically
+### Elevation Data Issues
+- Provide a LiDAR HD file using `--lidar-file` parameter
+- Supported formats: GeoTIFF (.tif), XYZ (.xyz), LAS/LAZ (.las, .laz)
+- Falls back to 0 (ground level) if no LiDAR file provided
+- Check that the LiDAR file covers your map area
 
-### Street View Textures Not Downloaded
-- Verify API key is valid
-- Check Google Cloud Console for quota
-- Ensure billing is enabled for the API
-- Check if locations have Street View coverage
+### Blender Timeout
+- If Blender times out, increase timeout: `--blender-timeout 900`
+- Default timeout is 600 seconds (10 minutes)
+- Complex maps with many buildings may need longer timeout
+- Monitor Blender process to see if it's making progress
 
 ## Best Practices
 
@@ -227,21 +247,25 @@ Check:
    - Use OSM data from well-mapped areas
    - Check building tags in JOSM before export
    - Add missing height data to OSM if possible
+   - Use LiDAR HD data for accurate elevation
 
 2. **Performance:**
    - Limit area size for faster processing
    - Use `--skip-3d` to test without Blender
    - Process large areas in segments
+   - Increase `--blender-timeout` for complex maps
 
 3. **Textures:**
-   - Use Street View only for final production
-   - Procedural textures are fine for testing
-   - Consider API costs for large areas
+   - Procedural textures work great and are free
+   - No API keys or internet required
+   - PIL/Pillow provides better quality textures
+   - All textures generated automatically
 
 4. **Testing:**
    - Always test with small area first
    - Verify 3DS file in Blender before PBSU
    - Check geographic_data.json for accuracy
+   - Monitor log files for issues
 
 ## Future Enhancements
 

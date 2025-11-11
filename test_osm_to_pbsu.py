@@ -467,6 +467,23 @@ class TestErrorHandling(unittest.TestCase):
             )
 
 
+class TestAIAutomation(unittest.TestCase):
+    """Test AI automation functionality"""
+    
+    def test_ai_automation_timeout_configuration(self):
+        """Test that AIAutomation accepts custom timeout"""
+        from ai_automation import AIAutomation
+        
+        with tempfile.TemporaryDirectory() as temp_dir:
+            # Test default timeout
+            automator = AIAutomation(temp_dir)
+            self.assertEqual(automator.blender_timeout, 600)
+            
+            # Test custom timeout
+            automator_custom = AIAutomation(temp_dir, blender_timeout=900)
+            self.assertEqual(automator_custom.blender_timeout, 900)
+
+
 def run_tests():
     """Run all tests"""
     loader = unittest.TestLoader()
@@ -481,6 +498,7 @@ def run_tests():
     suite.addTests(loader.loadTestsFromTestCase(TestElevationData))
     suite.addTests(loader.loadTestsFromTestCase(TestIntegration))
     suite.addTests(loader.loadTestsFromTestCase(TestErrorHandling))
+    suite.addTests(loader.loadTestsFromTestCase(TestAIAutomation))
     
     runner = unittest.TextTestRunner(verbosity=2)
     result = runner.run(suite)
